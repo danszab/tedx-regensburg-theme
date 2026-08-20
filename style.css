@@ -1,0 +1,17 @@
+/*
+Theme Name: TEDx Regensburg
+Theme URI: https://tedxregensburg.de
+Author: TEDx Regensburg Team
+Author URI: https://tedxregensburg.de
+Description: A modern, high-performance WordPress theme for TEDx Regensburg, crafted with Tailwind CSS and standard-compliant WordPress architecture based on Figma design.
+Version: 1.0.0
+Tested up to: 6.7
+Requires at least: 6.0
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: tedx-regensburg
+Tags: one-column, custom-colors, custom-menu, custom-logo, featured-images, translation-ready, dark-theme
+*/
+
+/* Core theme styles are loaded from assets/css/style.css */

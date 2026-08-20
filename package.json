@@ -1,0 +1,20 @@
+{
+  "name": "tedx-regensburg-theme",
+  "version": "1.0.0",
+  "description": "WordPress Theme for TEDx Regensburg based on Figma Design",
+  "scripts": {
+    "dev": "tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --watch",
+    "build": "tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --minify"
+  },
+  "keywords": [
+    "wordpress",
+    "theme",
+    "tedx",
+    "tailwindcss"
+  ],
+  "author": "TEDx Regensburg Team",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}
