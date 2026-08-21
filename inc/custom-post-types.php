@@ -290,7 +290,15 @@ function tedx_render_page_event_meta_box( $post ) {
 	$pitch_meta = get_post_meta( $post->ID, '_event_pitch_meta', true );
 	$pitch_desc = get_post_meta( $post->ID, '_event_pitch_desc', true );
 	$ticket_url = get_post_meta( $post->ID, '_event_ticket_url', true );
-	$is_past_event = get_post_meta( $post->ID, '_event_is_past', true );
+	$show_more_url = get_post_meta( $post->ID, '_event_show_more_url', true );
+	$enable_tickets = get_post_meta( $post->ID, '_event_enable_tickets', true );
+	if ( '' === $enable_tickets ) {
+		$enable_tickets = '1';
+	}
+	$enable_show_more = get_post_meta( $post->ID, '_event_enable_show_more', true );
+	if ( '' === $enable_show_more ) {
+		$enable_show_more = '1';
+	}
 	$event_year = get_post_meta( $post->ID, '_event_year', true );
 	
 	// Location Meta
@@ -326,8 +334,22 @@ function tedx_render_page_event_meta_box( $post ) {
 			<td><input type="url" id="event_ticket_url" name="event_ticket_url" value="<?php echo esc_url( $ticket_url ); ?>" class="regular-text" /></td>
 		</tr>
 		<tr>
-			<th scope="row"><label for="event_is_past"><?php _e( 'Is Past Event?', 'tedx-regensburg' ); ?></label></th>
-			<td><input type="checkbox" id="event_is_past" name="event_is_past" value="1" <?php checked( $is_past_event, '1' ); ?> /> <span class="description"><?php _e('Check this if the event is in the past (changes the UI slightly).', 'tedx-regensburg'); ?></span></td>
+			<th scope="row"><label for="event_show_more_url"><?php _e( 'Show More / Subpage URL', 'tedx-regensburg' ); ?></label></th>
+			<td><input type="url" id="event_show_more_url" name="event_show_more_url" value="<?php echo esc_url( $show_more_url ); ?>" class="regular-text" placeholder="<?php echo esc_attr( home_url( '/about' ) ); ?>" /></td>
+		</tr>
+		<tr>
+			<th scope="row"><?php _e( 'Button Controls', 'tedx-regensburg' ); ?></th>
+			<td>
+				<label for="event_enable_tickets" style="display: inline-block; margin-right: 20px; margin-bottom: 6px;">
+					<input type="checkbox" id="event_enable_tickets" name="event_enable_tickets" value="1" <?php checked( $enable_tickets, '1' ); ?> />
+					<strong><?php _e( 'Enable Tickets Button', 'tedx-regensburg' ); ?></strong>
+				</label>
+				<label for="event_enable_show_more" style="display: inline-block; margin-bottom: 6px;">
+					<input type="checkbox" id="event_enable_show_more" name="event_enable_show_more" value="1" <?php checked( $enable_show_more, '1' ); ?> />
+					<strong><?php _e( 'Enable Show More Button', 'tedx-regensburg' ); ?></strong>
+				</label>
+				<p class="description"><?php _e( 'Uncheck both buttons to completely hide all action buttons (e.g. for past events).', 'tedx-regensburg' ); ?></p>
+			</td>
 		</tr>
 		<tr>
 			<th scope="row" colspan="2"><h3 style="margin: 0; padding-top: 15px; border-bottom: 1px solid #ccc;"><?php _e('Location Settings', 'tedx-regensburg'); ?></h3></th>
@@ -367,7 +389,9 @@ function tedx_save_page_event_meta_data( $post_id ) {
 	update_post_meta( $post_id, '_event_pitch_meta', sanitize_text_field( $_POST['event_pitch_meta'] ?? '' ) );
 	update_post_meta( $post_id, '_event_pitch_desc', sanitize_textarea_field( $_POST['event_pitch_desc'] ?? '' ) );
 	update_post_meta( $post_id, '_event_ticket_url', esc_url_raw( $_POST['event_ticket_url'] ?? '' ) );
-	update_post_meta( $post_id, '_event_is_past', isset( $_POST['event_is_past'] ) ? '1' : '0' );
+	update_post_meta( $post_id, '_event_show_more_url', esc_url_raw( $_POST['event_show_more_url'] ?? '' ) );
+	update_post_meta( $post_id, '_event_enable_tickets', isset( $_POST['event_enable_tickets'] ) ? '1' : '0' );
+	update_post_meta( $post_id, '_event_enable_show_more', isset( $_POST['event_enable_show_more'] ) ? '1' : '0' );
 	update_post_meta( $post_id, '_event_year', sanitize_text_field( $_POST['event_year'] ?? '' ) );
 	update_post_meta( $post_id, '_event_venue_name', sanitize_text_field( $_POST['event_venue_name'] ?? '' ) );
 	update_post_meta( $post_id, '_event_venue_address_1', sanitize_text_field( $_POST['event_venue_address_1'] ?? '' ) );

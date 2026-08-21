@@ -26,39 +26,39 @@ if ( is_page() ) {
 }
 ?>
 
-<section class="bg-tedx-dark py-16 md:py-24 px-4 md:px-8 lg:px-12 w-full flex flex-col items-center border-t border-white/5">
-	<div class="max-w-figma w-full flex flex-col md:flex-row items-center gap-10 md:gap-16">
+<section id="location" class="bg-tedx-dark py-16 md:py-24 px-4 md:px-8 lg:px-12 w-full border-t border-white/5">
+	<div class="max-w-figma mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
 		
-		<!-- Location Image -->
-		<div class="w-full md:w-1/2 aspect-square md:aspect-[4/3] rounded-3xl overflow-hidden relative shadow-lg bg-tedx-card border border-white/10">
+		<!-- Left Column: Location / Venue Image -->
+		<div class="w-full aspect-[4/3] rounded-[32px] overflow-hidden relative shadow-2xl bg-tedx-card border border-white/10">
 			<?php if ( $venue_image ) : ?>
 				<img alt="<?php echo esc_attr( $venue_name ); ?>" class="absolute inset-0 w-full h-full object-cover" src="<?php echo esc_url( $venue_image ); ?>" />
 			<?php else : ?>
 				<div class="absolute inset-0 w-full h-full flex flex-col items-center justify-center text-white/30 bg-gradient-to-br from-[#333] to-[#222]">
-					<?php tedx_get_icon( 'info', 'w-12 h-12 mb-2 opacity-50' ); ?>
+					<?php echo tedx_get_icon( 'info', 'w-12 h-12 mb-2 opacity-50' ); ?>
 					<span class="font-bold text-lg">Venue Image</span>
 				</div>
 			<?php endif; ?>
 		</div>
 		
-		<!-- Location Info -->
-		<div class="w-full md:w-1/2 flex flex-col items-center text-center md:items-start md:text-left break-words">
-			<h2 class="text-5xl md:text-6xl font-black text-white tracking-tight leading-tight mb-6">
+		<!-- Right Column: Location / Venue Info -->
+		<div class="flex flex-col items-start text-left break-words">
+			<h2 class="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight mb-4">
 				Venue
 			</h2>
 			
-			<div class="flex flex-col gap-2 mb-8">
-				<h3 class="text-2xl font-bold text-tedx-red tracking-tight">
+			<div class="flex flex-col gap-1 mb-8">
+				<h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
 					<?php echo esc_html( $venue_name ); ?>
 				</h3>
-				<div class="text-base text-white/80 leading-relaxed font-normal space-y-1">
+				<div class="text-base text-white/80 leading-relaxed font-normal mt-1">
 					<p><?php echo esc_html( $venue_address_1 ); ?></p>
 					<p><?php echo esc_html( $venue_address_2 ); ?></p>
 				</div>
 			</div>
 			
 			<?php if ( $venue_maps_url ) : ?>
-			<a href="<?php echo esc_url( $venue_maps_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center border border-white/20 text-white hover:border-tedx-red hover:bg-tedx-red text-sm font-medium px-6 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02]">
+			<a href="<?php echo esc_url( $venue_maps_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center border border-white/20 hover:border-tedx-red text-white hover:bg-tedx-red text-sm font-semibold px-6 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] uppercase tracking-wider">
 				<span>VIEW ON GOOGLE MAPS</span>
 			</a>
 			<?php endif; ?>

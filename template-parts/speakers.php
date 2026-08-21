@@ -13,10 +13,13 @@ $event_year      = tedx_mod( 'tedx_event_year', '2026' );
 $cfs_title       = tedx_mod( 'tedx_cfs_title', __( 'Your Name Here?', 'tedx-regensburg' ) );
 $cfs_description = tedx_mod( 'tedx_cfs_description', __( 'We are curating for the final lineup for 2026. Bring your vision to the stage.', 'tedx-regensburg' ) );
 $cfs_url         = tedx_mod( 'tedx_cfs_url', '#apply' );
-$is_past_event   = false;
+$show_cfs = true;
 
 if ( is_page() ) {
-	$is_past_event = get_post_meta( get_the_ID(), '_event_is_past', true ) === '1';
+	$meta_enable_tickets = get_post_meta( get_the_ID(), '_event_enable_tickets', true );
+	if ( '0' === $meta_enable_tickets ) {
+		$show_cfs = false;
+	}
 }
 
 // Determine which year to show
@@ -208,7 +211,7 @@ $speakers_query = new WP_Query( $query_args );
 			endif;
 			?>
 
-			<?php if ( ! $is_past_event ) : ?>
+			<?php if ( $show_cfs ) : ?>
 			<!-- Call for Speakers Card ("Your Name Here?") -->
 			<div class="border-2 border-tedx-red bg-tedx-red/5 rounded-[32px] p-8 flex flex-col items-center justify-center text-center shadow-xl transition-all duration-300 hover:bg-tedx-red/10 hover:scale-[1.02]">
 				<h3 class="text-2xl font-bold text-white mb-3">

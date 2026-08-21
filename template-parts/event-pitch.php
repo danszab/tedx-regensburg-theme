@@ -14,7 +14,10 @@ $pitch_meta        = tedx_mod( 'tedx_pitch_meta', 'TEDxREGENSBURG | NOV 14 | MAR
 $pitch_description = tedx_mod( 'tedx_pitch_description', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.' );
 $ticket_url        = tedx_mod( 'tedx_ticket_url', '#tickets' );
 $ticket_text       = tedx_mod( 'tedx_ticket_text', __( 'Tickets', 'tedx-regensburg' ) );
-$is_past_event     = false;
+$show_more_url     = tedx_mod( 'tedx_show_more_url', '#about' );
+$show_more_text    = tedx_mod( 'tedx_show_more_text', __( 'Show More', 'tedx-regensburg' ) );
+$enable_tickets    = true;
+$enable_show_more  = true;
 
 if ( is_page() ) {
 	$page_title = get_post_meta( get_the_ID(), '_event_pitch_title', true );
@@ -22,8 +25,21 @@ if ( is_page() ) {
 		$pitch_title       = $page_title;
 		$pitch_meta        = get_post_meta( get_the_ID(), '_event_pitch_meta', true );
 		$pitch_description = get_post_meta( get_the_ID(), '_event_pitch_desc', true );
-		$ticket_url        = get_post_meta( get_the_ID(), '_event_ticket_url', true );
-		$is_past_event     = get_post_meta( get_the_ID(), '_event_is_past', true ) === '1';
+		$ticket_url        = get_post_meta( get_the_ID(), '_event_ticket_url', true ) ?: $ticket_url;
+		$meta_show_more    = get_post_meta( get_the_ID(), '_event_show_more_url', true );
+		if ( ! empty( $meta_show_more ) ) {
+			$show_more_url = $meta_show_more;
+		}
+	}
+
+	$meta_enable_tickets = get_post_meta( get_the_ID(), '_event_enable_tickets', true );
+	if ( '' !== $meta_enable_tickets ) {
+		$enable_tickets = ( '1' === $meta_enable_tickets );
+	}
+
+	$meta_enable_show_more = get_post_meta( get_the_ID(), '_event_enable_show_more', true );
+	if ( '' !== $meta_enable_show_more ) {
+		$enable_show_more = ( '1' === $meta_enable_show_more );
 	}
 }
 ?>
@@ -43,22 +59,22 @@ if ( is_page() ) {
 			</div>
 
 			<!-- Action Buttons -->
+			<?php if ( $enable_tickets || $enable_show_more ) : ?>
 			<div class="flex flex-wrap items-center gap-4 pt-2">
-				<?php if ( $is_past_event ) : ?>
-					<a href="#about" class="inline-flex items-center justify-center border border-tedx-red text-tedx-red hover:bg-tedx-red/10 text-sm font-medium px-5 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02]">
-						<span><?php esc_html_e( 'Show More', 'tedx-regensburg' ); ?></span>
-					</a>
-				<?php else : ?>
-					<a href="<?php echo esc_url( $ticket_url ); ?>" class="inline-flex items-center gap-2 bg-tedx-red hover:bg-tedx-red-hover text-white text-sm font-medium px-5 py-3 rounded-xl shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-95">
-						<?php echo tedx_get_icon( 'ticket', 'w-4 h-4 text-white' ); ?>
-						<span><?php echo esc_html( $ticket_text ); ?></span>
-					</a>
+				<?php if ( $enable_tickets && ! empty( $ticket_url ) ) : ?>
+				<a href="<?php echo esc_url( $ticket_url ); ?>" class="inline-flex items-center gap-2 bg-tedx-red hover:bg-tedx-red-hover text-white text-sm font-medium px-5 py-3 rounded-xl shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-95">
+					<?php echo tedx_get_icon( 'ticket', 'w-4 h-4 text-white' ); ?>
+					<span><?php echo esc_html( $ticket_text ); ?></span>
+				</a>
+				<?php endif; ?>
 
-					<a href="#about" class="inline-flex items-center justify-center border border-tedx-red text-tedx-red hover:bg-tedx-red/10 text-sm font-medium px-5 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02]">
-						<span><?php esc_html_e( 'Show More', 'tedx-regensburg' ); ?></span>
-					</a>
+				<?php if ( $enable_show_more && ! empty( $show_more_url ) ) : ?>
+				<a href="<?php echo esc_url( $show_more_url ); ?>" class="inline-flex items-center justify-center border border-tedx-red text-tedx-red hover:bg-tedx-red/10 text-sm font-medium px-5 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02]">
+					<span><?php echo esc_html( $show_more_text ); ?></span>
+				</a>
 				<?php endif; ?>
 			</div>
+			<?php endif; ?>
 
 			<!-- Event Pitch Body Copy -->
 			<p class="text-base text-white/90 leading-relaxed font-normal mt-2">

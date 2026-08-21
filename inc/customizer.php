@@ -102,6 +102,29 @@ function tedx_customize_register( $wp_customize ) {
 		'type'     => 'text',
 	) );
 
+	// Show More Button URL (Subpage Link)
+	$wp_customize->add_setting( 'tedx_show_more_url', array(
+		'default'           => '#about',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+	$wp_customize->add_control( 'tedx_show_more_url', array(
+		'label'       => __( 'Show More Button URL / Subpage Link', 'tedx-regensburg' ),
+		'description' => __( 'Destination URL for the Show More button on the homepage (e.g. /about or https://...).', 'tedx-regensburg' ),
+		'section'     => 'tedx_hero_section',
+		'type'        => 'url',
+	) );
+
+	// Show More Button Text
+	$wp_customize->add_setting( 'tedx_show_more_text', array(
+		'default'           => 'Show More',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'tedx_show_more_text', array(
+		'label'    => __( 'Show More Button Text', 'tedx-regensburg' ),
+		'section'  => 'tedx_hero_section',
+		'type'     => 'text',
+	) );
+
 	// --- Section: About TEDx ---
 	$wp_customize->add_section( 'tedx_about_section', array(
 		'title'    => __( 'About Section', 'tedx-regensburg' ),
