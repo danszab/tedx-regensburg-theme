@@ -36,8 +36,8 @@ $newsletter_action = tedx_mod( 'tedx_newsletter_action', '#' );
 					) );
 				} else {
 					?>
-					<a href="<?php echo esc_url( home_url( '/impressum/' ) ); ?>" class="hover:text-tedx-red transition-colors"><?php esc_html_e( 'Imprint', 'tedx-regensburg' ); ?></a>
-					<a href="<?php echo esc_url( home_url( '/datenschutz/' ) ); ?>" class="hover:text-tedx-red transition-colors"><?php esc_html_e( 'Privacy', 'tedx-regensburg' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/imprint/' ) ); ?>" class="hover:text-tedx-red transition-colors"><?php esc_html_e( 'Imprint', 'tedx-regensburg' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/privacy/' ) ); ?>" class="hover:text-tedx-red transition-colors"><?php esc_html_e( 'Privacy', 'tedx-regensburg' ); ?></a>
 					<?php
 				}
 				?>
