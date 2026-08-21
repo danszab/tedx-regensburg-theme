@@ -25,7 +25,7 @@ $stats = array(
 );
 ?>
 
-<section id="stats" class="bg-tedx-panel py-16 md:py-20 px-4 border-t border-white/5">
+<section id="stats" class="bg-tedx-surface py-16 md:py-20 px-4 border-t border-white/5">
 	<div class="max-w-figma mx-auto flex flex-wrap items-center justify-center gap-8 md:gap-16">
 		
 		<?php foreach ( $stats as $stat ) : ?>
