@@ -19,25 +19,26 @@ $show_more_text    = tedx_mod( 'tedx_show_more_text', __( 'Show More', 'tedx-reg
 $enable_tickets    = true;
 $enable_show_more  = true;
 
-if ( is_page() ) {
-	$page_title = get_post_meta( get_the_ID(), '_event_pitch_title', true );
+if ( is_page() || is_singular( 'tedx_event' ) ) {
+	$page_id = get_the_ID();
+	$page_title = get_post_meta( $page_id, '_event_pitch_title', true );
 	if ( ! empty( $page_title ) ) {
 		$pitch_title       = $page_title;
-		$pitch_meta        = get_post_meta( get_the_ID(), '_event_pitch_meta', true );
-		$pitch_description = get_post_meta( get_the_ID(), '_event_pitch_desc', true );
-		$ticket_url        = get_post_meta( get_the_ID(), '_event_ticket_url', true ) ?: $ticket_url;
-		$meta_show_more    = get_post_meta( get_the_ID(), '_event_show_more_url', true );
+		$pitch_meta        = get_post_meta( $page_id, '_event_pitch_meta', true );
+		$pitch_description = get_post_meta( $page_id, '_event_pitch_desc', true );
+		$ticket_url        = get_post_meta( $page_id, '_event_ticket_url', true ) ?: $ticket_url;
+		$meta_show_more    = get_post_meta( $page_id, '_event_show_more_url', true );
 		if ( ! empty( $meta_show_more ) ) {
 			$show_more_url = $meta_show_more;
 		}
 	}
 
-	$meta_enable_tickets = get_post_meta( get_the_ID(), '_event_enable_tickets', true );
+	$meta_enable_tickets = get_post_meta( $page_id, '_event_enable_tickets', true );
 	if ( '' !== $meta_enable_tickets ) {
 		$enable_tickets = ( '1' === $meta_enable_tickets );
 	}
 
-	$meta_enable_show_more = get_post_meta( get_the_ID(), '_event_enable_show_more', true );
+	$meta_enable_show_more = get_post_meta( $page_id, '_event_enable_show_more', true );
 	if ( '' !== $meta_enable_show_more ) {
 		$enable_show_more = ( '1' === $meta_enable_show_more );
 	}
@@ -83,15 +84,9 @@ if ( is_page() ) {
 
 		</div>
 
-		<!-- Right Column: Visual Theme Graphic Card -->
+		<!-- Right Column: Visual Theme Graphic Card (Figma 166:1430) -->
 		<div class="flex justify-center lg:justify-end">
-			<div class="w-full max-w-[460px] aspect-[4/5] rounded-[40px] md:rounded-[48px] border border-[#555] bg-theme-gold-gradient relative p-8 md:p-10 flex flex-col justify-end shadow-2xl overflow-hidden group">
-				<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none"></div>
-				
-				<h3 class="relative z-10 text-3xl sm:text-4xl font-medium text-white tracking-tight leading-tight">
-					<?php esc_html_e( 'This Events Theme', 'tedx-regensburg' ); ?>
-				</h3>
-			</div>
+			<?php get_template_part( 'template-parts/event-card' ); ?>
 		</div>
 
 	</div>

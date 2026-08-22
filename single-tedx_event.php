@@ -1,7 +1,7 @@
 <?php
 /**
- * Template Name: Event Page
- * 
+ * Single Template for Events
+ *
  * @package TEDx_Regensburg
  */
 

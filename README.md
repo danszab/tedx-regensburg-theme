@@ -1,115 +1,200 @@
 # TEDx Regensburg - WordPress Theme
 
-Ein modernes, standardkonformes und hochperformantes WordPress-Theme für **TEDx Regensburg**, entwickelt basierend auf dem offiziellen Figma-Design mit **Tailwind CSS**, modularen PHP-Template-Parts und dynamischen WordPress-Template-Tags.
+A modern, standards-compliant, and high-performance WordPress theme for **TEDx Regensburg**. Built based on the official Figma design system using **Tailwind CSS**, modular PHP template parts, dynamic Custom Post Types (Events, Speakers, Team Members), and WordPress Customizer integration.
 
 ---
 
-## 🎯 Features
+## 🎯 Key Features
 
-- **100% Figma-konform:** Präzise Umsetzung aller Sektionen (`Homepage Main` Node ID `166:2126`):
-  - Sticky / Blurred Header mit dynamischem Menü, Sprachwechsler (`DE | EN`) und Tickets-CTA
-  - Hero-Sektion mit topographischen Kurven, Leucht-Effekt und Jahresmotto-Karte
-  - Event-Pitch-Sektion mit Datums- & Location-Badge (`TEDxREGENSBURG | NOV 14 | MARINAFORUM`) und Action-Buttons
-  - About TEDx-Sektion mit Stage-Foto, Branding und Info-Text
-  - 2026 Speakers-Sektion mit dynamischem Custom Post Type Loop & "Your Name Here?" Call-for-Speakers-Karte
-  - Stats-Sektion mit 3 dynamischen Counter-Karten (Gäste, Talks, Ideen)
-  - Footer mit Social-Media-Badges (LinkedIn, Instagram, Facebook), Newsletter-Anmeldung und TEDx-Lizenzhinweis
-- **Zero-Dependency Setup:** Das Theme ist sofort nach Aktivierung in WordPress einsatzbereit (kompilierte `assets/css/style.css` liegt bereits bei).
-- **Entwickler-Workflow:** Tailwind CSS CLI Integration (`npm run dev`, `npm run build`) über `tailwind.config.js` und `assets/css/input.css`.
-- **WordPress Standards:** Volle Unterstützung für `wp_nav_menu()`, `the_custom_logo()`, `the_post_thumbnail()`, `Customizer`, `WP_Query`, HTML5 und Übersetzung (`tedx-regensburg` Text-Domain).
+- **100% Figma Pixel-Perfect Implementation:**
+  - **Sticky Blurred Navigation:** Responsive desktop navbar and mobile drawer menu with language indicator (`DE | EN`) and Ticket CTA.
+  - **Homepage Hero Section:** Topographic contour lines, background glow, and standalone interactive Hero Event Card.
+  - **Event Pitch Section:** Event summary, pill badges, and independently configurable Ticket and "Show More" action buttons.
+  - **About Section & Dedicated "About Us" Page (`page-about.php`):** Clean Figma layout (Node `166:1525`) featuring mission statement, core statistics, and team member grid with LinkedIn badges.
+  - **Dedicated Event Pages (`single-tedx_event.php`):** Full subpage template for past and upcoming events including dynamic pitch details, speaker lineups filtered by year, and venue location with interactive Google Maps link.
+  - **Dynamic Speaker & Team Member Directories:** Custom Post Types with custom meta fields, responsive grids, and clean fallbacks.
+  - **Interactive Event Cards (Node `166:1430`):** 48px rounded squircle cards with custom images, smooth hover zoom animations, pill badges, and direct database linking.
+  - **Footer:** Social badges (LinkedIn, Instagram, Facebook), newsletter signup form, and TEDx licensing disclaimer.
+- **Zero-Dependency Production Build:** Pre-compiled CSS located at `assets/css/style.css`. Ready to activate immediately out-of-the-box.
+- **Developer Ready:** Tailwind CSS CLI workflow available via `package.json` and `tailwind.config.js`.
 
 ---
 
-## 📁 Ordner- & Dateistruktur
+## 📁 File Structure
 
 ```text
 tedx-regensburg-theme/
-├── style.css                 # Theme-Header & Metadaten
-├── functions.php             # Enqueueing, Theme-Supports & Modul-Loader
-├── header.php                # Sticky Navigation & Mobile Drawer Menu
-├── footer.php                # Footer mit Social Links & Newsletter
-├── front-page.php            # Haupt-Landingpage (orchestiriert alle Sektionen)
-├── index.php                 # Standard-Fallback & Blog-Archiv
-├── page.php                  # Template für Standard-Seiten (z. B. Impressum, Datenschutz)
-├── single.php                # Standard Single Post Template
-├── single-speaker.php        # Detail-Ansicht für Speaker
-├── archive-speaker.php       # Archiv-Übersicht aller Speaker
-├── 404.php                   # 404-Fehlerseite im TEDx-Stil
+├── style.css                 # Theme header & WordPress metadata
+├── functions.php             # Enqueue scripts/styles, theme supports, and module loader
+├── header.php                # Sticky navbar & mobile navigation drawer
+├── footer.php                # Site footer, social icons & newsletter subscription
+├── front-page.php            # Homepage template orchestrating all main sections
+├── page-about.php            # Custom page template for "About Us" (Team grid & mission)
+├── single-tedx_event.php     # Template for single Event pages
+├── single-speaker.php        # Template for single Speaker pages
+├── archive-speaker.php       # Archive overview for all speakers
+├── page.php                  # Default page template (Legal, Privacy, etc.)
+├── single.php                # Default blog post template
+├── 404.php                   # 404 Error page in TEDx branding
 ├── inc/
-│   ├── custom-post-types.php # CPT 'speaker' mit Meta-Feldern (Topic, Sprache, LinkedIn, Jahr)
-│   ├── customizer.php        # Customizer Panel: TEDx Event Settings
-│   ├── template-tags.php     # Helper: Vektor-Logo, Inline-SVGs, Language-Switcher
-│   └── nav-walker.php        # Tailwind CSS Nav Walker für WordPress-Menüs
+│   ├── custom-post-types.php # CPT registration for Events, Speakers, Team & Meta Boxes
+│   ├── customizer.php        # WordPress Customizer controls and panels
+│   ├── customizer-helpers.php# Helper functions for dynamic event dropdown choices
+│   ├── template-tags.php     # Helper functions (SVG icons, logos, formatting)
+│   └── nav-walker.php        # Custom Tailwind CSS Nav Walker
 ├── template-parts/
-│   ├── hero.php              # Hero-Sektion
-│   ├── event-pitch.php       # Event-Pitch & Motto
-│   ├── about.php             # Über TEDx Regensburg
-│   ├── speakers.php          # Speaker-Grid & CFS-Card
-│   ├── stats.php             # Counter Squircle Cards
-│   └── content.php           # Post/Page Content Loop
+│   ├── hero.php              # Hero section with heading & Hero Event Card
+│   ├── event-pitch.php       # Event pitch, descriptions, and action buttons
+│   ├── event-card.php        # Reusable Figma 166:1430 Event Card component
+│   ├── about.php             # About TEDx snippet for the homepage
+│   ├── team.php              # Team member grid component for the About page
+│   ├── speakers.php          # Speaker grid & "Your Name Here?" Call-for-Speakers card
+│   ├── stats.php             # 3-column stats counter cards
+│   ├── location.php          # Venue section with address & Google Maps CTA
+│   └── content.php           # Default content loop
 ├── assets/
 │   ├── css/
-│   │   ├── input.css         # Tailwind Quell-CSS
-│   │   └── style.css         # Kompiliertes, produktionsreifes Tailwind CSS
+│   │   ├── input.css         # Tailwind source CSS
+│   │   └── style.css         # Compiled production CSS
 │   └── js/
-│       └── main.js           # Menü-Toggle, Smooth Scroll, Newsletter-Feedback
-├── tailwind.config.js        # Tailwind Konfiguration & TEDx Farbtokens
-├── package.json              # NPM Skripte für Tailwind
-└── README.md                 # Dokumentation
+│       └── main.js           # Menu toggles, mobile drawer, smooth scroll
+├── tailwind.config.js        # Tailwind configuration and TEDx brand tokens
+├── package.json              # Build scripts
+└── README.md                 # Theme documentation & guide
 ```
 
 ---
 
-## 🚀 Installation & Aktivierung
+## 🚀 Installation & First-Time Setup
 
-### 1. In WordPress installieren
-1. Kopiere den Ordner `tedx-regensburg-theme` in dein WordPress-Theme-Verzeichnis:
-   `wp-content/themes/tedx-regensburg-theme`
-   *(oder erstelle eine `.zip`-Datei des Ordners und lade sie unter **Design → Themes → Theme hinzufügen → Theme hochladen** hoch)*.
-2. Gehe im WordPress-Adminbereich auf **Design → Themes** und klicke bei **TEDx Regensburg** auf **Aktivieren**.
-
-### 2. Menü einrichten
-1. Gehe zu **Design → Menüs**.
-2. Erstelle ein Menü (z. B. "Hauptmenü") mit Links zu den Sektionen:
-   - `#hero` (2026 Event)
-   - `#event-pitch` (Past Talks)
-   - `#about` (About Us)
-   - `#speakers` (Speaker Information)
-3. Weise das Menü der Position **Primary Navigation** zu.
-
-### 3. Inhalte im Customizer anpassen
-Unter **Design → Customizer → TEDx Event Settings** kannst du alle dynamischen Elemente flexibel bearbeiten:
-- **Hero & Event Pitch:** Event-Jahr, Theme-Titel, Pitch-Text, Ticket-Shop URL & Button-Text
-- **About Section:** Titel, Mission-Text, Foto, "Learn More" Link
-- **Speakers Section:** Call-for-Speakers Titel, Text und Bewerbungs-Link
-- **Stats Section:** Werte und Beschriftungen für die 3 Counter-Karten
-- **Footer & Social Links:** LinkedIn, Instagram, Facebook URLs und Newsletter-Endpoint
-
-### 4. Speaker anlegen
-1. Klicke im WordPress-Menü auf **Speakers → Add New**.
-2. Gib den Namen des Speakers als Titel ein.
-3. Füge die Bio/Beschreibung in das Textfeld ein.
-4. Lade unter **Beitragsbild (Featured Image)** ein quadratisches Foto hoch.
-5. Fülle die **Speaker Details** aus:
-   - **Topic / Field:** z. B. `Content Creation` oder `AI & Ethics` (erscheint in Rot)
-   - **Talk Language:** `EN` oder `DE`
-   - **LinkedIn URL:** Profil-Link für den "VIEW LINKEDIN"-Button
-6. Klicke auf **Veröffentlichen**.
+1. **Upload & Activate Theme:**
+   - Copy the `tedx-regensburg-theme` directory into `/wp-content/themes/` (or upload as `.zip` in **Appearance → Themes → Add New**).
+   - Click **Activate** under **TEDx Regensburg**.
+2. **Flush Permalinks (Crucial Step for Event URLs):**
+   - Go to **Settings → Permalinks** in the WordPress admin panel.
+   - Without making any changes, scroll to the bottom and click **Save Changes**. *(This registers the `/events/...` URL rewrite rules in WordPress).*
+3. **Setup Navigation Menu:**
+   - Navigate to **Appearance → Menus**.
+   - Create a primary menu and assign it to the **Primary Navigation** location.
+   - Example menu items:
+     - Home (`/`)
+     - 2026 Event (`/events/tedx-regensburg-2026/`)
+     - About Us (`/about-us/`)
+     - Speakers (`#speakers`)
 
 ---
 
-## 💻 Entwickler-Workflow (Optional)
+## 📖 How to Manage Events & Event Pages
 
-Falls du neue Tailwind-Klassen oder Styles hinzufügen möchtest:
+Every event (e.g. "TEDxRegensburg 2026", "Past Event 2025") is stored as an independent database item under the **Events** post type.
+
+### 1. Creating a New Event
+1. In the WordPress sidebar, go to **Events → Add New**.
+2. **Title & Permalink:** Enter the name of your event (e.g., `TEDxRegensburg 2026`).
+3. **Featured Image:** Set a high-resolution featured image or specify a custom card image URL in the settings box.
+4. **Fill out the "Event Details" Box:**
+   - **Event Year:** e.g., `2026` (Used to automatically filter the speaker lineup on this event's page).
+   - **Pitch Title & Subtitle:** e.g., `This Events Title` and `TEDxREGENSBURG | NOV 14 | MARINAFORUM`.
+   - **Pitch Description:** Paragraph introducing the theme and vision for this specific event.
+   - **Ticket & Show More Buttons:**
+     - Check/uncheck **Enable Tickets Button** and **Enable Show More Button** to show or hide them independently.
+     - Specify custom URLs for both buttons (e.g., direct ticketing link or custom subpage).
+   - **Event Card Settings:**
+     - **Card Image URL:** (Optional override if different from the Featured Image).
+     - **Date / Badge Label Text:** Text displayed in the pill badge (e.g., `Nov. 14 | TEDxRegensburg`).
+     - **Custom Card Link URL:** Optional custom destination.
+   - **Location & Venue Settings:**
+     - **Venue Name:** e.g., `Marinaforum Regensburg`.
+     - **Address Line 1 & Line 2:** e.g., `Johanna-Dachs-Straße 46` / `93055 Regensburg`.
+     - **Google Maps URL:** Direct link to Google Maps for navigation.
+     - **Venue Image URL:** Photo of the event hall / location.
+5. Click **Publish**.
+
+### 2. How the Event Page Works (`single-tedx_event.php`)
+When viewing the published event link (`/events/your-event-slug/`), WordPress automatically renders a dedicated event page featuring:
+1. **Event Pitch & Card:** Populated exclusively with the data, buttons, and card image you defined for this event.
+2. **Speaker Lineup:** Automatically queries and displays all speakers assigned to this event's year.
+3. **Venue / Location Section:** Shows the venue name, address, photo, and Google Maps button specific to this event.
+
+---
+
+## 🏠 How to Manage the Homepage (`front-page.php`)
+
+The homepage can be customized via **Appearance → Customize → TEDx Event Settings**.
+
+### 1. Featuring an Event in the Hero Card (Top Card)
+1. Go to **Appearance → Customize → TEDx Event Settings → Hero Card (Top Visual Card)**.
+2. Under **Select Event to Feature**, pick any event from your database (e.g., `TEDxRegensburg 2026`).
+   - The Hero Card will automatically load the event's image, date badge text, and link.
+3. **Card Display Controls:**
+   - Check/uncheck **Show Date / Badge Label** to toggle the top badge on/off.
+   - Check/uncheck **Enable Card Click & Hover Animation** to enable/disable clickable behavior and hover zoom effects.
+4. *(Optional)* If no event is selected, you can manually upload an image and specify custom text/links.
+
+### 2. Featuring an Event in the Event Pitch Card (Bottom Card)
+1. Go to **Appearance → Customize → TEDx Event Settings → Event Pitch Card (Bottom Card)**.
+2. Under **Select Event to Feature**, choose the event you want to display in the pitch section on the homepage.
+3. Use the checkboxes to toggle the date badge and hover animations as desired.
+
+### 3. Other Homepage Sections in Customizer
+- **Hero & Event Settings:** Global theme motto, event year, and default ticket button URLs.
+- **About Section:** Title, description text, stage photo, and "Learn More" redirect URL.
+- **Speakers Section:** Call-for-speakers title, descriptive text, and application URL.
+- **Stats Section:** Numbers and labels for the 3 counter cards.
+- **Social & Newsletter:** Social media URLs (LinkedIn, Instagram, Facebook) and form submission endpoint.
+
+---
+
+## 👥 How to Manage Team Members & About Page
+
+1. Create a WordPress page with the slug `about-us` and select the **About Us** template.
+2. In the WordPress sidebar, go to **Team Members → Add New**.
+3. **Title:** Enter the member's full name (e.g., `Jane Doe`).
+4. **Featured Image:** Upload a square headshot photo.
+5. **Team Member Details:**
+   - **Role:** e.g., `Lead Organizer` or `Curator`.
+   - **LinkedIn URL:** Direct link to their profile (renders the square LinkedIn icon button).
+6. **Order:** In the **Page Attributes** box on the right, set the **Order** integer to control grid positioning.
+7. Click **Publish**.
+
+---
+
+## 🎤 How to Manage Speakers
+
+1. In the WordPress sidebar, go to **Speakers → Add New**.
+2. **Title:** Speaker's full name.
+3. **Content Editor:** Speaker bio and talk description.
+4. **Featured Image:** Speaker portrait photo.
+5. **Speaker Details:**
+   - **Topic / Field:** e.g., `Artificial Intelligence & Ethics` (displays in red).
+   - **Talk Language:** `EN` or `DE`.
+   - **Event Year:** e.g., `2026` (Matches this speaker with the corresponding Event page).
+   - **LinkedIn URL:** Link for the "View LinkedIn" profile button.
+6. Click **Publish**.
+
+---
+
+## 💻 Developer Workflow (Tailwind CSS)
+
+To modify Tailwind CSS styles or rebuild the static stylesheet:
 
 ```bash
 cd wp-content/themes/tedx-regensburg-theme
+
+# Install dependencies
 npm install
-npm run dev    # Für kontinuierliche CSS-Kompilierung während der Entwicklung
-npm run build  # Für optimierte, minifizierte Produktions-CSS
+
+# Start development watcher (auto-recompiles assets/css/style.css)
+npm run dev
+
+# Build minified production CSS
+npm run build
 ```
 
 ---
 
-## 📄 Lizenz
-GPL-2.0-or-later. TEDx ist eine eingetragene Marke der TED Conferences, LLC.
+## 📄 License & Attribution
+
+- Licensed under the **GPL-2.0-or-later**.
+- *TEDx is an independently organized TED event operated under license from TED Conferences, LLC.*
+

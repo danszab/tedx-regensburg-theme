@@ -92,5 +92,6 @@ add_action( 'wp_enqueue_scripts', 'tedx_enqueue_scripts' );
  */
 require_once TEDX_DIR . '/inc/template-tags.php';
 require_once TEDX_DIR . '/inc/custom-post-types.php';
+require_once TEDX_DIR . '/inc/customizer-helpers.php';
 require_once TEDX_DIR . '/inc/customizer.php';
 require_once TEDX_DIR . '/inc/nav-walker.php';

@@ -13,7 +13,7 @@ $venue_maps_url = get_theme_mod( 'tedx_venue_maps_url', '#' );
 $venue_image = get_theme_mod( 'tedx_venue_image', '' );
 
 // If on an Event Page, override with specific event location details
-if ( is_page() ) {
+if ( is_page() || is_singular( 'tedx_event' ) ) {
 	$page_id = get_the_ID();
 	$meta_venue_name = get_post_meta( $page_id, '_event_venue_name', true );
 	if ( ! empty( $meta_venue_name ) ) {
