@@ -115,4 +115,4 @@ $ticket_text = tedx_mod( 'tedx_ticket_text', __( 'Tickets', 'tedx-regensburg' ) 
 		</nav>
 	</div>
 </header>
-<div class="h-[60px]"></div><!-- Header Spacer -->
+<!-- <div class="h-[60px]"></div> Header Spacer -->

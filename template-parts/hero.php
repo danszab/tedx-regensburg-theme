@@ -1,6 +1,6 @@
 <?php
 /**
- * Hero Section Template Part (Figma: Homepage - Hero alternative)
+ * Hero Section Template Part (Figma: Homepage - Hero alternative 2, node 2170:1875)
  *
  * @package TEDx_Regensburg
  */
@@ -13,64 +13,97 @@ $event_year   = tedx_mod( 'tedx_event_year', '2026' );
 $theme_name   = tedx_mod( 'tedx_theme_name', __( 'This years Theme', 'tedx-regensburg' ) );
 ?>
 
-<section id="hero" class="relative min-h-[85vh] lg:min-h-[920px] flex items-center justify-center overflow-hidden bg-tedx-dark py-16 md:py-24 px-4 md:px-8 lg:px-12">
-	
-	<!-- Background Topography Lines & Glow Effect -->
-	<div class="absolute inset-0 pointer-events-none z-0">
-		<div class="absolute inset-0 bg-[#0a0a0a]"></div>
-		<!-- Topographic Contour Curves SVG Background -->
-		<svg class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-screen" viewBox="0 0 1512 982" fill="none" xmlns="http://www.w3.org/2000/svg">
-			<path d="M-100 200 C 300 100, 500 400, 800 250 C 1100 100, 1400 350, 1600 200" stroke="#2ad17e" stroke-width="1.5" stroke-opacity="0.35" fill="none" />
-			<path d="M-100 350 C 250 250, 450 600, 850 400 C 1150 250, 1350 500, 1600 350" stroke="#2ad17e" stroke-width="1.5" stroke-opacity="0.3" fill="none" />
-			<path d="M-50 500 C 350 400, 600 750, 950 550 C 1250 400, 1450 650, 1650 500" stroke="#2ad17e" stroke-width="1.5" stroke-opacity="0.25" fill="none" />
-			<path d="M-150 650 C 200 550, 500 900, 900 700 C 1300 550, 1500 800, 1700 650" stroke="#2ad17e" stroke-width="1.5" stroke-opacity="0.2" fill="none" />
-			<ellipse cx="250" cy="550" rx="350" ry="250" stroke="#2ad17e" stroke-width="1.2" stroke-opacity="0.25" fill="none" />
-			<ellipse cx="250" cy="550" rx="200" ry="140" stroke="#2ad17e" stroke-width="1.2" stroke-opacity="0.3" fill="none" />
-			<ellipse cx="250" cy="550" rx="80" ry="50" stroke="#2ad17e" stroke-width="1.5" stroke-opacity="0.4" fill="none" />
-		</svg>
-		<!-- Bottom Gradient Fade -->
-		<div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-tedx-dark"></div>
+<section id="hero" class="relative min-h-[100vh] lg:min-h-[100vh] flex items-center overflow-hidden bg-black" style="height: clamp(600px, 100vh, 982px);">
+
+	<!-- =============================================
+		 Layer 1: Background Gradient (black → red → black)
+		 Figma node 2170:1876 "Backgground gradient"
+	     ============================================= -->
+	<div class="absolute inset-0 z-0" style="background: linear-gradient(to bottom, #000000 0%, #eb0028 20.67%, #000000 77.98%);"></div>
+
+	<!-- =============================================
+		 Layer 2: Topographic Texture with luminance mask
+		 Figma node 2170:1877 "Background Pattern"
+		 ============================================= -->
+	<div class="absolute inset-0 z-[1] opacity-[0.37]"
+		 style="background-image: url('<?php echo esc_url( TEDX_URI . '/assets/img/topo-texture.png' ); ?>');
+				background-size: 1024px 1024px;
+				background-repeat: repeat;
+				-webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.8) 23.6%, rgba(0,0,0,0.75) 74.3%, rgba(0,0,0,0) 100%);
+				mask-image: linear-gradient(to bottom, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0.8) 23.6%, rgba(0,0,0,0.75) 74.3%, rgba(0,0,0,0) 100%);">
 	</div>
 
-	<div class="max-w-figma mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
-		
-		<!-- Left Column: Welcome & Typography & Lamp Beam -->
-		<div class="lg:col-span-6 flex flex-col justify-center relative">
-			
-			<div class="relative z-10 space-y-2">
-				<p class="text-2xl md:text-3xl lg:text-4xl font-medium text-white/90 tracking-tight">
+	<!-- =============================================
+		 Layer 3: Bottom fade to black
+		 Figma shows a gradient from transparent to black at ~65%
+		 ============================================= -->
+	<div class="absolute inset-0 z-[2]"
+		 style="background: linear-gradient(to bottom, rgba(0,0,0,0) 65.39%, #000000 100%);">
+	</div>
+
+	<!-- =============================================
+		 Layer 4: Regensburg Dom Cathedral Silhouette
+		 Figma node 2170:1880 "Dom svg"
+		 ============================================= -->
+	<div class="absolute left-0 bottom-0 z-[3] w-full min-w-[900px] lg:min-w-[1200px] pointer-events-none">
+		<svg class="h-[85vh]" preserveAspectRatio="xMinYMax meet" overflow="visible" viewBox="0 0 1513 842" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M2013.5 422.408L2013.5 841.5H0.5V422.408C12 422.408 70.3459 422.471 70.3459 362.045V307.156L74.4642 301.534V293.101L79.2689 266.269V254.258L84.5311 235.859L93.8199 221.293L103.063 202.893L104.207 157.406L108.326 153.317L125.028 36.7876C123.884 34.3173 122.282 27.9968 125.028 22.477C127.773 16.9572 124.189 16.9401 122.053 17.6216C121.672 15.492 126.172 0.499819 129.146 0.5C132.12 0.500181 136.467 17.6216 135.095 17.6216C133.722 17.6216 130.061 17.1104 133.035 22.477C136.01 27.8435 133.951 35.2544 133.035 36.7876L151.339 193.438L157.059 201.36L160.948 204.171V221.548L165.067 226.404V283.391L167.354 290.29V316.101H171.473V344.211L173.074 350.344V393.276L190.463 365.421V354.177L188.175 350.344V343.444L190.463 339.611V319.934L194.581 310.99H204.419L208.537 319.934V339.611L210.825 343.444V350.344L208.537 354.177V365.421L225.926 393.276V350.344L227.527 344.211V316.101H231.646V290.29L233.933 283.391V226.404L238.052 221.548V204.171L241.941 201.36L247.661 193.438L265.965 36.7876C265.049 35.2544 262.99 27.8435 265.965 22.477C268.939 17.1104 265.278 17.6216 263.905 17.6216C262.533 17.6216 266.88 0.500181 269.854 0.5C272.828 0.499819 277.328 15.492 276.947 17.6216C274.811 16.9401 271.227 16.9572 273.972 22.477C276.718 27.9968 275.116 34.3173 273.972 36.7876L290.674 153.317L294.793 157.406L295.937 202.893L305.18 221.293L314.469 235.859L319.731 254.258V266.269L324.536 293.101V301.534L328.654 307.156V372C328.654 554.592 1751 695.5 2013.5 422.408Z" fill="black" stroke="black"/>
+</svg>
+	</div>
+
+	<!-- =============================================
+		 Layer 5: Lamppost Illustration
+		 Figma node 2170:1882 — positioned center with topo texture
+		 ============================================= -->
+	<div class="absolute z-[4] pointer-events-none hidden md:block"
+		 style="left: 35.52%; top: 40.33%; width: 12.53%; bottom: 0;">
+		<img
+			src="<?php echo esc_url( TEDX_URI . '/assets/img/lamppost.png' ); ?>"
+			alt=""
+			class="w-full h-full object-contain object-bottom"
+			aria-hidden="true"
+			loading="eager"
+		/>
+	</div>
+
+	<!-- =============================================
+		 Content Layer
+		 ============================================= -->
+	<!-- Removed 'items-end lg:items-center' from the parent grid so we can control columns individually -->
+	<div class="relative z-10 w-full max-w-figma-wide mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 px-6 sm:px-12 lg:px-[99px] py-16 md:py-24 min-h-[inherit]">
+
+		<!-- Left Column: Welcome & Typography -->
+		<!-- Added 'self-end' to push this column to the bottom of the section -->
+		<!-- You can adjust the pb-0 or add mb-8 etc. here if you need to bump it slightly up or down -->
+		<div class="lg:col-span-6 flex flex-col justify-end self-end pb-4 lg:pb-4 relative z-10">
+
+			<div class="flex flex-col gap-6 md:gap-[20px]">
+				<!-- "Welcome to" — Figma node 2170:1889 -->
+				<p class="text-3xl md:text-4xl lg:text-5xl font-medium text-white tracking-[-0.05em] leading-[0.95] m-0"
+				   style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
 					<?php esc_html_e( 'Welcome to', 'tedx-regensburg' ); ?>
 				</p>
 
-				<div class="flex items-baseline flex-wrap gap-2 text-white">
-					<h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-none m-0">
-						TED<span class="text-tedx-red">x</span>
-					</h1>
-					<span class="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-none">
+				<!-- "TEDx Regensburg" block — Figma node 2170:1894 -->
+				<div class="flex flex-col pl-4 md:pl-[54px]">
+					<!-- TED + x — Figma node 2170:1893 -->
+					<div class="flex gap-2 md:gap-4 items-end">
+						<h1 class="text-6xl sm:text-7xl lg:text-8xl font-extrabold tracking-[-0.05em] leading-[0.95] text-white m-0"
+						    style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">TED<span class="">x</span></h1>
+					</div>
+					<!-- Regensburg — Figma node 2170:1888 -->
+					<span class="text-6xl sm:text-7xl lg:text-8xl font-normal text-white tracking-[-0.02em] leading-[0.95] block"
+					      style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
 						Regensburg
 					</span>
 				</div>
 			</div>
 
-			<!-- Artistic Streetlight / Lamp Illustration with Light Cone -->
-			<div class="relative mt-8 h-64 md:h-80 w-full max-w-sm">
-				<!-- Light Cone / Beam -->
-				<div class="absolute -top-12 left-12 w-96 h-96 rounded-full bg-gradient-to-tr from-amber-400/25 via-yellow-500/10 to-transparent blur-2xl pointer-events-none"></div>
-				
-				<!-- Streetlamp SVG Illustration -->
-				<svg class="relative z-10 w-48 h-64 text-tedx-red" viewBox="0 0 150 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M75 190V60" stroke="#888" stroke-width="4" stroke-linecap="round" />
-					<path d="M50 60C50 45 65 30 75 30C85 30 100 45 100 60H50Z" fill="#eb0028" />
-					<ellipse cx="75" cy="60" rx="25" ry="6" fill="#fff" fill-opacity="0.8" />
-					<circle cx="75" cy="60" r="14" fill="#ffd15c" filter="drop-shadow(0 0 12px #ffd15c)" />
-					<path d="M40 190H110" stroke="#888" stroke-width="4" stroke-linecap="round" />
-				</svg>
-			</div>
-
 		</div>
 
-		<!-- Right Column: Theme Hero Card (Figma 166:1430) -->
-		<div class="lg:col-span-6 flex justify-center lg:justify-end">
+		<!-- Right Column: Theme Hero Card -->
+		<!-- Added 'self-center' to keep the card exactly vertically centered -->
+		<div class="lg:col-span-6 flex justify-center lg:justify-end self-center relative z-10">
 			<?php get_template_part( 'template-parts/event-card', null, array( 'context' => 'hero' ) ); ?>
 		</div>
 
