@@ -17,24 +17,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function tedx_regensburg_logo( $classes = 'h-8 w-auto', $show_link = true ) {
 	$custom_logo_id = get_theme_mod( 'custom_logo' );
-	$mobile_logo_id = get_theme_mod( 'tedx_mobile_logo' );
 	
 	if ( $custom_logo_id ) {
-		$desktop_url = wp_get_attachment_image_url( $custom_logo_id, 'full' );
-		$mobile_url  = $mobile_logo_id ? wp_get_attachment_image_url( $mobile_logo_id, 'full' ) : '';
-
-		if ( $desktop_url ) {
+		$logo_url = wp_get_attachment_image_url( $custom_logo_id, 'full' );
+		if ( $logo_url ) {
 			if ( $show_link ) {
 				echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="flex items-center" rel="home" aria-label="' . esc_attr( get_bloginfo( 'name' ) ) . '">';
 			}
-			
-			if ( $mobile_url ) {
-				echo '<img src="' . esc_url( $desktop_url ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" class="hidden md:block ' . esc_attr( $classes ) . '">';
-				echo '<img src="' . esc_url( $mobile_url ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . ' (Mobile)" class="block md:hidden ' . esc_attr( $classes ) . '">';
-			} else {
-				echo '<img src="' . esc_url( $desktop_url ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" class="' . esc_attr( $classes ) . '">';
-			}
-
+			echo '<img src="' . esc_url( $logo_url ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" class="' . esc_attr( $classes ) . '">';
 			if ( $show_link ) {
 				echo '</a>';
 			}

@@ -11,7 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $ticket_url  = tedx_mod( 'tedx_ticket_url', '#tickets' );
 $ticket_text = tedx_mod( 'tedx_ticket_text', __( 'Tickets', 'tedx-regensburg' ) );
-$ticket_disabled = tedx_mod( 'tedx_navbar_tickets_disabled', false );
 if ( empty( trim( $ticket_text ) ) ) { $ticket_text = __( 'Tickets', 'tedx-regensburg' ); }
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js">
@@ -74,34 +73,16 @@ if ( empty( trim( $ticket_text ) ) ) { $ticket_text = __( 'Tickets', 'tedx-regen
 			</div>
 
 			<!-- Tickets CTA Button -->
-			<?php
-			if ( $ticket_disabled ) {
-				$ticket_classes = 'inline-flex items-center gap-2 bg-gray-600/50 text-white/50 text-sm font-medium px-4 py-2 rounded-xl shadow-sm cursor-not-allowed pointer-events-none';
-				$ticket_href = '#';
-				$icon_class = 'w-3.5 h-3.5 text-white/50';
-			} else {
-				$ticket_classes = 'inline-flex items-center gap-2 bg-tedx-red text-white text-sm font-medium px-4 py-2 rounded-xl shadow-sm transition-all duration-200 btn-shadcn-anim';
-				$ticket_href = esc_url( $ticket_url );
-				$icon_class = 'w-3.5 h-3.5 text-white';
-			}
-			?>
-			<a href="<?php echo $ticket_href; ?>" class="<?php echo esc_attr( $ticket_classes ); ?>">
-				<?php echo tedx_get_icon( 'ticket', $icon_class ); ?>
+			<a href="<?php echo esc_url( $ticket_url ); ?>" class="inline-flex items-center gap-2 bg-tedx-red text-white text-sm font-medium px-4 py-2 rounded-xl shadow-sm transition-all duration-200 btn-shadcn-anim">
+				<?php echo tedx_get_icon( 'ticket', 'w-3.5 h-3.5 text-white' ); ?>
 				<span><?php echo esc_html( $ticket_text ); ?></span>
 			</a>
 		</div>
 
 		<!-- Mobile Menu Button -->
 		<div class="flex items-center gap-3 lg:hidden">
-			<?php
-			if ( $ticket_disabled ) {
-				$mobile_ticket_classes = 'sm:hidden inline-flex items-center gap-1.5 bg-gray-600/50 text-white/50 text-xs font-medium px-3 py-1.5 rounded-lg cursor-not-allowed pointer-events-none';
-			} else {
-				$mobile_ticket_classes = 'sm:hidden inline-flex items-center gap-1.5 bg-tedx-red text-white text-xs font-medium px-3 py-1.5 rounded-lg';
-			}
-			?>
-			<a href="<?php echo $ticket_href; ?>" class="<?php echo esc_attr( $mobile_ticket_classes ); ?>">
-				<?php echo tedx_get_icon( 'ticket', $icon_class ); ?>
+			<a href="<?php echo esc_url( $ticket_url ); ?>" class="sm:hidden inline-flex items-center gap-1.5 bg-tedx-red text-white text-xs font-medium px-3 py-1.5 rounded-lg">
+				<?php echo tedx_get_icon( 'ticket', 'w-3.5 h-3.5' ); ?>
 				<span><?php echo esc_html( $ticket_text ); ?></span>
 			</a>
 			<button id="mobile-menu-toggle" type="button" class="p-2 text-white/90 hover:text-white rounded-lg focus:outline-none flex items-center justify-center" aria-label="<?php esc_attr_e( 'Toggle navigation', 'tedx-regensburg' ); ?>">
