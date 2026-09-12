@@ -29,7 +29,7 @@ $stats = array(
 	<div class="max-w-figma mx-auto flex flex-wrap items-center justify-center gap-8 md:gap-16">
 		
 		<?php foreach ( $stats as $stat ) : ?>
-			<div class="w-[147px] h-[147px] border-2 border-tedx-green rounded-[32px] p-4 flex flex-col items-center justify-between text-center bg-black/20 backdrop-blur-sm transition-transform duration-300 hover:scale-105 shadow-glow-green">
+			<div class="w-[147px] h-[147px] border-2 border-tedx-green rounded-[32px] p-4 flex flex-col items-center justify-between text-center bg-black/20 backdrop-blur-sm shadow-glow-green">
 				
 				<!-- Groups Icon -->
 				<div class="text-tedx-green pt-1">

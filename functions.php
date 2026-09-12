@@ -94,4 +94,36 @@ require_once TEDX_DIR . '/inc/template-tags.php';
 require_once TEDX_DIR . '/inc/custom-post-types.php';
 require_once TEDX_DIR . '/inc/customizer-helpers.php';
 require_once TEDX_DIR . '/inc/customizer.php';
+require_once TEDX_DIR . '/inc/customizer-additions.php';
 require_once TEDX_DIR . '/inc/nav-walker.php';
+
+
+/**
+ * Register Custom Blocks (Native Gutenberg)
+ */
+function tedx_register_native_blocks() {
+	if ( function_exists( 'register_block_type' ) ) {
+		register_block_type( TEDX_DIR . '/blocks/tedx-gallery' );
+	}
+}
+add_action( 'init', 'tedx_register_native_blocks' );
+
+/**
+ * Enable SVG Uploads
+ */
+function tedx_mime_types( $mimes ) {
+	$mimes['svg'] = 'image/svg+xml';
+	return $mimes;
+}
+add_filter( 'upload_mimes', 'tedx_mime_types' );
+
+
+function tedx_check_filetype_and_ext( $data, $file, $filename, $mimes ) {
+	$ext = pathinfo( $filename, PATHINFO_EXTENSION );
+	if ( strtolower( $ext ) === 'svg' ) {
+		$data['ext']  = 'svg';
+		$data['type'] = 'image/svg+xml';
+	}
+	return $data;
+}
+add_filter( 'wp_check_filetype_and_ext', 'tedx_check_filetype_and_ext', 10, 4 );

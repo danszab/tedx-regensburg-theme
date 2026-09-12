@@ -15,7 +15,7 @@ $about_tedxregensburg = get_theme_mod( 'tedx_about_tedxregensburg_text', "Lorem 
 <main id="primary" class="site-main flex-grow bg-tedx-dark w-full">
 	
 	<!-- About Us Content Section -->
-	<section class="py-16 md:py-24 px-4 md:px-8 lg:px-12 w-full">
+	<section class="pt-28 pb-16 md:py-24 px-4 md:px-8 lg:px-12 w-full">
 		<div class="max-w-figma mx-auto w-full">
 			
 			<!-- Headline -->

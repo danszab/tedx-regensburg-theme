@@ -58,7 +58,7 @@ if ( is_page() || is_singular( 'tedx_event' ) ) {
 			</div>
 			
 			<?php if ( $venue_maps_url ) : ?>
-			<a href="<?php echo esc_url( $venue_maps_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center border border-white/20 hover:border-tedx-red text-white hover:bg-tedx-red text-sm font-semibold px-6 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] uppercase tracking-wider">
+			<a href="<?php echo esc_url( $venue_maps_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center border border-white/20 hover:border-tedx-red text-white text-sm font-semibold px-6 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] uppercase tracking-wider">
 				<span>VIEW ON GOOGLE MAPS</span>
 			</a>
 			<?php endif; ?>

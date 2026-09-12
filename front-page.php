@@ -22,6 +22,16 @@ get_header();
 	// 2. Event Pitch Section (This Events Title & Theme)
 	get_template_part( 'template-parts/event-pitch' );
 
+	// Output Gutenberg Blocks added to the page
+	while ( have_posts() ) :
+		the_post();
+		?>
+		<div class="tedx-page-content">
+			<?php the_content(); ?>
+		</div>
+		<?php
+	endwhile;
+
 	// 3. About TEDx Section (Stage photo & About copy)
 	get_template_part( 'template-parts/about' );
 
@@ -30,6 +40,8 @@ get_header();
 
 	// 5. Stats Section (Counter squircle cards)
 	get_template_part( 'template-parts/stats' );
+
+	
 	?>
 
 </main>

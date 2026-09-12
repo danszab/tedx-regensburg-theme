@@ -1,0 +1,200 @@
+.tedx-gallery-wrapper {
+    background-color: #000000;
+    padding-top: 64px;
+    padding-bottom: 64px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.tedx-gallery-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: max(16px, calc((100vw - 1000px) / 2));
+    scroll-padding-right: max(16px, calc((100vw - 1000px) / 2));
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    width: 100%;
+}
+
+.tedx-gallery-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+.tedx-gallery-grid {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-auto-flow: column;
+    gap: 24px;
+    padding-left: max(16px, calc((100vw - 1000px) / 2));
+    padding-right: max(16px, calc((100vw - 1000px) / 2));
+    width: max-content;
+}
+
+.gallery-title-block {
+    grid-row: 1;
+    display: flex;
+    align-items: flex-end; /* Align bottom to match image baseline if needed, or flex-start */
+    width: 231px; /* Matches image width so column is aligned */
+    scroll-snap-align: start;
+}
+
+.gallery-title-block h2 {
+    /* Matching the 'About' section font styling */
+    font-weight: 900;
+    font-size: 60px;
+    color: white;
+    letter-spacing: -0.025em;
+    line-height: 1;
+    margin: 0;
+}
+
+.tedx-gallery-item {
+    width: 231px;
+    height: 154px;
+    border-radius: 32px;
+    overflow: hidden;
+    cursor: pointer;
+    scroll-snap-align: start;
+    position: relative;
+}
+
+.tedx-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.tedx-gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.tedx-gallery-fade-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: max(16px, calc((100vw - 1000px) / 2));
+    background: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.tedx-gallery-fade-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: max(16px, calc((100vw - 1000px) / 2));
+    background: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.gallery-controls-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+.gallery-controls {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 48px;
+    position: relative;
+    z-index: 20;
+}
+
+.gallery-controls button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0.5;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    padding: 0;
+}
+
+.gallery-controls button:hover {
+    opacity: 1;
+}
+
+.gallery-scrollbar {
+    height: 8px;
+    width: 150px;
+    background-color: #474747;
+    border-radius: 999px;
+    position: relative;
+    overflow: hidden;
+}
+
+.gallery-scrollbar-thumb {
+    height: 100%;
+    width: 54px;
+    background-color: white;
+    border-radius: 999px;
+    position: absolute;
+    left: 0;
+    pointer-events: none; /* Let the track handle clicks if we add them */
+}
+
+/* Lightbox */
+.tedx-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.tedx-lightbox.active {
+    display: flex;
+    opacity: 1;
+}
+.tedx-lightbox .lightbox-img {
+    max-height: 90vh;
+    max-width: 90vw;
+    object-fit: contain;
+    border-radius: 8px;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+.tedx-lightbox.active .lightbox-img {
+    transform: scale(1);
+}
+.tedx-lightbox .lightbox-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .gallery-title-block h2 {
+        font-size: 48px;
+    }
+    .tedx-gallery-item {
+        width: 180px;
+        height: 120px;
+    }
+    .gallery-title-block {
+        width: 180px;
+    }
+}

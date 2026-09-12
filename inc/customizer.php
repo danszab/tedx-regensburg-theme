@@ -11,6 +11,28 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function tedx_customize_register( $wp_customize ) {
 
+	// Mobile Logo Setting
+	$wp_customize->add_setting( 'tedx_mobile_logo', array(
+		'default'           => '',
+		'sanitize_callback' => 'absint',
+	) );
+	$wp_customize->add_control( new WP_Customize_Cropped_Image_Control( $wp_customize, 'tedx_mobile_logo', array(
+		'label'         => __( 'Mobile Logo', 'tedx-regensburg' ),
+		'description'   => __( 'Upload a separate logo for mobile devices (optional).', 'tedx-regensburg' ),
+		'section'       => 'title_tagline',
+		'flex_width'    => true,
+		'flex_height'   => true,
+		'button_labels' => array(
+			'select'       => __( 'Select Mobile Logo', 'tedx-regensburg' ),
+			'change'       => __( 'Change Mobile Logo', 'tedx-regensburg' ),
+			'remove'       => __( 'Remove', 'tedx-regensburg' ),
+			'default'      => __( 'Default', 'tedx-regensburg' ),
+			'placeholder'  => __( 'No mobile logo selected', 'tedx-regensburg' ),
+			'frame_title'  => __( 'Select Mobile Logo', 'tedx-regensburg' ),
+			'frame_button' => __( 'Choose Mobile Logo', 'tedx-regensburg' ),
+		),
+	) ) );
+
 	// 1. Panel: TEDx Event Settings
 	$wp_customize->add_panel( 'tedx_event_panel', array(
 		'title'       => __( 'TEDx Event Settings', 'tedx-regensburg' ),
@@ -20,9 +42,21 @@ function tedx_customize_register( $wp_customize ) {
 
 	// --- Section: General & Hero ---
 	$wp_customize->add_section( 'tedx_hero_section', array(
-		'title'    => __( 'Hero & Event Pitch', 'tedx-regensburg' ),
+		'title'    => __( 'Header, Hero & Event Pitch', 'tedx-regensburg' ),
 		'panel'    => 'tedx_event_panel',
 		'priority' => 10,
+	) );
+
+	// Disable Navbar Tickets Button
+	$wp_customize->add_setting( 'tedx_navbar_tickets_disabled', array(
+		'default'           => false,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'tedx_navbar_tickets_disabled', array(
+		'label'       => __( 'Disable Tickets Button in Navbar', 'tedx-regensburg' ),
+		'description' => __( 'Check to disable (gray out) the tickets button in the top navigation bar.', 'tedx-regensburg' ),
+		'section'     => 'tedx_hero_section',
+		'type'        => 'checkbox',
 	) );
 
 	// Event Year
@@ -42,7 +76,7 @@ function tedx_customize_register( $wp_customize ) {
 		'sanitize_callback' => 'sanitize_text_field',
 	) );
 	$wp_customize->add_control( 'tedx_theme_name', array(
-		'label'    => __( 'Hero Theme Card Title', 'tedx-regensburg' ),
+		'label'    => __( 'Event Theme Name', 'tedx-regensburg' ),
 		'section'  => 'tedx_hero_section',
 		'type'     => 'text',
 	) );
@@ -64,7 +98,7 @@ function tedx_customize_register( $wp_customize ) {
 		'sanitize_callback' => 'sanitize_text_field',
 	) );
 	$wp_customize->add_control( 'tedx_pitch_meta', array(
-		'label'    => __( 'Event Date & Venue Tagline', 'tedx-regensburg' ),
+		'label'    => __( 'Event Pitch Meta Info', 'tedx-regensburg' ),
 		'section'  => 'tedx_hero_section',
 		'type'     => 'text',
 	) );
@@ -123,85 +157,6 @@ function tedx_customize_register( $wp_customize ) {
 		'label'    => __( 'Show More Button Text', 'tedx-regensburg' ),
 		'section'  => 'tedx_hero_section',
 		'type'     => 'text',
-	) );
-
-	// --- Section: Hero Card (Top Visual Card) ---
-	$wp_customize->add_section( 'tedx_hero_card_section', array(
-		'title'    => __( 'Hero Card (Top Visual Card)', 'tedx-regensburg' ),
-		'panel'    => 'tedx_event_panel',
-		'priority' => 12,
-	) );
-
-	// Select Event from Database
-	$wp_customize->add_setting( 'tedx_hero_selected_event', array(
-		'default'           => '',
-		'sanitize_callback' => 'absint',
-	) );
-	$wp_customize->add_control( 'tedx_hero_selected_event', array(
-		'label'       => __( 'Select Event to Feature', 'tedx-regensburg' ),
-		'description' => __( 'Select an Event to automatically pull its image and details from the database. (Overrides manual settings below).', 'tedx-regensburg' ),
-		'section'     => 'tedx_hero_card_section',
-		'type'        => 'select',
-		'choices'     => tedx_get_events_choices(),
-	) );
-
-	// Hero Card Image
-	$wp_customize->add_setting( 'tedx_hero_card_image', array(
-		'default'           => '',
-		'sanitize_callback' => 'esc_url_raw',
-	) );
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'tedx_hero_card_image', array(
-		'label'       => __( 'Hero Custom Card Image', 'tedx-regensburg' ),
-		'description' => __( 'Select or upload a custom image for the Hero Event Card.', 'tedx-regensburg' ),
-		'section'     => 'tedx_hero_card_section',
-		'settings'    => 'tedx_hero_card_image',
-	) ) );
-
-	// Hero Show Date Label Checkbox
-	$wp_customize->add_setting( 'tedx_hero_card_show_label', array(
-		'default'           => true,
-		'sanitize_callback' => 'wp_validate_boolean',
-	) );
-	$wp_customize->add_control( 'tedx_hero_card_show_label', array(
-		'label'       => __( 'Show Date / Badge Label', 'tedx-regensburg' ),
-		'description' => __( 'Toggle the pill label badge at the top of the hero card.', 'tedx-regensburg' ),
-		'section'     => 'tedx_hero_card_section',
-		'type'        => 'checkbox',
-	) );
-
-	// Hero Date Label Text
-	$wp_customize->add_setting( 'tedx_hero_card_label_text', array(
-		'default'           => 'TEDxRegensburg 2026',
-		'sanitize_callback' => 'sanitize_text_field',
-	) );
-	$wp_customize->add_control( 'tedx_hero_card_label_text', array(
-		'label'    => __( 'Date / Badge Label Text', 'tedx-regensburg' ),
-		'section'  => 'tedx_hero_card_section',
-		'type'     => 'text',
-	) );
-
-	// Hero Clickable / Link Enabled State Checkbox
-	$wp_customize->add_setting( 'tedx_hero_card_is_clickable', array(
-		'default'           => false,
-		'sanitize_callback' => 'wp_validate_boolean',
-	) );
-	$wp_customize->add_control( 'tedx_hero_card_is_clickable', array(
-		'label'       => __( 'Enable Card Click & Hover Animation', 'tedx-regensburg' ),
-		'description' => __( 'When checked, the hero card becomes clickable and displays hover/click animations.', 'tedx-regensburg' ),
-		'section'     => 'tedx_hero_card_section',
-		'type'        => 'checkbox',
-	) );
-
-	// Hero Card Redirect URL
-	$wp_customize->add_setting( 'tedx_hero_card_link_url', array(
-		'default'           => '',
-		'sanitize_callback' => 'esc_url_raw',
-	) );
-	$wp_customize->add_control( 'tedx_hero_card_link_url', array(
-		'label'       => __( 'Card Redirect Link URL', 'tedx-regensburg' ),
-		'description' => __( 'Destination URL when the hero card is clicked.', 'tedx-regensburg' ),
-		'section'     => 'tedx_hero_card_section',
-		'type'        => 'url',
 	) );
 
 	// --- Section: Event Pitch Card (Figma 166:1430) ---
@@ -338,6 +293,17 @@ function tedx_customize_register( $wp_customize ) {
 		'title'    => __( 'Speakers Section', 'tedx-regensburg' ),
 		'panel'    => 'tedx_event_panel',
 		'priority' => 30,
+	) );
+
+	$wp_customize->add_setting( 'tedx_show_cfs', array(
+		'default'           => true,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'tedx_show_cfs', array(
+		'label'       => __( 'Show "Your Name Here" Card', 'tedx-regensburg' ),
+		'description' => __( 'Toggle the visibility of the Call for Speakers placeholder card.', 'tedx-regensburg' ),
+		'section'     => 'tedx_speakers_section',
+		'type'        => 'checkbox',
 	) );
 
 	$wp_customize->add_setting( 'tedx_cfs_title', array(

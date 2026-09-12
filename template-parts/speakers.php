@@ -13,7 +13,7 @@ $event_year      = tedx_mod( 'tedx_event_year', '2026' );
 $cfs_title       = tedx_mod( 'tedx_cfs_title', __( 'Your Name Here?', 'tedx-regensburg' ) );
 $cfs_description = tedx_mod( 'tedx_cfs_description', __( 'We are curating for the final lineup for 2026. Bring your vision to the stage.', 'tedx-regensburg' ) );
 $cfs_url         = tedx_mod( 'tedx_cfs_url', '#apply' );
-$show_cfs = true;
+$show_cfs = tedx_mod( 'tedx_show_cfs', true );
 
 if ( is_page() ) {
 	$meta_enable_tickets = get_post_meta( get_the_ID(), '_event_enable_tickets', true );
@@ -213,7 +213,7 @@ $speakers_query = new WP_Query( $query_args );
 
 			<?php if ( $show_cfs ) : ?>
 			<!-- Call for Speakers Card ("Your Name Here?") -->
-			<div class="border-2 border-tedx-red bg-tedx-red/5 rounded-[32px] p-8 flex flex-col items-center justify-center text-center shadow-xl transition-all duration-300 hover:bg-tedx-red/10 hover:scale-[1.02]">
+			<div class="border-2 border-tedx-red bg-tedx-red/5 rounded-[32px] p-8 flex flex-col items-center justify-center text-center shadow-xl transition-all duration-300 hover:scale-[1.02]">
 				<h3 class="text-2xl font-bold text-white mb-3">
 					<?php echo esc_html( $cfs_title ); ?>
 				</h3>
@@ -222,7 +222,7 @@ $speakers_query = new WP_Query( $query_args );
 					<?php echo esc_html( $cfs_description ); ?>
 				</p>
 
-				<a href="<?php echo esc_url( $cfs_url ); ?>" class="inline-block text-base font-bold text-tedx-red hover:text-white uppercase tracking-wider transition-colors py-2 px-4 rounded-xl hover:bg-tedx-red">
+				<a href="<?php echo esc_url( $cfs_url ); ?>" class="inline-flex items-center justify-center border border-tedx-red text-tedx-red text-sm font-bold uppercase tracking-wider px-5 py-3 rounded-xl transition-all duration-200 btn-shadcn-anim">
 					<?php esc_html_e( 'APPLY NOW', 'tedx-regensburg' ); ?> &rarr;
 				</a>
 			</div>

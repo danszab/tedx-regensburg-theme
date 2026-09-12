@@ -62,7 +62,7 @@ $team_query = new WP_Query( $team_args );
 							
 							<!-- Right Column: LinkedIn Button (Strictly square 40x40px) -->
 							<?php if ( ! empty( $linkedin ) ) : ?>
-								<a href="<?php echo esc_url( $linkedin ); ?>" target="_blank" rel="noopener noreferrer" class="shrink-0 w-10 h-10 min-w-[40px] min-h-[40px] aspect-square flex items-center justify-center bg-[#212121] rounded-[12px] hover:bg-tedx-red transition-colors duration-200 shadow-sm" aria-label="<?php echo esc_attr( sprintf( __( '%s on LinkedIn', 'tedx-regensburg' ), $name ) ); ?>">
+								<a href="<?php echo esc_url( $linkedin ); ?>" target="_blank" rel="noopener noreferrer" class="shrink-0 w-10 h-10 min-w-[40px] min-h-[40px] aspect-square flex items-center justify-center bg-[#212121] rounded-[12px] transition-colors duration-200 shadow-sm" aria-label="<?php echo esc_attr( sprintf( __( '%s on LinkedIn', 'tedx-regensburg' ), $name ) ); ?>">
 									<div class="w-5 h-5 flex items-center justify-center pointer-events-none">
 										<?php echo tedx_get_icon( 'linkedin', 'w-5 h-5 text-white' ); ?>
 									</div>

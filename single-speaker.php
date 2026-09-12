@@ -18,7 +18,7 @@ $year         = get_post_meta( $speaker_id, '_speaker_year', true ) ?: '2026';
 $linkedin_url = get_post_meta( $speaker_id, '_speaker_linkedin', true );
 ?>
 
-<main id="primary" class="site-main flex-grow py-16 px-4 md:px-8 lg:px-12 bg-tedx-dark">
+<main id="primary" class="site-main flex-grow pt-28 pb-16 px-4 md:px-8 lg:px-12 bg-tedx-dark">
 	<div class="max-w-figma mx-auto">
 		
 		<!-- Breadcrumb / Back Link -->

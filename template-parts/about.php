@@ -52,7 +52,7 @@ $about_btn_url     = tedx_mod( 'tedx_about_button_url', '#about' );
 				<?php echo esc_html( $about_description ); ?>
 			</p>
 
-			<a href="<?php echo esc_url( $about_btn_url ); ?>" class="inline-flex items-center gap-2 border border-tedx-red text-tedx-red hover:bg-tedx-red hover:text-white text-sm font-medium px-5 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-95">
+			<a href="<?php echo esc_url( $about_btn_url ); ?>" class="inline-flex items-center gap-2 border border-tedx-red text-tedx-red text-sm font-medium px-5 py-3 rounded-xl transition-all duration-200 btn-shadcn-anim">
 				<?php echo tedx_get_icon( 'info', 'w-4 h-4' ); ?>
 				<span><?php esc_html_e( 'Learn More', 'tedx-regensburg' ); ?></span>
 			</a>

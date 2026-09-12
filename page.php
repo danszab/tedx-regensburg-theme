@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-<main id="primary" class="site-main flex-grow py-16 px-4 md:px-8 lg:px-12 bg-tedx-dark">
+<main id="primary" class="site-main flex-grow pt-28 pb-16 px-4 md:px-8 lg:px-12 bg-tedx-dark">
 	<div class="max-w-4xl mx-auto">
 		
 		<?php

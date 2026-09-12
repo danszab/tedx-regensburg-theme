@@ -14,6 +14,7 @@ $pitch_meta        = tedx_mod( 'tedx_pitch_meta', 'TEDxREGENSBURG | NOV 14 | MAR
 $pitch_description = tedx_mod( 'tedx_pitch_description', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.' );
 $ticket_url        = tedx_mod( 'tedx_ticket_url', '#tickets' );
 $ticket_text       = tedx_mod( 'tedx_ticket_text', __( 'Tickets', 'tedx-regensburg' ) );
+if ( empty( trim( $ticket_text ) ) ) { $ticket_text = __( 'Tickets', 'tedx-regensburg' ); }
 $show_more_url     = tedx_mod( 'tedx_show_more_url', '#about' );
 $show_more_text    = tedx_mod( 'tedx_show_more_text', __( 'Show More', 'tedx-regensburg' ) );
 $enable_tickets    = true;
@@ -43,9 +44,13 @@ if ( is_page() || is_singular( 'tedx_event' ) ) {
 		$enable_show_more = ( '1' === $meta_enable_show_more );
 	}
 }
+$pitch_classes = 'bg-tedx-surface py-16 md:py-24 px-4 md:px-8 lg:px-12 border-t border-white/5';
+if ( ! is_front_page() ) {
+	$pitch_classes = 'bg-tedx-surface pt-28 pb-16 md:py-24 px-4 md:px-8 lg:px-12 border-t border-white/5';
+}
 ?>
 
-<section id="event-pitch" class="bg-tedx-surface py-16 md:py-24 px-4 md:px-8 lg:px-12 border-t border-white/5">
+<section id="event-pitch" class="<?php echo esc_attr( $pitch_classes ); ?>">
 	<div class="max-w-figma mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 		
 		<!-- Left Column: Event Information & Actions -->
@@ -63,14 +68,14 @@ if ( is_page() || is_singular( 'tedx_event' ) ) {
 			<?php if ( $enable_tickets || $enable_show_more ) : ?>
 			<div class="flex flex-wrap items-center gap-4 pt-2">
 				<?php if ( $enable_tickets && ! empty( $ticket_url ) ) : ?>
-				<a href="<?php echo esc_url( $ticket_url ); ?>" class="inline-flex items-center gap-2 bg-tedx-red hover:bg-tedx-red-hover text-white text-sm font-medium px-5 py-3 rounded-xl shadow-md transition-all duration-200 hover:scale-[1.02] active:scale-95">
+				<a href="<?php echo esc_url( $ticket_url ); ?>" class="inline-flex items-center gap-2 bg-tedx-red text-white text-sm font-medium px-5 py-3 rounded-xl shadow-md transition-all duration-200 btn-shadcn-anim">
 					<?php echo tedx_get_icon( 'ticket', 'w-4 h-4 text-white' ); ?>
 					<span><?php echo esc_html( $ticket_text ); ?></span>
 				</a>
 				<?php endif; ?>
 
 				<?php if ( $enable_show_more && ! empty( $show_more_url ) ) : ?>
-				<a href="<?php echo esc_url( $show_more_url ); ?>" class="inline-flex items-center justify-center border border-tedx-red text-tedx-red hover:bg-tedx-red/10 text-sm font-medium px-5 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02]">
+				<a href="<?php echo esc_url( $show_more_url ); ?>" class="inline-flex items-center justify-center border border-tedx-red text-tedx-red text-sm font-medium px-5 py-3 rounded-xl transition-all duration-200 btn-shadcn-anim">
 					<span><?php echo esc_html( $show_more_text ); ?></span>
 				</a>
 				<?php endif; ?>

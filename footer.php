@@ -61,19 +61,19 @@ $newsletter_action = tedx_mod( 'tedx_newsletter_action', '#' );
 				<h3 class="text-2xl font-medium text-white tracking-tight mb-4"><?php esc_html_e( 'Let’s stay in touch', 'tedx-regensburg' ); ?></h3>
 				<div class="flex items-center gap-4">
 					<?php if ( $linkedin_url ) : ?>
-						<a href="<?php echo esc_url( $linkedin_url ); ?>" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-14 h-14 bg-tedx-button hover:bg-tedx-red text-white rounded-2xl transition-all duration-200 hover:scale-105" aria-label="LinkedIn">
+						<a href="<?php echo esc_url( $linkedin_url ); ?>" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-14 h-14 bg-tedx-button text-white rounded-2xl transition-all duration-200 btn-shadcn-anim" aria-label="LinkedIn">
 							<?php echo tedx_get_icon( 'linkedin', 'w-6 h-6' ); ?>
 						</a>
 					<?php endif; ?>
 
 					<?php if ( $instagram_url ) : ?>
-						<a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-14 h-14 bg-tedx-button hover:bg-tedx-red text-white rounded-2xl transition-all duration-200 hover:scale-105" aria-label="Instagram">
+						<a href="<?php echo esc_url( $instagram_url ); ?>" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-14 h-14 bg-tedx-button text-white rounded-2xl transition-all duration-200 btn-shadcn-anim" aria-label="Instagram">
 							<?php echo tedx_get_icon( 'instagram', 'w-6 h-6' ); ?>
 						</a>
 					<?php endif; ?>
 
 					<?php if ( $facebook_url ) : ?>
-						<a href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-14 h-14 bg-tedx-button hover:bg-tedx-red text-white rounded-2xl transition-all duration-200 hover:scale-105" aria-label="Facebook">
+						<a href="<?php echo esc_url( $facebook_url ); ?>" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-14 h-14 bg-tedx-button text-white rounded-2xl transition-all duration-200 btn-shadcn-anim" aria-label="Facebook">
 							<?php echo tedx_get_icon( 'facebook', 'w-6 h-6' ); ?>
 						</a>
 					<?php endif; ?>
@@ -90,7 +90,7 @@ $newsletter_action = tedx_mod( 'tedx_newsletter_action', '#' );
 						</div>
 						<input type="email" name="email" required placeholder="<?php esc_attr_e( 'Email Address', 'tedx-regensburg' ); ?>" class="w-full pl-11 pr-4 py-3 bg-transparent border border-tedx-outline rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:border-tedx-red focus:ring-1 focus:ring-tedx-red transition-all">
 					</div>
-					<button type="submit" class="flex items-center justify-center w-12 h-12 bg-tedx-button hover:bg-tedx-red text-white rounded-2xl transition-all duration-200 hover:scale-105 shrink-0" aria-label="<?php esc_attr_e( 'Subscribe', 'tedx-regensburg' ); ?>">
+					<button type="submit" class="flex items-center justify-center w-12 h-12 bg-tedx-button text-white rounded-2xl transition-all duration-200 btn-shadcn-anim shrink-0" aria-label="<?php esc_attr_e( 'Subscribe', 'tedx-regensburg' ); ?>">
 						<?php echo tedx_get_icon( 'send', 'w-5 h-5' ); ?>
 					</button>
 				</form>

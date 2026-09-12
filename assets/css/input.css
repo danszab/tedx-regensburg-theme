@@ -48,3 +48,133 @@
     text-wrap: balance;
   }
 }
+
+@layer components {
+  /* TEDx Custom Slider for core/gallery */
+  .wp-block-gallery.is-style-tedx-slider {
+      position: relative;
+      width: 100vw;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      gap: 24px !important;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-bottom: 20px;
+      margin-top: 32px;
+      margin-bottom: 32px;
+      background-color: #1e1e1e;
+      padding-top: 64px;
+      align-items: center;
+  }
+  
+  .wp-block-gallery.is-style-tedx-slider::-webkit-scrollbar {
+      display: none;
+  }
+  
+  .wp-block-gallery.is-style-tedx-slider::before,
+  .wp-block-gallery.is-style-tedx-slider::after {
+      content: '';
+      flex-shrink: 0;
+      width: max(16px, calc((100vw - 1000px) / 2));
+  }
+  
+  .wp-block-gallery.is-style-tedx-slider .wp-block-image {
+      flex-shrink: 0 !important;
+      width: 231px !important;
+      height: 154px !important;
+      scroll-snap-align: start;
+      position: relative;
+      margin: 0 !important;
+      cursor: pointer;
+  }
+  
+  .wp-block-gallery.is-style-tedx-slider .wp-block-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 32px;
+      transition: transform 0.3s ease;
+  }
+  
+  .wp-block-gallery.is-style-tedx-slider .wp-block-image:hover img {
+      transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+      .wp-block-gallery.is-style-tedx-slider .wp-block-image {
+          width: 180px !important;
+          height: 120px !important;
+      }
+  }
+
+  /* Fade overlays - inserted via JS because they need to be fixed on screen sides over the scroll */
+  .tedx-slider-fade-left {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100px;
+      background: linear-gradient(to right, #1e1e1e, transparent);
+      pointer-events: none;
+      z-index: 10;
+  }
+  
+  .tedx-slider-fade-right {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 100px;
+      background: linear-gradient(to left, #1e1e1e, transparent);
+      pointer-events: none;
+      z-index: 10;
+  }
+
+  @media (min-width: 768px) {
+      .tedx-slider-fade-left, .tedx-slider-fade-right {
+          width: 256px;
+      }
+  }
+
+  /* Lightbox */
+  .tedx-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+  }
+  .tedx-lightbox.active {
+      display: flex;
+      opacity: 1;
+  }
+  .tedx-lightbox .lightbox-img {
+      max-height: 90vh;
+      max-width: 90vw;
+      object-fit: contain;
+      border-radius: 8px;
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+  }
+  .tedx-lightbox.active .lightbox-img {
+      transform: scale(1);
+  }
+  .tedx-lightbox .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      color: white;
+      font-size: 40px;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+  }
+}

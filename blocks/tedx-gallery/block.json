@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/gallery",
+    "title": "TEDx Gallery",
+    "category": "media",
+    "icon": "format-gallery",
+    "description": "Custom 2-row gallery slider for TEDx.",
+    "supports": {
+        "html": false,
+        "align": ["full"]
+    },
+    "attributes": {
+        "images": {
+            "type": "array",
+            "default": []
+        }
+    },
+    "editorScript": "file:./index.js",
+    "script": "file:./script.js",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}
