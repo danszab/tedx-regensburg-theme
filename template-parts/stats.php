@@ -19,21 +19,60 @@ $stat_3_val = tedx_mod( 'tedx_stat_3_value', '100+' );
 $stat_3_lbl = tedx_mod( 'tedx_stat_3_label', __( 'Ideas', 'tedx-regensburg' ) );
 
 $stats = array(
-	array( 'val' => $stat_1_val, 'lbl' => $stat_1_lbl ),
-	array( 'val' => $stat_2_val, 'lbl' => $stat_2_lbl ),
-	array( 'val' => $stat_3_val, 'lbl' => $stat_3_lbl ),
+	1 => array( 'val' => $stat_1_val, 'lbl' => $stat_1_lbl ),
+	2 => array( 'val' => $stat_2_val, 'lbl' => $stat_2_lbl ),
+	3 => array( 'val' => $stat_3_val, 'lbl' => $stat_3_lbl ),
 );
 ?>
 
 <section id="stats" class="bg-tedx-surface py-16 md:py-20 px-4 border-t border-white/5">
 	<div class="max-w-figma mx-auto flex flex-wrap items-center justify-center gap-8 md:gap-16">
 		
-		<?php foreach ( $stats as $stat ) : ?>
+		<?php foreach ( $stats as $i => $stat ) : ?>
+			<?php
+			// 1. Check Customizer upload for this stat
+			$custom_icon_url = tedx_mod( "tedx_stat_{$i}_icon", '' );
+			$icon_html = '';
+
+			if ( ! empty( $custom_icon_url ) ) {
+				$icon_html = '<img src="' . esc_url( $custom_icon_url ) . '" alt="" class="w-6 h-6 object-contain">';
+			} else {
+				// 2. Check local theme files in assets/images/icons/
+				$candidate_files = array(
+					"assets/images/icons/stat-{$i}.svg",
+					"assets/images/icons/stat-{$i}.png",
+					"assets/images/icons/stat-icon-{$i}.svg",
+					"assets/images/icons/stat-icon-{$i}.png",
+					"assets/images/stat-{$i}.svg",
+					"assets/images/stat-{$i}.png",
+				);
+				foreach ( $candidate_files as $rel_file ) {
+					$full_path = TEDX_DIR . '/' . $rel_file;
+					if ( file_exists( $full_path ) ) {
+						if ( pathinfo( $rel_file, PATHINFO_EXTENSION ) === 'svg' ) {
+							$svg_data = file_get_contents( $full_path );
+							$svg_data = preg_replace( '/<\?xml.*?\?>/i', '', $svg_data );
+							$icon_html = '<div class="w-6 h-6 flex items-center justify-center [&>svg]:w-6 [&>svg]:h-6 [&>svg]:fill-current">' . $svg_data . '</div>';
+						} else {
+							$icon_html = '<img src="' . esc_url( TEDX_URI . '/' . $rel_file ) . '" alt="" class="w-6 h-6 object-contain">';
+						}
+						break;
+					}
+				}
+			}
+
+			// 3. Fallback to built-in vector icons
+			if ( empty( $icon_html ) ) {
+				$fallback_icons = array( 1 => 'groups', 2 => 'globe', 3 => 'send' );
+				$icon_key = isset( $fallback_icons[ $i ] ) ? $fallback_icons[ $i ] : 'groups';
+				$icon_html = tedx_get_icon( $icon_key, 'w-6 h-6' );
+			}
+			?>
 			<div class="w-[147px] h-[147px] border-2 border-tedx-green rounded-[32px] p-4 flex flex-col items-center justify-between text-center bg-black/20 backdrop-blur-sm shadow-glow-green">
 				
-				<!-- Groups Icon -->
-				<div class="text-tedx-green pt-1">
-					<?php echo tedx_get_icon( 'groups', 'w-6 h-6' ); ?>
+				<!-- Stat Icon -->
+				<div class="text-tedx-green pt-1 flex items-center justify-center">
+					<?php echo $icon_html; ?>
 				</div>
 
 				<!-- Number Value -->

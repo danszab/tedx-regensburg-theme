@@ -47,15 +47,12 @@ $poster_image = tedx_mod( 'tedx_hero_poster_image', '' );
         position: relative;
         z-index: 10;
         width: 100%;
-        max-width: 1256px;
         margin: 0 auto;
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 24px;
-        padding-left: 24px;
-        padding-right: 24px;
     }
     .tedx-hero-typography {
         display: flex;
@@ -171,7 +168,7 @@ $poster_image = tedx_mod( 'tedx_hero_poster_image', '' );
     </div>
 
     <!-- Content Container -->
-    <div class="tedx-hero-container">
+    <div class="tedx-hero-container max-w-figma-wide px-4 md:px-8 lg:px-12">
         
         <!-- Left Side: Typography -->
         <div class="tedx-hero-typography">

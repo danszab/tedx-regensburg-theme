@@ -16,34 +16,42 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param bool   $show_link Whether to wrap in home link.
  */
 function tedx_regensburg_logo( $classes = 'h-8 w-auto', $show_link = true ) {
-	$custom_logo_id = get_theme_mod( 'custom_logo' );
-	
+	$custom_logo_id  = get_theme_mod( 'custom_logo' );
+	$mobile_logo_url = get_theme_mod( 'tedx_mobile_logo' );
+	$site_name       = get_bloginfo( 'name' );
+
+	// 1. Build desktop logo
+	$desktop_logo = '';
 	if ( $custom_logo_id ) {
 		$logo_url = wp_get_attachment_image_url( $custom_logo_id, 'full' );
 		if ( $logo_url ) {
-			if ( $show_link ) {
-				echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="flex items-center" rel="home" aria-label="' . esc_attr( get_bloginfo( 'name' ) ) . '">';
-			}
-			echo '<img src="' . esc_url( $logo_url ) . '" alt="' . esc_attr( get_bloginfo( 'name' ) ) . '" class="' . esc_attr( $classes ) . '">';
-			if ( $show_link ) {
-				echo '</a>';
-			}
-			return;
+			$desktop_logo = '<img src="' . esc_url( $logo_url ) . '" alt="' . esc_attr( $site_name ) . '" class="' . esc_attr( $classes ) . ' object-contain block">';
 		}
 	}
 
-	// Fallback to crisp TEDxRegensburg vector markup matching Figma
-	$output = '<div class="flex items-center gap-1 text-white font-bold select-none tracking-tight leading-none ' . esc_attr( $classes ) . '">';
-	$output .= '<span class="text-white text-2xl md:text-3xl font-extrabold tracking-tighter">TED<sup class="text-tedx-red text-lg md:text-xl font-bold ml-[1px]">x</sup></span>';
-	$output .= '<span class="text-white text-xl md:text-2xl font-medium tracking-normal ml-2">Regensburg</span>';
-	$output .= '</div>';
+	if ( empty( $desktop_logo ) ) {
+		// Fallback to crisp TEDxRegensburg vector markup matching Figma
+		$desktop_logo = '<div class="flex items-center gap-1 text-white font-bold select-none tracking-tight leading-none ' . esc_attr( $classes ) . '">';
+		$desktop_logo .= '<span class="text-white text-2xl md:text-3xl font-extrabold tracking-tighter">TED<sup class="text-tedx-red text-lg md:text-xl font-bold ml-[1px]">x</sup></span>';
+		$desktop_logo .= '<span class="text-white text-xl md:text-2xl font-medium tracking-normal ml-2">Regensburg</span>';
+		$desktop_logo .= '</div>';
+	}
+
+	// 2. Build final output with responsive mobile logo switch if set
+	if ( ! empty( $mobile_logo_url ) ) {
+		$mobile_logo = '<img src="' . esc_url( $mobile_logo_url ) . '" alt="' . esc_attr( $site_name ) . '" class="h-6 w-auto object-contain block lg:hidden">';
+		$desktop_wrapped = '<div class="hidden lg:flex items-center">' . $desktop_logo . '</div>';
+		$final_output = $desktop_wrapped . $mobile_logo;
+	} else {
+		$final_output = $desktop_logo;
+	}
 
 	if ( $show_link ) {
-		echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="inline-flex items-center transition-opacity hover:opacity-90" rel="home" aria-label="' . esc_attr( get_bloginfo( 'name' ) ) . '">';
-		echo $output;
+		echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="inline-flex items-center justify-center transition-opacity hover:opacity-90" rel="home" aria-label="' . esc_attr( $site_name ) . '">';
+		echo $final_output;
 		echo '</a>';
 	} else {
-		echo $output;
+		echo $final_output;
 	}
 }
 
@@ -80,7 +88,7 @@ function tedx_language_switcher() {
 	$current_lang = defined( 'ICL_LANGUAGE_CODE' ) ? ICL_LANGUAGE_CODE : 'en';
 	?>
 	<div class="flex items-center gap-2 text-sm font-medium text-white/90">
-		<span class="text-white/60"><?php echo tedx_get_icon( 'globe', 'w-4 h-4' ); ?></span>
+		<span class="text-white/60 flex items-center justify-center flex-shrink-0"><?php echo tedx_get_icon( 'globe', 'w-4 h-4 block' ); ?></span>
 		<div class="flex items-center gap-1 font-sans">
 			<a href="?lang=de" class="<?php echo $current_lang === 'de' ? 'underline font-bold text-white' : 'text-white/70 hover:text-white transition-colors'; ?>">DE</a>
 			<span class="text-white/40">|</span>

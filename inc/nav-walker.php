@@ -72,7 +72,7 @@ class TEDx_Tailwind_Nav_Walker extends Walker_Nav_Menu {
 		$title = apply_filters( 'nav_menu_item_title', $title, $menu_item, $args, $depth );
 		
 		if ( in_array( 'menu-item-has-children', $classes ) && $depth === 0 ) {
-			$title .= ' <svg class="w-4 h-4 ml-1 opacity-70 nav-dropdown-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+			$title .= '<svg class="w-4 h-4 ml-1.5 opacity-70 nav-dropdown-arrow flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
 		}
 
 		$item_output  = isset( $args->before ) ? $args->before : '';
@@ -125,7 +125,7 @@ class TEDx_Tailwind_Mobile_Nav_Walker extends Walker_Nav_Menu {
 		$atts['rel']    = ! empty( $menu_item->xfn ) ? $menu_item->xfn : '';
 		$atts['href']   = ! empty( $menu_item->url ) ? $menu_item->url : '';
 
-		$link_classes = 'font-medium transition-all inline-block nav-link nav-link-anim mobile-nav-parent ';
+		$link_classes = 'font-medium transition-all inline-flex items-center nav-link nav-link-anim mobile-nav-parent ';
 		if ( $depth === 0 ) {
 			if ( $is_active ) {
 				$link_classes .= 'text-xl text-tedx-red font-bold active-nav-link ';
@@ -156,7 +156,7 @@ class TEDx_Tailwind_Mobile_Nav_Walker extends Walker_Nav_Menu {
 		$title = apply_filters( 'nav_menu_item_title', $title, $menu_item, $args, $depth );
 
 		if ( in_array( 'menu-item-has-children', $classes ) && $depth === 0 ) {
-			$title .= ' <svg class="mobile-dropdown-arrow w-5 h-5 ml-1 inline-block opacity-70 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+			$title .= '<svg class="mobile-dropdown-arrow w-5 h-5 ml-1.5 opacity-70 transition-transform duration-300 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
 		}
 
 		$item_output  = isset( $args->before ) ? $args->before : '';

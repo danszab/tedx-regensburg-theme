@@ -44,9 +44,10 @@ if ( is_page() || is_singular( 'tedx_event' ) ) {
 		$enable_show_more = ( '1' === $meta_enable_show_more );
 	}
 }
+
 $pitch_classes = 'bg-tedx-surface py-16 md:py-24 px-4 md:px-8 lg:px-12 border-t border-white/5';
 if ( ! is_front_page() ) {
-	$pitch_classes = 'bg-tedx-surface pt-28 pb-16 md:py-24 px-4 md:px-8 lg:px-12 border-t border-white/5';
+	$pitch_classes = 'bg-tedx-surface pt-28 pb-16 md:py-24 px-4 md:px-8 lg:px-12';
 }
 ?>
 

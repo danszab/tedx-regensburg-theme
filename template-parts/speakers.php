@@ -71,8 +71,8 @@ $speakers_query = new WP_Query( $query_args );
 			</h2>
 		</div>
 
-		<!-- Speakers Grid -->
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+		<!-- Speakers Grid (Masonry Layout) -->
+		<div class="tedx-masonry-grid">
 			
 			<?php
 			if ( $speakers_query->have_posts() ) :

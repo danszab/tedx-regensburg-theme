@@ -203,6 +203,8 @@
 
 /* Dropdown Arrow Animation */
 .nav-dropdown-arrow, .mobile-dropdown-arrow {
+    display: inline-block;
+    vertical-align: middle;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .group:hover .nav-dropdown-arrow {
@@ -219,3 +221,35 @@
     overscroll-behavior: contain;
 }
 
+/* Subpage Top Padding to clear fixed navbar (60px) */
+.pt-28 {
+    padding-top: 7rem !important; /* 112px on desktop: 60px navbar + 52px breathing room */
+}
+
+/* Extra generous top padding on mobile screens for all subpages so navbar never touches content */
+@media (max-width: 1023px) {
+    .pt-28 {
+        padding-top: 8rem !important; /* 128px on mobile: 60px navbar + 68px breathing room */
+    }
+}
+
+
+
+/* Speakers Grid Layout (Left-to-Right, No Stretching) */
+.tedx-masonry-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+}
+@media (min-width: 768px) {
+    .tedx-masonry-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (min-width: 1024px) {
+    .tedx-masonry-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 2rem; /* gap-8 */
+    }
+}

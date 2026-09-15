@@ -23,5 +23,3 @@ function tedx_add_new_hero_customizer_settings( $wp_customize ) {
 	) ) );
 }
 add_action( 'customize_register', 'tedx_add_new_hero_customizer_settings', 20 );
-<?php
-// Just append the mobile logo code to customizer.php instead.

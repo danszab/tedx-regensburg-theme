@@ -10,7 +10,6 @@ $venue_name = get_theme_mod( 'tedx_venue_name', 'Marinaforum Regensburg' );
 $venue_address_1 = get_theme_mod( 'tedx_venue_address_1', 'Johanna-Dachs-Straße 46' );
 $venue_address_2 = get_theme_mod( 'tedx_venue_address_2', '93055 Regensburg' );
 $venue_maps_url = get_theme_mod( 'tedx_venue_maps_url', '#' );
-$venue_image = get_theme_mod( 'tedx_venue_image', '' );
 
 // If on an Event Page, override with specific event location details
 if ( is_page() || is_singular( 'tedx_event' ) ) {
@@ -21,8 +20,11 @@ if ( is_page() || is_singular( 'tedx_event' ) ) {
 		$venue_address_1 = get_post_meta( $page_id, '_event_venue_address_1', true );
 		$venue_address_2 = get_post_meta( $page_id, '_event_venue_address_2', true );
 		$venue_maps_url = get_post_meta( $page_id, '_event_venue_maps_url', true );
-		$venue_image = get_post_meta( $page_id, '_event_venue_image', true );
 	}
+}
+
+if ( empty( $venue_maps_url ) || '#' === $venue_maps_url ) {
+	$venue_maps_url = 'https://www.google.com/maps/search/?api=1&query=' . urlencode( $venue_name . ', ' . $venue_address_1 . ', ' . $venue_address_2 );
 }
 ?>
 
@@ -31,14 +33,11 @@ if ( is_page() || is_singular( 'tedx_event' ) ) {
 		
 		<!-- Left Column: Location / Venue Image -->
 		<div class="w-full aspect-[4/3] rounded-[32px] overflow-hidden relative shadow-2xl bg-tedx-card border border-white/10">
-			<?php if ( $venue_image ) : ?>
-				<img alt="<?php echo esc_attr( $venue_name ); ?>" class="absolute inset-0 w-full h-full object-cover" src="<?php echo esc_url( $venue_image ); ?>" />
-			<?php else : ?>
-				<div class="absolute inset-0 w-full h-full flex flex-col items-center justify-center text-white/30 bg-gradient-to-br from-[#333] to-[#222]">
-					<?php echo tedx_get_icon( 'info', 'w-12 h-12 mb-2 opacity-50' ); ?>
-					<span class="font-bold text-lg">Venue Image</span>
-				</div>
-			<?php endif; ?>
+			<?php
+			$map_query = $venue_name . ', ' . $venue_address_1 . ', ' . $venue_address_2;
+			$map_embed_url = 'https://www.google.com/maps?q=' . urlencode( $map_query ) . '&output=embed';
+			?>
+			<iframe class="absolute inset-0 w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-500" src="<?php echo esc_url( $map_embed_url ); ?>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 		</div>
 		
 		<!-- Right Column: Location / Venue Info -->
@@ -58,7 +57,7 @@ if ( is_page() || is_singular( 'tedx_event' ) ) {
 			</div>
 			
 			<?php if ( $venue_maps_url ) : ?>
-			<a href="<?php echo esc_url( $venue_maps_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center border border-white/20 hover:border-tedx-red text-white text-sm font-semibold px-6 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] uppercase tracking-wider">
+			<a href="<?php echo esc_url( $venue_maps_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center border border-white/20 hover:border-tedx-red hover:text-tedx-red text-white text-sm font-semibold px-6 py-3 rounded-xl transition-all duration-200 btn-shadcn-anim uppercase tracking-wider">
 				<span>VIEW ON GOOGLE MAPS</span>
 			</a>
 			<?php endif; ?>
