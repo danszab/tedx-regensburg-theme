@@ -15,3 +15,28 @@ Tags: one-column, custom-colors, custom-menu, custom-logo, featured-images, tran
 */
 
 /* Core theme styles are loaded from assets/css/style.css */
+
+/* Custom Header Scrolled State */
+#site-header {
+    background-color: transparent;
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+}
+
+#site-header.header-scrolled {
+    background-color: rgba(21, 21, 21, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Active Nav Link Styles */
+.active-nav-link {
+    color: #eb0028 !important;
+    font-weight: 700 !important;
+    transition: none !important;
+}
+.active-nav-link:hover, .active-nav-link:active {
+    color: #eb0028 !important;
+    transform: none !important;
+    opacity: 1 !important;
+}

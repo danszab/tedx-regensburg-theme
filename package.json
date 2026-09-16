@@ -16,5 +16,8 @@
   "license": "GPL-2.0-or-later",
   "devDependencies": {
     "tailwindcss": "^3.4.17"
+  },
+  "allowScripts": {
+    "fsevents@2.3.3": true
   }
 }

@@ -64,12 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	const header = document.getElementById('site-header');
 	if (header) {
 		window.addEventListener('scroll', () => {
-			if (window.scrollY > 50) {
-				header.classList.add('bg-[#151515]/90', 'shadow-lg');
-				header.classList.remove('bg-[#151515]/40');
+			if (window.scrollY > 20) {
+				header.classList.add("header-scrolled");
+				
 			} else {
-				header.classList.remove('bg-[#151515]/90', 'shadow-lg');
-				header.classList.add('bg-[#151515]/40');
+				header.classList.remove("header-scrolled");
+				
 			}
 		});
 	}
