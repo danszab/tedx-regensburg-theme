@@ -23,17 +23,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Navigation buttons
-        var scrollAmount = 300; // Scroll by roughly one item + gap
-        
+        // Scroll by most of the visible width so each click advances several items
+        var getScrollAmount = function() {
+            return scrollContainer.clientWidth * 0.9;
+        };
+
         if (nextBtn) {
             nextBtn.addEventListener('click', function() {
-                scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                scrollContainer.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
             });
         }
         
         if (prevBtn) {
             prevBtn.addEventListener('click', function() {
-                scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                scrollContainer.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
             });
         }
         
