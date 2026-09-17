@@ -128,9 +128,21 @@ function tedx_render_speaker_meta_box( $post ) {
 	$topic     = get_post_meta( $post->ID, '_speaker_topic', true );
 	$language  = get_post_meta( $post->ID, '_speaker_language', true ) ?: 'EN';
 	$linkedin  = get_post_meta( $post->ID, '_speaker_linkedin', true );
+	$youtube   = get_post_meta( $post->ID, '_speaker_youtube', true );
+	$show_more = get_post_meta( $post->ID, '_speaker_show_more', true );
+	if ( '' === $show_more ) { $show_more = '1'; } // Default to enabled
 	$year      = get_post_meta( $post->ID, '_speaker_year', true ) ?: '2026';
 	?>
 	<table class="form-table" style="width: 100%;">
+				<tr>
+			<th scope="row"><?php _e( 'Card Display', 'tedx-regensburg' ); ?></th>
+			<td>
+				<label for="speaker_show_more">
+					<input type="checkbox" id="speaker_show_more" name="speaker_show_more" value="1" <?php checked( $show_more, '1' ); ?> />
+					<?php _e( 'Truncate bio and display "Show More" button on the homepage', 'tedx-regensburg' ); ?>
+				</label>
+			</td>
+		</tr>
 		<tr>
 			<th scope="row"><label for="speaker_topic"><?php _e( 'Topic / Field', 'tedx-regensburg' ); ?></label></th>
 			<td>
@@ -158,6 +170,13 @@ function tedx_render_speaker_meta_box( $post ) {
 			<td>
 				<input type="url" id="speaker_linkedin" name="speaker_linkedin" value="<?php echo esc_url( $linkedin ); ?>" class="regular-text" placeholder="https://linkedin.com/in/username" />
 				<p class="description"><?php _e( 'URL for "VIEW LINKEDIN" link.', 'tedx-regensburg' ); ?></p>
+			</td>
+		</tr>
+			<tr>
+			<th scope="row"><label for="speaker_youtube"><?php _e( 'YouTube URL', 'tedx-regensburg' ); ?></label></th>
+			<td>
+				<input type="url" id="speaker_youtube" name="speaker_youtube" value="<?php echo esc_url( $youtube ); ?>" class="regular-text" placeholder="https://youtube.com/watch?v=..." />
+				<p class="description"><?php _e( 'URL for "WATCH THE TALK" button.', 'tedx-regensburg' ); ?></p>
 			</td>
 		</tr>
 	</table>
@@ -195,6 +214,13 @@ function tedx_save_speaker_meta_data( $post_id ) {
 	if ( isset( $_POST['speaker_linkedin'] ) ) {
 		update_post_meta( $post_id, '_speaker_linkedin', esc_url_raw( $_POST['speaker_linkedin'] ) );
 	}
+
+	if ( isset( $_POST['speaker_youtube'] ) ) {
+		update_post_meta( $post_id, '_speaker_youtube', esc_url_raw( $_POST['speaker_youtube'] ) );
+	}
+
+	$show_more = isset( $_POST['speaker_show_more'] ) ? '1' : '0';
+	update_post_meta( $post_id, '_speaker_show_more', $show_more );
 }
 add_action( 'save_post_speaker', 'tedx_save_speaker_meta_data' );
 
@@ -279,6 +305,13 @@ function tedx_render_team_member_meta_box( $post ) {
 				<input type="url" id="team_member_linkedin" name="team_member_linkedin" value="<?php echo esc_url( $linkedin ); ?>" class="regular-text" />
 			</td>
 		</tr>
+			<tr>
+			<th scope="row"><label for="speaker_youtube"><?php _e( 'YouTube URL', 'tedx-regensburg' ); ?></label></th>
+			<td>
+				<input type="url" id="speaker_youtube" name="speaker_youtube" value="<?php echo esc_url( $youtube ); ?>" class="regular-text" placeholder="https://youtube.com/watch?v=..." />
+				<p class="description"><?php _e( 'URL for "WATCH THE TALK" button.', 'tedx-regensburg' ); ?></p>
+			</td>
+		</tr>
 	</table>
 	<?php
 }
@@ -348,6 +381,7 @@ function tedx_render_page_event_meta_box( $post ) {
 	$event_venue_address_1 = get_post_meta( $post->ID, '_event_venue_address_1', true );
 	$event_venue_address_2 = get_post_meta( $post->ID, '_event_venue_address_2', true );
 	$event_venue_maps_url = get_post_meta( $post->ID, '_event_venue_maps_url', true );
+	$venue_maps_embed = get_post_meta( $post->ID, '_event_venue_maps_embed', true );
 	$event_venue_image = get_post_meta( $post->ID, '_event_venue_image', true );
 
 	// Event Card Meta
@@ -443,6 +477,10 @@ function tedx_render_page_event_meta_box( $post ) {
 			<th scope="row"><label for="event_venue_address_2"><?php _e( 'Address Line 2', 'tedx-regensburg' ); ?></label></th>
 			<td><input type="text" id="event_venue_address_2" name="event_venue_address_2" value="<?php echo esc_attr( $venue_address_2 ); ?>" class="regular-text" /></td>
 		</tr>
+				<tr>
+			<th scope="row"><label for="event_venue_maps_embed"><?php _e( 'Google Maps Embed HTML', 'tedx-regensburg' ); ?></label></th>
+			<td><textarea id="event_venue_maps_embed" name="event_venue_maps_embed" rows="4" class="large-text" placeholder="<iframe src=\"...\"></iframe>"><?php echo esc_textarea( $venue_maps_embed ); ?></textarea></td>
+		</tr>
 		<tr>
 			<th scope="row"><label for="event_venue_maps_url"><?php _e( 'Google Maps URL', 'tedx-regensburg' ); ?></label></th>
 			<td><input type="url" id="event_venue_maps_url" name="event_venue_maps_url" value="<?php echo esc_url( $venue_maps_url ); ?>" class="regular-text" /></td>
@@ -450,6 +488,13 @@ function tedx_render_page_event_meta_box( $post ) {
 		<tr>
 			<th scope="row"><label for="event_venue_image"><?php _e( 'Venue Image URL', 'tedx-regensburg' ); ?></label></th>
 			<td><input type="url" id="event_venue_image" name="event_venue_image" value="<?php echo esc_url( $venue_image ); ?>" class="regular-text" /></td>
+		</tr>
+			<tr>
+			<th scope="row"><label for="speaker_youtube"><?php _e( 'YouTube URL', 'tedx-regensburg' ); ?></label></th>
+			<td>
+				<input type="url" id="speaker_youtube" name="speaker_youtube" value="<?php echo esc_url( $youtube ); ?>" class="regular-text" placeholder="https://youtube.com/watch?v=..." />
+				<p class="description"><?php _e( 'URL for "WATCH THE TALK" button.', 'tedx-regensburg' ); ?></p>
+			</td>
 		</tr>
 	</table>
 	<?php
@@ -478,6 +523,7 @@ function tedx_save_page_event_meta_data( $post_id ) {
 	update_post_meta( $post_id, '_event_venue_address_1', sanitize_text_field( $_POST['event_venue_address_1'] ?? '' ) );
 	update_post_meta( $post_id, '_event_venue_address_2', sanitize_text_field( $_POST['event_venue_address_2'] ?? '' ) );
 	update_post_meta( $post_id, '_event_venue_maps_url', esc_url_raw( $_POST['event_venue_maps_url'] ?? '' ) );
+	update_post_meta( $post_id, '_event_venue_maps_embed', wp_unslash( $_POST['event_venue_maps_embed'] ?? '' ) );
 	update_post_meta( $post_id, '_event_venue_image', esc_url_raw( $_POST['event_venue_image'] ?? '' ) );
 }
 add_action( 'save_post_page', 'tedx_save_page_event_meta_data' );

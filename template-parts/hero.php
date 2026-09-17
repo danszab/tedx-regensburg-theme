@@ -36,7 +36,8 @@ $poster_image = tedx_mod( 'tedx_hero_poster_image', '' );
         height: 100%;
         object-fit: cover;
         filter: blur(3.5px);
-        transform: scale(1.05); /* Prevent blur edges */
+        transform: scale(1.05);
+        animation: heroBgPan 3s cubic-bezier(0.1, 1, 0, 1) forwards;
     }
     .tedx-hero-bg-overlay {
         position: absolute;
@@ -153,6 +154,15 @@ $poster_image = tedx_mod( 'tedx_hero_poster_image', '' );
         
         .tedx-hero-poster-wrapper {
             height: 40vh;
+        }
+    }
+
+    @keyframes heroBgPan {
+        0% {
+            transform: scale(1.15) translateX(3%);
+        }
+        100% {
+            transform: scale(1.05) translateX(0%);
         }
     }
 </style>

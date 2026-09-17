@@ -36,7 +36,9 @@ get_header();
 	get_template_part( 'template-parts/about' );
 
 	// 4. 2026 Speakers Section (Speaker cards & CFS card)
-	get_template_part( 'template-parts/speakers' );
+	$event_year = get_theme_mod( 'tedx_speaker_year', '2026' );
+	set_query_var( 'target_year', $event_year );
+	get_template_part( 'template-parts/speakers', null, array( 'target_year' => $event_year ) );
 
 	// 5. Stats Section (Counter squircle cards)
 	get_template_part( 'template-parts/stats' );

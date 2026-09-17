@@ -73,12 +73,15 @@ function tedx_enqueue_scripts() {
 	// Main Compiled Tailwind Styles
 	if ( file_exists( TEDX_DIR . '/assets/css/style.css' ) ) {
 		wp_enqueue_style( 'tedx-tailwind-style', TEDX_URI . '/assets/css/style.css', array(), filemtime( TEDX_DIR . '/assets/css/style.css' ) );
-	} else {
-		wp_enqueue_style( 'tedx-main-style', get_stylesheet_uri(), array(), TEDX_VERSION );
+
+
 	}
 
-	// Main JavaScript
-	wp_enqueue_script( 'tedx-main-js', TEDX_URI . '/assets/js/main.js', array(), TEDX_VERSION, true );
+	// Cache bust the root style.css so updates are visible
+	wp_enqueue_style( 'tedx-main-style', get_stylesheet_uri(), array(), filemtime( get_stylesheet_directory() . '/style.css' ) );
+
+	// Main JS
+	wp_enqueue_script( 'tedx-main-js', TEDX_URI . '/assets/js/main.js', array(), filemtime( TEDX_DIR . '/assets/js/main.js' ), true );
 
 	wp_localize_script( 'tedx-main-js', 'tedx_vars', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),

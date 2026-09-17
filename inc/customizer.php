@@ -295,6 +295,17 @@ function tedx_customize_register( $wp_customize ) {
 		'priority' => 30,
 	) );
 
+	$wp_customize->add_setting( 'tedx_speaker_year', array(
+		'default'           => '2026',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'tedx_speaker_year', array(
+		'label'    => __( 'Speaker Year Filter', 'tedx-regensburg' ),
+		'description' => __( 'Enter the year to display speakers for (e.g. 2026).' , 'tedx-regensburg' ),
+		'section'  => 'tedx_speakers_section',
+		'type'     => 'text',
+	) );
+
 	$wp_customize->add_setting( 'tedx_show_cfs', array(
 		'default'           => true,
 		'sanitize_callback' => 'wp_validate_boolean',
@@ -516,6 +527,17 @@ function tedx_customize_register( $wp_customize ) {
 		'type'    => 'text',
 	) );
 	
+	$wp_customize->add_setting( 'tedx_venue_maps_embed', array(
+		'default'           => '',
+		'sanitize_callback' => 'wp_unslash',
+	) );
+	$wp_customize->add_control( 'tedx_venue_maps_embed', array(
+		'label'       => __( 'Google Maps Embed HTML', 'tedx-regensburg' ),
+		'description' => __( 'Paste the full iframe code from Google Maps. Overrides auto-generated map.', 'tedx-regensburg' ),
+		'section'     => 'tedx_location_section',
+		'type'        => 'textarea',
+	) );
+
 	$wp_customize->add_setting( 'tedx_venue_maps_url', array(
 		'default'           => '#',
 		'sanitize_callback' => 'esc_url_raw',

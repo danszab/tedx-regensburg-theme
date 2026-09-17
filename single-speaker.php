@@ -16,6 +16,7 @@ $topic        = get_post_meta( $speaker_id, '_speaker_topic', true );
 $language     = get_post_meta( $speaker_id, '_speaker_language', true ) ?: 'EN';
 $year         = get_post_meta( $speaker_id, '_speaker_year', true ) ?: '2026';
 $linkedin_url = get_post_meta( $speaker_id, '_speaker_linkedin', true );
+$youtube_url  = get_post_meta( $speaker_id, '_speaker_youtube', true );
 ?>
 
 <main id="primary" class="site-main flex-grow pt-28 pb-16 px-4 md:px-8 lg:px-12 bg-tedx-dark">
@@ -44,12 +45,20 @@ $linkedin_url = get_post_meta( $speaker_id, '_speaker_linkedin', true );
 						<?php endif; ?>
 					</div>
 
-					<?php if ( ! empty( $linkedin_url ) ) : ?>
-						<div class="mt-6">
-							<a href="<?php echo esc_url( $linkedin_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 w-full justify-center bg-[#212121] hover:bg-tedx-red text-white py-3 px-6 rounded-xl font-bold text-sm tracking-wider uppercase transition-colors">
-								<?php echo tedx_get_icon( 'linkedin', 'w-5 h-5' ); ?>
-								<span><?php esc_html_e( 'View LinkedIn Profile', 'tedx-regensburg' ); ?></span>
-							</a>
+					<?php if ( ! empty( $linkedin_url ) || ! empty( $youtube_url ) ) : ?>
+						<div class="mt-6 flex flex-col gap-3">
+							<?php if ( ! empty( $youtube_url ) ) : ?>
+								<a href="#talk-video" class="inline-flex items-center gap-2 w-full justify-center bg-tedx-red text-white py-3 px-6 rounded-xl font-bold text-[13px] tracking-wider uppercase btn-shadcn-anim transition-all">
+									<?php echo tedx_get_icon( 'youtube', 'w-5 h-5' ); ?>
+									<span><?php esc_html_e( 'Watch the Talk', 'tedx-regensburg' ); ?></span>
+								</a>
+							<?php endif; ?>
+							<?php if ( ! empty( $linkedin_url ) ) : ?>
+								<a href="<?php echo esc_url( $linkedin_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 w-full justify-center bg-[#212121] border border-white/20 text-white py-3 px-6 rounded-xl font-bold text-[13px] tracking-wider uppercase btn-shadcn-anim transition-all">
+									<?php echo tedx_get_icon( 'linkedin', 'w-5 h-5' ); ?>
+									<span><?php esc_html_e( 'View LinkedIn Profile', 'tedx-regensburg' ); ?></span>
+								</a>
+							<?php endif; ?>
 						</div>
 					<?php endif; ?>
 				</div>
@@ -80,6 +89,18 @@ $linkedin_url = get_post_meta( $speaker_id, '_speaker_linkedin', true );
 					<div class="entry-content text-white/90 leading-relaxed text-base space-y-4 pt-4 border-t border-white/10">
 						<?php the_content(); ?>
 					</div>
+
+					<?php if ( ! empty( $youtube_url ) ) : ?>
+						<div id="talk-video" class="mt-10 scroll-mt-32">
+							<h3 class="text-2xl font-bold text-white mb-5 flex items-center gap-2">
+								<?php echo tedx_get_icon( 'youtube', 'w-6 h-6 text-tedx-red' ); ?>
+								<?php esc_html_e( 'The Talk', 'tedx-regensburg' ); ?>
+							</h3>
+							<div class="aspect-video w-full rounded-[20px] overflow-hidden bg-black shadow-2xl [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:border-0 border border-white/10">
+								<?php echo wp_oembed_get( $youtube_url ); ?>
+							</div>
+						</div>
+					<?php endif; ?>
 
 				</div>
 

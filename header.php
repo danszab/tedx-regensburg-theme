@@ -66,22 +66,18 @@
 
 		<!-- Right Side: Tickets CTA -->
 		<div class="hidden sm:flex items-center justify-end gap-6 flex-shrink-0">
-			<?php if ( $show_navbar_ticket ) : ?>
-			<a href="<?php echo esc_url( $ticket_url ); ?>" class="inline-flex items-center justify-center gap-2 bg-tedx-red text-white text-sm font-medium px-4 py-2 rounded-xl shadow-sm transition-all duration-200 btn-shadcn-anim leading-none">
+			<a href="<?php echo esc_url( $ticket_url ); ?>" class="inline-flex items-center justify-center gap-2 bg-tedx-red text-white text-sm font-medium px-4 py-2 rounded-xl shadow-sm transition-all duration-200 leading-none <?php echo $show_navbar_ticket ? 'btn-shadcn-anim' : 'invisible pointer-events-none select-none'; ?>">
 				<span class="flex items-center justify-center flex-shrink-0"><?php echo tedx_get_icon( 'ticket', 'w-3.5 h-3.5 text-white block' ); ?></span>
 				<span class="leading-none"><?php echo esc_html( $ticket_text ); ?></span>
 			</a>
-			<?php endif; ?>
 		</div>
 
 		<!-- Mobile Menu Button -->
 		<div class="flex items-center gap-3 lg:hidden flex-shrink-0">
-			<?php if ( $show_navbar_ticket ) : ?>
-			<a href="<?php echo esc_url( $ticket_url ); ?>" class="sm:hidden inline-flex items-center justify-center gap-1.5 bg-tedx-red text-white text-xs font-medium px-3 py-1.5 rounded-lg leading-none">
+			<a href="<?php echo esc_url( $ticket_url ); ?>" class="sm:hidden inline-flex items-center justify-center gap-1.5 bg-tedx-red text-white text-xs font-medium px-3 py-1.5 rounded-lg leading-none <?php echo $show_navbar_ticket ? '' : 'invisible pointer-events-none select-none'; ?>">
 				<span class="flex items-center justify-center flex-shrink-0"><?php echo tedx_get_icon( 'ticket', 'w-3.5 h-3.5 block' ); ?></span>
 				<span class="leading-none"><?php echo esc_html( $ticket_text ); ?></span>
 			</a>
-			<?php endif; ?>
 			<button id="mobile-menu-toggle" type="button" class="p-2 text-white/90 hover:text-white rounded-lg focus:outline-none flex items-center justify-center" aria-label="<?php esc_attr_e( 'Toggle navigation', 'tedx-regensburg' ); ?>">
 				<span class="open-icon flex items-center justify-center"><?php echo tedx_get_icon( 'menu', 'w-6 h-6 block' ); ?></span>
 				<span class="close-icon hidden flex items-center justify-center"><?php echo tedx_get_icon( 'close', 'w-6 h-6 block' ); ?></span>
@@ -91,7 +87,7 @@
 	</div>
 
 	<!-- Mobile Drawer Menu -->
-	<div id="mobile-menu" class="hidden lg:hidden bg-[#181818]/95 backdrop-blur-md border-b border-white/10 px-6 py-8 transition-all duration-300 mobile-menu-scrollable">
+	<div id="mobile-menu" class="hidden lg:hidden bg-[#181818]/95 backdrop-blur-md border-b border-white/10 px-6 py-8 transition-all duration-300 overflow-y-auto max-h-[calc(100vh-80px)]">
 		<nav class="flex flex-col gap-5">
 			<?php
 			if ( has_nav_menu( 'primary' ) ) {

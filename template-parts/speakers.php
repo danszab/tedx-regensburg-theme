@@ -3,14 +3,14 @@
  * Speakers Section Template Part
  */
 
-$target_year = get_query_var( 'target_year' );
-$show_cfs    = tedx_mod( 'tedx_show_cfs_card', true );
+$target_year = trim( isset($args['target_year']) ? $args['target_year'] : get_query_var( 'target_year' ) );
+$show_cfs    = tedx_mod( 'tedx_show_cfs', true );
 $cfs_title   = tedx_mod( 'tedx_cfs_title', __( 'Your Name Here?', 'tedx-regensburg' ) );
 $cfs_description = tedx_mod( 'tedx_cfs_description', __( 'Apply to be a speaker at our next TEDx Regensburg event.', 'tedx-regensburg' ) );
 $cfs_url     = tedx_mod( 'tedx_cfs_url', home_url( '/apply' ) );
 
 $query_args = array(
-	'post_type'      => 'tedx_speaker',
+	'post_type'      => 'speaker',
 	'posts_per_page' => -1,
 	'orderby'        => 'menu_order',
 	'order'          => 'ASC',
@@ -31,6 +31,15 @@ $speakers_query = new WP_Query( $query_args );
 // 1. Collect all cards into an array of HTML strings
 $all_cards = array();
 
+ob_start();
+?>
+<div class="mb-4 pt-4 px-2">
+	<span class="block text-5xl sm:text-6xl font-black text-white tracking-tighter leading-none"><?php echo esc_html( $target_year ); ?></span>
+	<h2 class="text-4xl sm:text-5xl font-medium text-white tracking-tight leading-tight"><?php esc_html_e( 'Speakers', 'tedx-regensburg' ); ?></h2>
+</div>
+<?php
+$all_cards[] = ob_get_clean();
+
 if ( $speakers_query->have_posts() ) {
 	while ( $speakers_query->have_posts() ) {
 		$speakers_query->the_post();
@@ -39,6 +48,7 @@ if ( $speakers_query->have_posts() ) {
 		$topic         = get_post_meta( $speaker_id, '_speaker_topic', true ) ?: __( 'Keynote Speaker', 'tedx-regensburg' );
 		$language      = get_post_meta( $speaker_id, '_speaker_language', true ) ?: 'EN';
 		$linkedin_url  = get_post_meta( $speaker_id, '_speaker_linkedin', true );
+		$youtube_url   = get_post_meta( $speaker_id, '_speaker_youtube', true );
 		$has_thumbnail = has_post_thumbnail();
 		?>
 		<article class="bg-tedx-card rounded-[32px] p-6 flex flex-col justify-between border border-white/5 hover:border-white/20 transition-all duration-300 shadow-xl group">
@@ -46,7 +56,7 @@ if ( $speakers_query->have_posts() ) {
 				<div class="flex gap-4 items-start mb-4">
 					<div class="w-[122px] h-[122px] rounded-2xl overflow-hidden shrink-0 bg-[#333] border border-white/10 relative">
 						<?php if ( $has_thumbnail ) : ?>
-							<?php the_post_thumbnail( 'tedx-speaker', array( 'class' => 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-300' ) ); ?>
+							<?php the_post_thumbnail( 'tedx-speaker', array( 'class' => 'w-full h-full object-cover ' ) ); ?>
 						<?php else : ?>
 							<div class="w-full h-full flex items-center justify-center text-white/30 font-bold text-3xl bg-gradient-to-br from-[#333] to-[#222]">
 								<?php echo mb_substr( get_the_title(), 0, 1 ); ?>
@@ -62,14 +72,45 @@ if ( $speakers_query->have_posts() ) {
 						</div>
 					</div>
 				</div>
-				<div class="text-sm text-white/70 leading-relaxed font-normal mb-6">
-					<?php has_excerpt() ? the_excerpt() : print( wp_trim_words( get_the_content(), 25, '...' ) ); ?>
-				</div>
+								<?php
+				$full_content = get_the_content();
+				$show_more_option = get_post_meta( $speaker_id, '_speaker_show_more', true );
+				if ( '' === $show_more_option ) { $show_more_option = '1'; } // Default to enabled
+				$is_trimmed = ( '1' === $show_more_option );
+				
+				if ( has_excerpt() ) {
+					echo '<div class="speaker-bio text-sm text-white/70 leading-relaxed font-normal mb-6 relative">';
+					the_excerpt();
+					echo '</div>';
+				} else {
+					$display_content = $is_trimmed ? wp_trim_words( $full_content, 25, '...' ) : $full_content;
+					?>
+					<div class="speaker-bio text-sm text-white/70 leading-relaxed font-normal mb-6 relative">
+						<div class="bio-short"><?php echo wp_kses_post( $display_content ); ?></div>
+						<?php if ( $is_trimmed ) : ?>
+							<a href="<?php the_permalink(); ?>" class="inline-block text-white hover:text-white/70 font-bold text-xs mt-2 uppercase tracking-wider transition-colors">
+								<?php esc_html_e( 'Show More', 'tedx-regensburg' ); ?>
+							</a>
+						<?php endif; ?>
+					</div>
+					<?php
+				}
+				?>
 			</div>
-			<?php if ( ! empty( $linkedin_url ) ) : ?>
-				<a href="<?php echo esc_url( $linkedin_url ); ?>" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white/60 hover:text-white uppercase tracking-wider transition-colors pt-2 border-t border-white/5">
-					<?php esc_html_e( 'VIEW LINKEDIN', 'tedx-regensburg' ); ?> &rarr;
-				</a>
+			<?php if ( ! empty( $linkedin_url ) || ! empty( $youtube_url ) ) : ?>
+				<div class="flex flex-col gap-3 pt-4 border-t border-white/5 mt-auto">
+					<?php if ( ! empty( $youtube_url ) ) : ?>
+						<a href="<?php echo esc_url( $youtube_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-tedx-red text-white text-[13px] font-bold px-4 py-3 rounded-xl btn-shadcn-anim w-full">
+							<span class="flex items-center justify-center"><?php echo tedx_get_icon( 'youtube', 'w-4 h-4 block' ); ?></span>
+							<span class="uppercase tracking-wider leading-none relative top-[1px]"><?php esc_html_e( 'Watch the Talk', 'tedx-regensburg' ); ?></span>
+						</a>
+					<?php endif; ?>
+					<?php if ( ! empty( $linkedin_url ) ) : ?>
+						<a href="<?php echo esc_url( $linkedin_url ); ?>" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white hover:text-white/70 uppercase tracking-wider transition-colors text-center w-full block">
+							<?php esc_html_e( 'VIEW LINKEDIN', 'tedx-regensburg' ); ?> &rarr;
+						</a>
+					<?php endif; ?>
+				</div>
 			<?php endif; ?>
 		</article>
 		<?php
@@ -140,10 +181,7 @@ foreach ( $all_cards as $card ) {
 <section id="speakers" class="relative bg-tedx-dark py-16 md:py-24 px-4 md:px-8 lg:px-12 overflow-hidden border-t border-white/5">
 	<div class="absolute left-0 top-1/4 w-[600px] h-[600px] bg-tedx-green/5 rounded-full blur-3xl pointer-events-none -translate-x-1/2"></div>
 	<div class="max-w-figma mx-auto relative z-10">
-		<div class="mb-12">
-			<span class="block text-5xl sm:text-6xl font-black text-white tracking-tighter leading-none"><?php echo esc_html( $target_year ); ?></span>
-			<h2 class="text-4xl sm:text-5xl font-medium text-white tracking-tight leading-tight"><?php esc_html_e( 'Speakers', 'tedx-regensburg' ); ?></h2>
-		</div>
+		
 
 		<!-- Speakers Grid (List view nested in a Column view for precise 24px vertical gap) -->
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
