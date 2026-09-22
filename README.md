@@ -186,6 +186,37 @@ The homepage can be customized via **Appearance → Customize → TEDx Event Set
 
 ---
 
+## 🤝 How to Manage Sponsors & Partners
+
+The homepage (and each event page) can show two sponsor blocks: an **Exclusive Partner** block (one large partner logo) and an **Other Sponsors** grid (multiple smaller logos). Both are powered by a single **Sponsors** custom post type — there is no separate database to configure, just posts to create.
+
+### 1. Adding a Sponsor to the Database
+
+1. In the WordPress sidebar, go to **Sponsors → Add New**.
+2. **Title:** The sponsor/company name (e.g., `Logoipsum GmbH`). This is used as the image `alt` text and as a text fallback if no logo is uploaded.
+3. **Sponsor Logo:** Upload the company logo as the **Featured Image** (top-right box). SVG or PNG both work — use a transparent background for best results.
+4. **Sponsor Details** (meta box below the content editor):
+   - **Event Year:** e.g., `2026`. This must match the event year the sponsor should appear for (see below).
+   - **Sponsor Link:** The company's website URL. The logo becomes clickable and opens this link in a new tab. Leave blank for a non-clickable logo.
+   - **Exclusive Partner:** Check this box **only** for the single top-tier partner that should appear in the large "Exclusive Partner" block. Leave unchecked for all other sponsors — they will appear in the "Other Sponsors" grid instead.
+5. Click **Publish**.
+
+Repeat for every sponsor. You can create sponsors for multiple years — each block only pulls sponsors whose **Event Year** matches the year currently configured for that view (see next section).
+
+### 2. Enabling & Configuring the Blocks
+
+Go to **Appearance → Customize → TEDx Event Settings → Partners & Sponsors**:
+
+- **Show Exclusive Partner Block:** Toggles the "Our Partner" block on/off. When enabled, the theme automatically pulls whichever sponsor has **Exclusive Partner** checked for the configured event year — there's nothing else to select manually.
+- **Show Sponsors Grid:** Toggles the "Other Sponsors" grid on/off. It automatically pulls every **non-exclusive** sponsor published for the configured event year.
+- **Event Year:** The year used by both blocks on the **homepage**. Change this each year once sponsors for the new event are added.
+
+**On individual event pages** (`single-tedx_event.php`), both blocks automatically use that event's own **Event Year** post meta instead of the Customizer setting, so each event page always shows only its own year's sponsors. If no sponsor exists for that year, the block simply doesn't render — no empty section is shown.
+
+> **Tip:** If a block isn't showing up, double-check that (a) the sponsor is **Published** (not a draft), (b) its **Event Year** exactly matches the year expected on that page, and (c) it has a **Featured Image** set — sponsors without a logo image are skipped.
+
+---
+
 ## 🖼️ How to Add an Image Gallery (Gutenberg Block)
 
 The theme ships a custom **TEDx Gallery** block (`tedx/gallery`) for adding a full-width, 2-row scrolling image gallery to any page or post.

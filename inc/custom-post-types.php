@@ -105,6 +105,204 @@ function tedx_register_event_cpt() {
 add_action( 'init', 'tedx_register_event_cpt', 0 );
 
 /**
+ * Register Sponsor Custom Post Type
+ */
+function tedx_register_sponsor_cpt() {
+	$labels = array(
+		'name'                  => _x( 'Sponsors', 'Post Type General Name', 'tedx-regensburg' ),
+		'singular_name'         => _x( 'Sponsor', 'Post Type Singular Name', 'tedx-regensburg' ),
+		'menu_name'             => __( 'Sponsors', 'tedx-regensburg' ),
+		'name_admin_bar'        => __( 'Sponsor', 'tedx-regensburg' ),
+		'archives'              => __( 'Sponsor Archives', 'tedx-regensburg' ),
+		'all_items'             => __( 'All Sponsors', 'tedx-regensburg' ),
+		'add_new_item'          => __( 'Add New Sponsor', 'tedx-regensburg' ),
+		'add_new'               => __( 'Add New', 'tedx-regensburg' ),
+		'new_item'              => __( 'New Sponsor', 'tedx-regensburg' ),
+		'edit_item'             => __( 'Edit Sponsor', 'tedx-regensburg' ),
+		'update_item'           => __( 'Update Sponsor', 'tedx-regensburg' ),
+		'view_item'             => __( 'View Sponsor', 'tedx-regensburg' ),
+		'search_items'          => __( 'Search Sponsor', 'tedx-regensburg' ),
+		'featured_image'        => __( 'Sponsor Logo', 'tedx-regensburg' ),
+		'set_featured_image'    => __( 'Set sponsor logo', 'tedx-regensburg' ),
+		'remove_featured_image' => __( 'Remove sponsor logo', 'tedx-regensburg' ),
+		'use_featured_image'    => __( 'Use as sponsor logo', 'tedx-regensburg' ),
+	);
+
+	$args = array(
+		'label'                 => __( 'Sponsor', 'tedx-regensburg' ),
+		'description'           => __( 'TEDx Regensburg event sponsors', 'tedx-regensburg' ),
+		'labels'                => $labels,
+		'supports'              => array( 'title', 'thumbnail', 'page-attributes', 'custom-fields' ),
+		'hierarchical'          => false,
+		'public'                => true,
+		'show_ui'               => true,
+		'show_in_menu'          => true,
+		'menu_position'         => 22,
+		'menu_icon'             => 'dashicons-awards',
+		'show_in_admin_bar'     => true,
+		'show_in_nav_menus'     => false,
+		'can_export'            => true,
+		'has_archive'           => true,
+		'exclude_from_search'   => false,
+		'publicly_queryable'    => true,
+		'capability_type'       => 'post',
+		'show_in_rest'          => true,
+		'rewrite'               => array( 'slug' => 'sponsors' ),
+	);
+
+	register_post_type( 'sponsor', $args );
+}
+add_action( 'init', 'tedx_register_sponsor_cpt', 0 );
+
+/**
+ * Register Sponsor Meta Fields for REST/API access
+ */
+function tedx_register_sponsor_meta() {
+	register_post_meta( 'sponsor', '_sponsor_event_year', array(
+		'type'              => 'string',
+		'single'            => true,
+		'show_in_rest'      => true,
+		'sanitize_callback' => 'sanitize_text_field',
+		'auth_callback'     => function() {
+			return current_user_can( 'edit_posts' );
+		},
+	) );
+
+	register_post_meta( 'sponsor', '_sponsor_link', array(
+		'type'              => 'string',
+		'single'            => true,
+		'show_in_rest'      => true,
+		'sanitize_callback' => 'esc_url_raw',
+		'auth_callback'     => function() {
+			return current_user_can( 'edit_posts' );
+		},
+	) );
+
+	register_post_meta( 'sponsor', '_sponsor_exclusive', array(
+		'type'              => 'boolean',
+		'single'            => true,
+		'show_in_rest'      => true,
+		'sanitize_callback' => 'wp_validate_boolean',
+		'auth_callback'     => function() {
+			return current_user_can( 'edit_posts' );
+		},
+	) );
+}
+add_action( 'init', 'tedx_register_sponsor_meta', 0 );
+
+/**
+ * Add Meta Box for Sponsor Details
+ */
+function tedx_add_sponsor_meta_boxes() {
+	add_meta_box(
+		'tedx_sponsor_details',
+		__( 'Sponsor Details', 'tedx-regensburg' ),
+		'tedx_render_sponsor_meta_box',
+		'sponsor',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'tedx_add_sponsor_meta_boxes' );
+
+/**
+ * Render Sponsor Meta Box Form
+ */
+function tedx_render_sponsor_meta_box( $post ) {
+	wp_nonce_field( 'tedx_save_sponsor_meta', 'tedx_sponsor_meta_nonce' );
+
+	$event_year = get_post_meta( $post->ID, '_sponsor_event_year', true ) ?: tedx_mod( 'tedx_event_year', '2026' );
+	$link       = get_post_meta( $post->ID, '_sponsor_link', true );
+	$exclusive  = get_post_meta( $post->ID, '_sponsor_exclusive', true );
+	?>
+	<table class="form-table" style="width: 100%;">
+		<tr>
+			<th scope="row"><label for="sponsor_event_year"><?php _e( 'Event Year', 'tedx-regensburg' ); ?></label></th>
+			<td>
+				<input type="text" id="sponsor_event_year" name="sponsor_event_year" value="<?php echo esc_attr( $event_year ); ?>" class="small-text" placeholder="2026" />
+				<p class="description"><?php _e( 'The event year this sponsor belongs to.', 'tedx-regensburg' ); ?></p>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row"><label for="sponsor_link"><?php _e( 'Sponsor Link', 'tedx-regensburg' ); ?></label></th>
+			<td>
+				<input type="text" id="sponsor_link" name="sponsor_link" value="<?php echo esc_attr( $link ); ?>" class="large-text" style="max-width: 420px;" placeholder="https://example.com" />
+				<p class="description"><?php _e( 'Optional URL for the sponsor logo link.', 'tedx-regensburg' ); ?></p>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row"><?php _e( 'Exclusive Partner', 'tedx-regensburg' ); ?></th>
+			<td>
+				<label for="sponsor_exclusive">
+					<input type="checkbox" id="sponsor_exclusive" name="sponsor_exclusive" value="1" <?php checked( $exclusive, '1' ); ?> />
+					<?php _e( 'Feature this sponsor in the exclusive partner block.', 'tedx-regensburg' ); ?>
+				</label>
+			</td>
+		</tr>
+	</table>
+	<?php
+}
+
+/**
+ * Save Sponsor Meta Box Data
+ */
+function tedx_save_sponsor_meta_data( $post_id ) {
+	if ( ! isset( $_POST['tedx_sponsor_meta_nonce'] ) || ! wp_verify_nonce( $_POST['tedx_sponsor_meta_nonce'], 'tedx_save_sponsor_meta' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	if ( isset( $_POST['sponsor_event_year'] ) ) {
+		update_post_meta( $post_id, '_sponsor_event_year', trim( sanitize_text_field( $_POST['sponsor_event_year'] ) ) );
+	}
+
+	if ( isset( $_POST['sponsor_link'] ) ) {
+		update_post_meta( $post_id, '_sponsor_link', esc_url_raw( $_POST['sponsor_link'] ) );
+	}
+
+	$exclusive = isset( $_POST['sponsor_exclusive'] ) ? '1' : '0';
+	update_post_meta( $post_id, '_sponsor_exclusive', $exclusive );
+}
+add_action( 'save_post_sponsor', 'tedx_save_sponsor_meta_data' );
+
+/**
+ * Sponsor Admin Columns
+ */
+function tedx_sponsor_admin_columns( $columns ) {
+	$columns['sponsor_event_year'] = __( 'Event Year', 'tedx-regensburg' );
+	$columns['sponsor_exclusive']  = __( 'Exclusive', 'tedx-regensburg' );
+	$columns['sponsor_link']       = __( 'Link', 'tedx-regensburg' );
+
+	return $columns;
+}
+add_filter( 'manage_sponsor_posts_columns', 'tedx_sponsor_admin_columns' );
+
+function tedx_render_sponsor_admin_columns( $column, $post_id ) {
+	switch ( $column ) {
+		case 'sponsor_event_year':
+			echo esc_html( get_post_meta( $post_id, '_sponsor_event_year', true ) );
+			break;
+		case 'sponsor_exclusive':
+			echo get_post_meta( $post_id, '_sponsor_exclusive', true ) === '1' ? esc_html__( 'Yes', 'tedx-regensburg' ) : esc_html__( 'No', 'tedx-regensburg' );
+			break;
+		case 'sponsor_link':
+			$link = get_post_meta( $post_id, '_sponsor_link', true );
+			if ( ! empty( $link ) ) {
+				printf( '<a href="%1$s" target="_blank" rel="noopener noreferrer">%1$s</a>', esc_url( $link ) );
+			}
+			break;
+	}
+}
+add_action( 'manage_sponsor_posts_custom_column', 'tedx_render_sponsor_admin_columns', 10, 2 );
+
+/**
  * Add Meta Box for Speaker Details
  */
 function tedx_add_speaker_meta_boxes() {

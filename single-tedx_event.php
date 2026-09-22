@@ -23,6 +23,12 @@ get_header();
 
 	// 3. Location Section
 	get_template_part( 'template-parts/location' );
+
+	// 4. Exclusive Partner Section (sponsors for this event year only)
+	get_template_part( 'template-parts/partner', null, array( 'target_year' => $event_year ) );
+
+	// 5. Sponsors Section (sponsors for this event year only)
+	get_template_part( 'template-parts/sponsors', null, array( 'target_year' => $event_year ) );
 	?>
 
 </main>

@@ -57,13 +57,11 @@ if ( ! is_front_page() ) {
 		<!-- Left Column: Event Information & Actions -->
 		<div class="flex flex-col gap-6 items-start">
 			
+			<?php tedx_category_header( $pitch_meta ); ?>
+
 			<h2 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none">
 				<?php echo esc_html( $pitch_title ); ?>
 			</h2>
-
-			<div class="text-xs sm:text-sm font-semibold tracking-wider text-tedx-green uppercase">
-				<?php echo esc_html( $pitch_meta ); ?>
-			</div>
 
 			<!-- Action Buttons -->
 			<?php if ( $enable_tickets || $enable_show_more ) : ?>

@@ -105,3 +105,32 @@ function tedx_language_switcher() {
 function tedx_mod( $key, $default = '' ) {
 	return get_theme_mod( $key, $default );
 }
+
+/**
+ * Shared "category header" eyebrow label used above section headings.
+ * Figma: small (13px), TEDx green, uppercase, 0.65px letter spacing.
+ */
+function tedx_category_header( $text, $extra_classes = '', $tag = 'p' ) {
+	$text = trim( (string) $text );
+
+	if ( '' === $text ) {
+		return;
+	}
+
+	$allowed_tags = array( 'p', 'h2', 'h3', 'span', 'div' );
+	if ( ! in_array( $tag, $allowed_tags, true ) ) {
+		$tag = 'p';
+	}
+
+	$classes = 'block w-full text-[13px] font-medium uppercase leading-none tracking-[0.65px] text-tedx-green';
+	if ( ! empty( $extra_classes ) ) {
+		$classes .= ' ' . $extra_classes;
+	}
+
+	printf(
+		'<%1$s class="%2$s">%3$s</%1$s>',
+		$tag,
+		esc_attr( $classes ),
+		esc_html( $text )
+	);
+}

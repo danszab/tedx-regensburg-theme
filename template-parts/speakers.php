@@ -33,9 +33,9 @@ $all_cards = array();
 
 ob_start();
 ?>
-<div class="mb-4 pt-4 px-2">
+<div class="mb-4 pt-4 px-2 flex flex-col gap-6">
+	<?php tedx_category_header( __( 'Speakers', 'tedx-regensburg' ), '', 'h2' ); ?>
 	<span class="block text-5xl sm:text-6xl font-normal text-white tracking-tighter leading-none"><?php echo esc_html( $target_year ); ?></span>
-	<h2 class="text-4xl sm:text-5xl font-medium text-white tracking-tight leading-tight"><?php esc_html_e( 'Speakers', 'tedx-regensburg' ); ?></h2>
 </div>
 <?php
 $all_cards[] = ob_get_clean();

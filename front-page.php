@@ -43,6 +43,12 @@ get_header();
 	// 5. Stats Section (Counter squircle cards)
 	get_template_part( 'template-parts/stats' );
 
+	// 6. Exclusive Partner Section
+	get_template_part( 'template-parts/partner' );
+
+	// 7. Sponsors Section
+	get_template_part( 'template-parts/sponsors' );
+
 	
 	?>
 

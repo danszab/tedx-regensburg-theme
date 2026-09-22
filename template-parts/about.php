@@ -39,12 +39,10 @@ $about_btn_url     = tedx_mod( 'tedx_about_button_url', '#about' );
 		<!-- Right Column: Heading, Logo, Description, Learn More Button -->
 		<div class="flex flex-col gap-6 items-start">
 			
-			<div>
-				<h2 class="text-5xl sm:text-6xl font-black text-white tracking-tight leading-none mb-2">
-					<?php echo esc_html( $about_title ); ?>
-				</h2>
-				<div class="mt-1">
-					<?php tedx_regensburg_logo( 'h-8 w-auto', false ); ?>
+			<div class="flex flex-col gap-6">
+				<?php tedx_category_header( $about_title, '', 'h2' ); ?>
+				<div>
+					<?php tedx_regensburg_logo( 'h-[50px] w-auto', false ); ?>
 				</div>
 			</div>
 

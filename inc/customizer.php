@@ -14,7 +14,7 @@ function tedx_customize_register( $wp_customize ) {
 	// 1. Panel: TEDx Event Settings
 	$wp_customize->add_panel( 'tedx_event_panel', array(
 		'title'       => __( 'TEDx Event Settings', 'tedx-regensburg' ),
-		'description' => __( 'Manage all event details, hero content, speakers call, stats and social links.', 'tedx-regensburg' ),
+		'description' => __( 'Manage all event details, hero content, speakers call, sponsors, stats and social links.', 'tedx-regensburg' ),
 		'priority'    => 30,
 	) );
 
@@ -386,6 +386,46 @@ function tedx_customize_register( $wp_customize ) {
 			'section'     => 'tedx_stats_section',
 		) ) );
 	}
+
+	// --- Section: Partner ---
+	$wp_customize->add_section( 'tedx_partner_section', array(
+		'title'    => __( 'Partners & Sponsors', 'tedx-regensburg' ),
+		'panel'    => 'tedx_event_panel',
+		'priority' => 45,
+	) );
+
+	$wp_customize->add_setting( 'tedx_show_partner_section', array(
+		'default'           => true,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'tedx_show_partner_section', array(
+		'label'       => __( 'Show Exclusive Partner Block', 'tedx-regensburg' ),
+		'description' => __( 'Toggle the visibility of the exclusive partner block. It automatically uses sponsors marked as exclusive for the selected event year.', 'tedx-regensburg' ),
+		'section'     => 'tedx_partner_section',
+		'type'        => 'checkbox',
+	) );
+
+	$wp_customize->add_setting( 'tedx_show_sponsors_section', array(
+		'default'           => true,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'tedx_show_sponsors_section', array(
+		'label'       => __( 'Show Sponsors Grid', 'tedx-regensburg' ),
+		'description' => __( 'Toggle the visibility of the Other Sponsors grid. It only shows non-exclusive sponsors for the selected event year.', 'tedx-regensburg' ),
+		'section'     => 'tedx_partner_section',
+		'type'        => 'checkbox',
+	) );
+
+	$wp_customize->add_setting( 'tedx_sponsors_event_year', array(
+		'default'           => '2026',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'tedx_sponsors_event_year', array(
+		'label'       => __( 'Event Year', 'tedx-regensburg' ),
+		'description' => __( 'Both sponsor blocks pull sponsors assigned to this event year from the sponsor database.', 'tedx-regensburg' ),
+		'section'     => 'tedx_partner_section',
+		'type'        => 'text',
+	) );
 
 	// --- Section: Social & Footer ---
 	$wp_customize->add_section( 'tedx_social_section', array(

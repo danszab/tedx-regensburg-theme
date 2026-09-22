@@ -71,22 +71,29 @@ function tedx_enqueue_scripts() {
 	wp_enqueue_style( 'tedx-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap', array(), null );
 
 	// Main Compiled Tailwind Styles
-	if ( file_exists( TEDX_DIR . '/assets/css/style.css' ) ) {
-		wp_enqueue_style( 'tedx-tailwind-style', TEDX_URI . '/assets/css/style.css', array(), filemtime( TEDX_DIR . '/assets/css/style.css' ) );
+	$compiled_style_path = TEDX_DIR . '/assets/css/style.css';
+	if ( file_exists( $compiled_style_path ) ) {
+		wp_enqueue_style( 'tedx-tailwind-style', TEDX_URI . '/assets/css/style.css', array(), filemtime( $compiled_style_path ) );
 
 
 	}
 
 	// Cache bust the root style.css so updates are visible
-	wp_enqueue_style( 'tedx-main-style', get_stylesheet_uri(), array(), filemtime( get_stylesheet_directory() . '/style.css' ) );
+	$theme_stylesheet_path = get_stylesheet_directory() . '/style.css';
+	wp_enqueue_style( 'tedx-main-style', get_stylesheet_uri(), array(), file_exists( $theme_stylesheet_path ) ? filemtime( $theme_stylesheet_path ) : TEDX_VERSION );
 
 	// Main JS
-	wp_enqueue_script( 'tedx-main-js', TEDX_URI . '/assets/js/main.js', array(), filemtime( TEDX_DIR . '/assets/js/main.js' ), true );
+	$main_script_path = TEDX_DIR . '/assets/js/main.js';
+	if ( file_exists( $main_script_path ) ) {
+		wp_enqueue_script( 'tedx-main-js', TEDX_URI . '/assets/js/main.js', array(), filemtime( $main_script_path ), true );
+	}
 
-	wp_localize_script( 'tedx-main-js', 'tedx_vars', array(
-		'ajax_url' => admin_url( 'admin-ajax.php' ),
-		'nonce'    => wp_create_nonce( 'tedx_nonce' ),
-	) );
+	if ( wp_script_is( 'tedx-main-js', 'registered' ) || wp_script_is( 'tedx-main-js', 'enqueued' ) ) {
+		wp_localize_script( 'tedx-main-js', 'tedx_vars', array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'tedx_nonce' ),
+		) );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'tedx_enqueue_scripts' );
 
