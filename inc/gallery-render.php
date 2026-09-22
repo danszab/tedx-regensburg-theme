@@ -47,7 +47,7 @@ function tedx_custom_gallery_render($block_content, $block) {
                 <div class="tedx-gallery-row flex gap-[24px] items-center relative w-max px-[max(16px,calc((100vw-1000px)/2))]">
                     <!-- Title Block inside gallery row -->
                     <div class="gallery-title-block shrink-0 w-[231px] md:w-[317px] h-[120px] md:h-[154px] flex items-center">
-                        <h2 class="font-['Helvetica_Neue_LT_Pro:73_Bold_Extended'] text-[48px] md:text-[64px] text-white tracking-[-3.2px] leading-[0.95] m-0">
+                        <h2 class="font-display text-[48px] md:text-[64px] text-white tracking-[-3.2px] leading-[0.95] m-0">
                             Gallery
                         </h2>
                     </div>

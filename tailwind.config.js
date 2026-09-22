@@ -26,9 +26,9 @@ module.exports = {
         'tedx-gold': '#d19f2a'
       },
       fontFamily: {
-        sans: ['"Helvetica Neue"', 'Helvetica', 'Arial', 'system-ui', 'sans-serif'],
-        display: ['"Helvetica Neue LT Pro"', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
-        body: ['Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+        sans: ['"Helvetica Neue"', 'Inter', 'sans-serif'],
+        display: ['"Helvetica Neue"', 'Inter', 'sans-serif'],
+        body: ['"Helvetica Neue"', 'Inter', 'sans-serif'],
       },
       maxWidth: {
         'figma': '1000px',

@@ -43,7 +43,7 @@
 
 .gallery-title-block h2 {
     /* Matching the 'About' section font styling */
-    font-weight: 900;
+     font-weight: 400;
     font-size: 60px;
     color: white;
     letter-spacing: -0.025em;

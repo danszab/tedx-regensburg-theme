@@ -61,7 +61,7 @@ $poster_image = tedx_mod( 'tedx_hero_poster_image', '' );
         z-index: 20;
     }
     .tedx-hero-welcome {
-        font-family: 'Helvetica_Neue_LT_Pro', sans-serif;
+        font-family: 'Helvetica Neue', Inter, sans-serif;
         font-weight: 500;
         font-size: 40px;
         line-height: 1;
@@ -83,7 +83,7 @@ $poster_image = tedx_mod( 'tedx_hero_poster_image', '' );
         gap: 0;
     }
     .tedx-hero-logo .flex span:first-child {
-        font-family: 'Helvetica_Neue_LT_Pro', sans-serif !important;
+        font-family: 'Helvetica Neue', Inter, sans-serif !important;
         font-weight: 900 !important;
         font-size: 160px !important;
         line-height: 0.8 !important;
@@ -93,7 +93,7 @@ $poster_image = tedx_mod( 'tedx_hero_poster_image', '' );
         font-size: 160px !important;
     }
     .tedx-hero-logo .flex span:last-child {
-        font-family: 'Helvetica_Neue_LT_Pro', sans-serif !important;
+        font-family: 'Helvetica Neue', Inter, sans-serif !important;
         font-weight: 500 !important;
         font-size: 64px !important;
         line-height: 1 !important;

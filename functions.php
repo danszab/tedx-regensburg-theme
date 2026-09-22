@@ -67,8 +67,8 @@ add_action( 'after_setup_theme', 'tedx_theme_setup' );
  * Enqueue scripts and styles.
  */
 function tedx_enqueue_scripts() {
-	// Google Fonts (Roboto)
-	wp_enqueue_style( 'tedx-google-fonts', 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap', array(), null );
+	// Inter fallback font
+	wp_enqueue_style( 'tedx-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap', array(), null );
 
 	// Main Compiled Tailwind Styles
 	if ( file_exists( TEDX_DIR . '/assets/css/style.css' ) ) {
