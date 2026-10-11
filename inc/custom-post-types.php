@@ -62,6 +62,83 @@ function tedx_register_speaker_cpt() {
 add_action( 'init', 'tedx_register_speaker_cpt', 0 );
 
 /**
+ * Register Speaker Coach Custom Post Type
+ */
+function tedx_register_speaker_coach_cpt() {
+	$labels = array(
+		'name'                  => _x( 'Speaker Coaches', 'Post Type General Name', 'tedx-regensburg' ),
+		'singular_name'         => _x( 'Speaker Coach', 'Post Type Singular Name', 'tedx-regensburg' ),
+		'menu_name'             => __( 'Speaker Coaches', 'tedx-regensburg' ),
+		'name_admin_bar'        => __( 'Speaker Coach', 'tedx-regensburg' ),
+		'archives'              => __( 'Speaker Coach Archives', 'tedx-regensburg' ),
+		'attributes'            => __( 'Speaker Coach Attributes', 'tedx-regensburg' ),
+		'all_items'             => __( 'All Speaker Coaches', 'tedx-regensburg' ),
+		'add_new_item'          => __( 'Add New Speaker Coach', 'tedx-regensburg' ),
+		'add_new'               => __( 'Add New', 'tedx-regensburg' ),
+		'new_item'              => __( 'New Speaker Coach', 'tedx-regensburg' ),
+		'edit_item'             => __( 'Edit Speaker Coach', 'tedx-regensburg' ),
+		'update_item'           => __( 'Update Speaker Coach', 'tedx-regensburg' ),
+		'view_item'             => __( 'View Speaker Coach', 'tedx-regensburg' ),
+		'view_items'            => __( 'View Speaker Coaches', 'tedx-regensburg' ),
+		'search_items'          => __( 'Search Speaker Coach', 'tedx-regensburg' ),
+		'featured_image'        => __( 'Speaker Coach Photo', 'tedx-regensburg' ),
+		'set_featured_image'    => __( 'Set speaker coach photo', 'tedx-regensburg' ),
+		'remove_featured_image' => __( 'Remove speaker coach photo', 'tedx-regensburg' ),
+		'use_featured_image'    => __( 'Use as speaker coach photo', 'tedx-regensburg' ),
+	);
+
+	$args = array(
+		'label'                 => __( 'Speaker Coach', 'tedx-regensburg' ),
+		'description'           => __( 'TEDx Regensburg Speaker Coaches', 'tedx-regensburg' ),
+		'labels'                => $labels,
+		'supports'              => array( 'title', 'editor', 'thumbnail', 'custom-fields', 'page-attributes' ),
+		'hierarchical'          => false,
+		'public'                => true,
+		'show_ui'               => true,
+		'show_in_menu'          => true,
+		'menu_position'         => 20,
+		'menu_icon'             => 'dashicons-microphone',
+		'show_in_admin_bar'     => true,
+		'show_in_nav_menus'     => true,
+		'can_export'            => true,
+		'has_archive'           => true,
+		'exclude_from_search'   => false,
+		'publicly_queryable'    => true,
+		'capability_type'       => 'post',
+		'show_in_rest'          => true,
+		'rewrite'               => array( 'slug' => 'speaker-coaches' ),
+	);
+
+	register_post_type( 'speaker_coach', $args );
+}
+add_action( 'init', 'tedx_register_speaker_coach_cpt', 0 );
+
+/**
+ * Automatically ensure rewrite rules for speaker_coach are present and flush if needed.
+ */
+function tedx_check_speaker_coach_rewrite_rules() {
+	$rules = get_option( 'rewrite_rules' );
+	if ( ! is_array( $rules ) || ! preg_grep( '/speaker-coaches/', array_keys( $rules ) ) ) {
+		flush_rewrite_rules( false );
+	}
+}
+add_action( 'init', 'tedx_check_speaker_coach_rewrite_rules', 99 );
+
+/**
+ * Filter template to ensure single speaker coach template is loaded.
+ */
+function tedx_speaker_coach_template( $template ) {
+	if ( is_singular( 'speaker_coach' ) ) {
+		$custom = locate_template( array( 'single-speaker_coach.php', 'single-speaker-coach.php' ) );
+		if ( ! empty( $custom ) ) {
+			return $custom;
+		}
+	}
+	return $template;
+}
+add_filter( 'template_include', 'tedx_speaker_coach_template', 99 );
+
+/**
  * Register Event Custom Post Type
  */
 function tedx_register_event_cpt() {
@@ -189,6 +266,50 @@ function tedx_register_sponsor_meta() {
 	) );
 }
 add_action( 'init', 'tedx_register_sponsor_meta', 0 );
+
+/**
+ * Register Speaker and Speaker Coach Meta Fields for REST/API access
+ */
+function tedx_register_speaker_and_coach_meta() {
+	// Speaker post meta (includes topic, language, year, linkedin, youtube, show_more)
+	$speaker_fields = array(
+		'topic'     => 'sanitize_text_field',
+		'language'  => 'sanitize_text_field',
+		'year'      => 'sanitize_text_field',
+		'linkedin'  => 'esc_url_raw',
+		'youtube'   => 'esc_url_raw',
+		'show_more' => 'sanitize_text_field',
+	);
+	foreach ( $speaker_fields as $field => $sanitizer ) {
+		register_post_meta( 'speaker', '_speaker_' . $field, array(
+			'type'              => 'string',
+			'single'            => true,
+			'show_in_rest'      => true,
+			'sanitize_callback' => $sanitizer,
+			'auth_callback'     => function() {
+				return current_user_can( 'edit_posts' );
+			},
+		) );
+	}
+
+	// Speaker Coach post meta (only linkedin, show_more; no topic, language, year, youtube)
+	$coach_fields = array(
+		'linkedin'  => 'esc_url_raw',
+		'show_more' => 'sanitize_text_field',
+	);
+	foreach ( $coach_fields as $field => $sanitizer ) {
+		register_post_meta( 'speaker_coach', '_speaker_coach_' . $field, array(
+			'type'              => 'string',
+			'single'            => true,
+			'show_in_rest'      => true,
+			'sanitize_callback' => $sanitizer,
+			'auth_callback'     => function() {
+				return current_user_can( 'edit_posts' );
+			},
+		) );
+	}
+}
+add_action( 'init', 'tedx_register_speaker_and_coach_meta', 0 );
 
 /**
  * Add Meta Box for Sponsor Details
@@ -421,6 +542,85 @@ function tedx_save_speaker_meta_data( $post_id ) {
 	update_post_meta( $post_id, '_speaker_show_more', $show_more );
 }
 add_action( 'save_post_speaker', 'tedx_save_speaker_meta_data' );
+
+/**
+ * Add Meta Box for Speaker Coach Details
+ */
+function tedx_add_speaker_coach_meta_boxes() {
+	add_meta_box(
+		'tedx_speaker_coach_details',
+		__( 'Speaker Coach Details', 'tedx-regensburg' ),
+		'tedx_render_speaker_coach_meta_box',
+		'speaker_coach',
+		'normal',
+		'high'
+	);
+}
+add_action( 'add_meta_boxes', 'tedx_add_speaker_coach_meta_boxes' );
+
+/**
+ * Render Speaker Coach Meta Box Form
+ */
+function tedx_render_speaker_coach_meta_box( $post ) {
+	wp_nonce_field( 'tedx_save_speaker_coach_meta', 'tedx_speaker_coach_meta_nonce' );
+
+	$linkedin  = get_post_meta( $post->ID, '_speaker_coach_linkedin', true ) ?: get_post_meta( $post->ID, '_speaker_linkedin', true );
+	$show_more = get_post_meta( $post->ID, '_speaker_coach_show_more', true );
+	if ( '' === $show_more ) {
+		$show_more = get_post_meta( $post->ID, '_speaker_show_more', true );
+	}
+	if ( '' === $show_more ) {
+		$show_more = '1'; // Default to enabled
+	}
+	?>
+	<table class="form-table" style="width: 100%;">
+		<tr>
+			<th scope="row"><?php _e( 'Card Display', 'tedx-regensburg' ); ?></th>
+			<td>
+				<label for="speaker_coach_show_more">
+					<input type="checkbox" id="speaker_coach_show_more" name="speaker_coach_show_more" value="1" <?php checked( $show_more, '1' ); ?> />
+					<?php _e( 'Truncate bio and display "Show More" button on the homepage', 'tedx-regensburg' ); ?>
+				</label>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row"><label for="speaker_coach_linkedin"><?php _e( 'LinkedIn URL', 'tedx-regensburg' ); ?></label></th>
+			<td>
+				<input type="url" id="speaker_coach_linkedin" name="speaker_coach_linkedin" value="<?php echo esc_url( $linkedin ); ?>" class="regular-text" placeholder="https://linkedin.com/in/username" />
+				<p class="description"><?php _e( 'URL for "VIEW LINKEDIN" link.', 'tedx-regensburg' ); ?></p>
+			</td>
+		</tr>
+	</table>
+	<?php
+}
+
+/**
+ * Save Speaker Coach Meta Box Data
+ */
+function tedx_save_speaker_coach_meta_data( $post_id ) {
+	if ( ! isset( $_POST['tedx_speaker_coach_meta_nonce'] ) || ! wp_verify_nonce( $_POST['tedx_speaker_coach_meta_nonce'], 'tedx_save_speaker_coach_meta' ) ) {
+		return;
+	}
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+
+	if ( isset( $_POST['speaker_coach_linkedin'] ) ) {
+		$linkedin = esc_url_raw( $_POST['speaker_coach_linkedin'] );
+		update_post_meta( $post_id, '_speaker_coach_linkedin', $linkedin );
+		update_post_meta( $post_id, '_speaker_linkedin', $linkedin );
+	}
+
+	$show_more = isset( $_POST['speaker_coach_show_more'] ) ? '1' : '0';
+	update_post_meta( $post_id, '_speaker_coach_show_more', $show_more );
+	update_post_meta( $post_id, '_speaker_show_more', $show_more );
+}
+add_action( 'save_post_speaker_coach', 'tedx_save_speaker_coach_meta_data' );
 
 
 /**

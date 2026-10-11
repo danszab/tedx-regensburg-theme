@@ -34,6 +34,7 @@ tedx-regensburg-theme/
 ├── page-about.php            # Custom page template for "About Us" (Team grid & mission)
 ├── single-tedx_event.php     # Template for single Event pages
 ├── single-speaker.php        # Template for single Speaker pages
+├── single-speaker_coach.php  # Template for single Speaker Coach detail pages
 ├── archive-speaker.php       # Archive overview for all speakers
 ├── page.php                  # Default page template (Legal, Privacy, etc.)
 ├── single.php                # Default blog post template
@@ -183,6 +184,34 @@ The homepage can be customized via **Appearance → Customize → TEDx Event Set
    - **LinkedIn URL:** Link for the "VIEW LINKEDIN" button.
    - **YouTube URL:** Link for the "WATCH THE TALK" button, shown automatically once the talk is filmed and published.
 6. Click **Publish**.
+
+---
+
+## 🧑‍🏫 How to Manage Speaker Coaches
+
+Speaker Coaches have their own dedicated database (**Speaker Coaches** post type). They are automatically displayed on the **About Us** page (`page-about.php`) directly under the **Our Team** section, and include all published coaches across all years.
+
+### 1. Adding a Speaker Coach to the Database
+1. In the WordPress sidebar, go to **Speaker Coaches → Add New**.
+2. **Title:** Enter the speaker coach's full name (e.g., `Sarah Lindner`).
+3. **Content Editor:** Enter their biography/profile text.
+4. **Featured Image:** Upload their headshot or portrait photo (top-right box).
+5. **Speaker Coach Details** (meta box below the editor):
+   - **Card Display:** Check or uncheck **Truncate bio and display "Show More" button on the homepage** to control whether longer bios are truncated with a "Show More" button.
+   - **LinkedIn URL:** Optional profile link (renders the `VIEW LINKEDIN →` button on the card and profile button on the detail page).
+6. **Display Order:** In the **Page Attributes** box on the right, use the **Order** number (e.g. `0`, `1`, `2`) to control the display sequence in the grid.
+7. Click **Publish**.
+
+### 2. Front-End Display & Styling
+- **About Us Grid:**
+  - Located on `/about-us/` (or your page with the "About Us" template) under the Team grid.
+  - Section title appears as a bold white heading (`Speaker Coaches`), without the green eyebrow label.
+  - Cards are simplified for coaches: they display the photo, full name, bio, and LinkedIn link (without topic subtitles, language badges, or YouTube talk buttons).
+  - Uses responsive CSS multi-column masonry with balanced vertical spacing across all screen sizes.
+- **Dedicated Coach Detail Page (`single-speaker_coach.php`):**
+  - Clicking **Show More** navigates to `/speaker-coaches/coach-name/`.
+  - Features the two-column profile layout (large square portrait and LinkedIn button on the left, "Speaker Coach" badge, title, and full bio on the right).
+  - Includes a quick back link returning to `/about#speaker-coaches`.
 
 ---
 

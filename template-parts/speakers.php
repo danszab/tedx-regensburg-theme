@@ -3,23 +3,30 @@
  * Speakers Section Template Part
  */
 
-$target_year = trim( isset($args['target_year']) ? $args['target_year'] : get_query_var( 'target_year' ) );
-$show_cfs    = tedx_mod( 'tedx_show_cfs', true );
+$post_type   = ! empty( $args['post_type'] ) ? $args['post_type'] : 'speaker';
+$target_year = trim( isset( $args['target_year'] ) ? $args['target_year'] : get_query_var( 'target_year' ) );
+$show_cfs    = isset( $args['show_cfs'] ) ? (bool) $args['show_cfs'] : ( 'speaker_coach' === $post_type ? false : tedx_mod( 'tedx_show_cfs', true ) );
 $cfs_title   = tedx_mod( 'tedx_cfs_title', __( 'Your Name Here?', 'tedx-regensburg' ) );
 $cfs_description = tedx_mod( 'tedx_cfs_description', __( 'Apply to be a speaker at our next TEDx Regensburg event.', 'tedx-regensburg' ) );
 $cfs_url     = tedx_mod( 'tedx_cfs_url', home_url( '/apply' ) );
 
+$default_title = ( 'speaker_coach' === $post_type ) ? __( 'Speaker Coaches', 'tedx-regensburg' ) : __( 'Speakers', 'tedx-regensburg' );
+$section_title = ! empty( $args['title'] ) ? $args['title'] : $default_title;
+$section_id    = ! empty( $args['section_id'] ) ? $args['section_id'] : ( 'speaker_coach' === $post_type ? 'speaker-coaches' : 'speakers' );
+
 $query_args = array(
-	'post_type'      => 'speaker',
+	'post_type'      => $post_type,
 	'posts_per_page' => -1,
 	'orderby'        => 'menu_order',
 	'order'          => 'ASC',
 );
 
-if ( ! empty( $target_year ) ) {
+$ignore_year = ! empty( $args['ignore_year'] ) || ( isset( $args['target_year'] ) && '' === $args['target_year'] );
+
+if ( ! empty( $target_year ) && ! $ignore_year ) {
 	$query_args['meta_query'] = array(
 		array(
-			'key'     => '_speaker_year',
+			'key'     => ( 'speaker_coach' === $post_type ) ? '_speaker_coach_year' : '_speaker_year',
 			'value'   => $target_year,
 			'compare' => '=',
 		),
@@ -28,14 +35,22 @@ if ( ! empty( $target_year ) ) {
 
 $speakers_query = new WP_Query( $query_args );
 
+$is_speaker_coach = ( 'speaker_coach' === $post_type );
+
 // 1. Collect all cards into an array of HTML strings
 $all_cards = array();
 
 ob_start();
 ?>
 <div class="mb-4 pt-4 px-2 flex flex-col gap-6">
-	<?php tedx_category_header( __( 'Speakers', 'tedx-regensburg' ), '', 'h2' ); ?>
-	<span class="block text-5xl sm:text-6xl font-normal text-white tracking-tighter leading-none"><?php echo esc_html( $target_year ); ?></span>
+	<?php if ( $is_speaker_coach ) : ?>
+		<h2 class="block text-5xl sm:text-6xl font-normal text-white tracking-tighter leading-none normal-case"><?php echo esc_html( $section_title ); ?></h2>
+	<?php else : ?>
+		<?php tedx_category_header( $section_title, '', 'h2' ); ?>
+		<?php if ( ! empty( $target_year ) && ! $ignore_year ) : ?>
+			<span class="block text-5xl sm:text-6xl font-normal text-white tracking-tighter leading-none"><?php echo esc_html( $target_year ); ?></span>
+		<?php endif; ?>
+	<?php endif; ?>
 </div>
 <?php
 $all_cards[] = ob_get_clean();
@@ -45,10 +60,11 @@ if ( $speakers_query->have_posts() ) {
 		$speakers_query->the_post();
 		ob_start();
 		$speaker_id    = get_the_ID();
-		$topic         = get_post_meta( $speaker_id, '_speaker_topic', true ) ?: __( 'Keynote Speaker', 'tedx-regensburg' );
-		$language      = get_post_meta( $speaker_id, '_speaker_language', true ) ?: 'EN';
-		$linkedin_url  = get_post_meta( $speaker_id, '_speaker_linkedin', true );
-		$youtube_url   = get_post_meta( $speaker_id, '_speaker_youtube', true );
+		$default_role  = ( 'speaker_coach' === $post_type ) ? __( 'Speaker Coach', 'tedx-regensburg' ) : __( 'Keynote Speaker', 'tedx-regensburg' );
+		$topic         = get_post_meta( $speaker_id, '_speaker_coach_topic', true ) ?: ( get_post_meta( $speaker_id, '_speaker_topic', true ) ?: $default_role );
+		$language      = get_post_meta( $speaker_id, '_speaker_coach_language', true ) ?: ( get_post_meta( $speaker_id, '_speaker_language', true ) ?: 'EN' );
+		$linkedin_url  = get_post_meta( $speaker_id, '_speaker_coach_linkedin', true ) ?: get_post_meta( $speaker_id, '_speaker_linkedin', true );
+		$youtube_url   = get_post_meta( $speaker_id, '_speaker_coach_youtube', true ) ?: get_post_meta( $speaker_id, '_speaker_youtube', true );
 		$has_thumbnail = has_post_thumbnail();
 		?>
 		<article class="bg-tedx-card rounded-[32px] p-6 flex flex-col justify-between border border-white/5 hover:border-white/20 transition-all duration-300 shadow-xl group">
@@ -65,17 +81,24 @@ if ( $speakers_query->have_posts() ) {
 					</div>
 					<div class="flex-1 flex flex-col gap-1 min-w-0">
 						<h3 class="text-xl font-bold text-white leading-tight break-words whitespace-normal"><?php the_title(); ?></h3>
-						<span class="text-sm font-bold text-tedx-red break-words whitespace-normal"><?php echo esc_html( $topic ); ?></span>
-						<div class="inline-flex items-center gap-1 bg-[#4d4d4d] px-2 py-0.5 rounded text-[11px] font-medium text-white/80 w-fit mt-1">
-							<?php echo tedx_get_icon( 'globe', 'w-3 h-3' ); ?>
-							<span><?php echo esc_html( $language ); ?></span>
-						</div>
+						<?php if ( ! $is_speaker_coach ) : ?>
+							<span class="text-sm font-bold text-tedx-red break-words whitespace-normal"><?php echo esc_html( $topic ); ?></span>
+							<div class="inline-flex items-center gap-1 bg-[#4d4d4d] px-2 py-0.5 rounded text-[11px] font-medium text-white/80 w-fit mt-1">
+								<?php echo tedx_get_icon( 'globe', 'w-3 h-3' ); ?>
+								<span><?php echo esc_html( $language ); ?></span>
+							</div>
+						<?php endif; ?>
 					</div>
 				</div>
 								<?php
 				$full_content = get_the_content();
-				$show_more_option = get_post_meta( $speaker_id, '_speaker_show_more', true );
-				if ( '' === $show_more_option ) { $show_more_option = '1'; } // Default to enabled
+				$show_more_option = get_post_meta( $speaker_id, '_speaker_coach_show_more', true );
+				if ( '' === $show_more_option ) {
+					$show_more_option = get_post_meta( $speaker_id, '_speaker_show_more', true );
+				}
+				if ( '' === $show_more_option ) {
+					$show_more_option = '1';
+				} // Default to enabled
 				$is_trimmed = ( '1' === $show_more_option );
 				
 				if ( has_excerpt() ) {
@@ -97,9 +120,9 @@ if ( $speakers_query->have_posts() ) {
 				}
 				?>
 			</div>
-			<?php if ( ! empty( $linkedin_url ) || ! empty( $youtube_url ) ) : ?>
+			<?php if ( ! empty( $linkedin_url ) || ( ! $is_speaker_coach && ! empty( $youtube_url ) ) ) : ?>
 				<div class="flex flex-col gap-3 pt-4 border-t border-white/5 mt-auto">
-					<?php if ( ! empty( $youtube_url ) ) : ?>
+					<?php if ( ! $is_speaker_coach && ! empty( $youtube_url ) ) : ?>
 						<a href="<?php echo esc_url( $youtube_url ); ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-tedx-red text-white text-[13px] font-bold px-4 py-3 rounded-xl btn-shadcn-anim w-full">
 							<span class="flex items-center justify-center"><?php echo tedx_get_icon( 'youtube', 'w-4 h-4 block' ); ?></span>
 							<span class="uppercase tracking-wider leading-none relative top-[1px]"><?php esc_html_e( 'Watch the Talk', 'tedx-regensburg' ); ?></span>
@@ -118,16 +141,24 @@ if ( $speakers_query->have_posts() ) {
 	}
 	wp_reset_postdata();
 } else {
-	$mock_speakers = array(
-		array('name' => 'Elizabeth Pilz', 'topic' => 'Minimalism as a structural method to reduce complexity', 'lang' => 'DE', 'bio' => '', 'linkedin' => '#'),
-		array('name' => 'Gabriel Chouchane', 'topic' => 'Changing the way of thinking about AI', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
-		array('name' => 'Natasha Vorompiova', 'topic' => 'Self-sabotage as a protection mechanism', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
-		array('name' => 'Erika Magyarosi', 'topic' => 'Becoming a finisher', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
-		array('name' => 'Hanna Markovych', 'topic' => 'The influence of health and mental strenght', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
-		array('name' => 'Petar Tumbov', 'topic' => 'Friendship as a 3rd concept of opportunity', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
-		array('name' => 'Liya Khusnullina', 'topic' => 'Cross-cultural differences', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
-	);
-	foreach ( $mock_speakers as $mock ) {
+	if ( 'speaker_coach' === $post_type ) {
+		$mock_items = array(
+			array('name' => 'Sarah Lindner', 'bio' => '', 'linkedin' => '#'),
+			array('name' => 'Michael Weber', 'bio' => '', 'linkedin' => '#'),
+			array('name' => 'Elena Fischer', 'bio' => '', 'linkedin' => '#'),
+		);
+	} else {
+		$mock_items = array(
+			array('name' => 'Elizabeth Pilz', 'topic' => 'Minimalism as a structural method to reduce complexity', 'lang' => 'DE', 'bio' => '', 'linkedin' => '#'),
+			array('name' => 'Gabriel Chouchane', 'topic' => 'Changing the way of thinking about AI', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
+			array('name' => 'Natasha Vorompiova', 'topic' => 'Self-sabotage as a protection mechanism', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
+			array('name' => 'Erika Magyarosi', 'topic' => 'Becoming a finisher', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
+			array('name' => 'Hanna Markovych', 'topic' => 'The influence of health and mental strenght', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
+			array('name' => 'Petar Tumbov', 'topic' => 'Friendship as a 3rd concept of opportunity', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
+			array('name' => 'Liya Khusnullina', 'topic' => 'Cross-cultural differences', 'lang' => 'EN', 'bio' => '', 'linkedin' => '#'),
+		);
+	}
+	foreach ( $mock_items as $mock ) {
 		ob_start();
 		?>
 		<article class="bg-tedx-card rounded-[32px] p-6 flex flex-col justify-between border border-white/5 hover:border-white/20 transition-all duration-300 shadow-xl group">
@@ -138,11 +169,13 @@ if ( $speakers_query->have_posts() ) {
 					</div>
 					<div class="flex-1 flex flex-col gap-1 min-w-0">
 						<h3 class="text-xl font-bold text-white leading-tight break-words whitespace-normal"><?php echo esc_html( $mock['name'] ); ?></h3>
-						<span class="text-sm font-bold text-tedx-red break-words whitespace-normal"><?php echo esc_html( $mock['topic'] ); ?></span>
-						<div class="inline-flex items-center gap-1 bg-[#4d4d4d] px-2 py-0.5 rounded text-[11px] font-medium text-white/80 w-fit mt-1">
-							<?php echo tedx_get_icon( 'globe', 'w-3 h-3' ); ?>
-							<span><?php echo esc_html( $mock['lang'] ); ?></span>
-						</div>
+						<?php if ( ! $is_speaker_coach ) : ?>
+							<span class="text-sm font-bold text-tedx-red break-words whitespace-normal"><?php echo esc_html( $mock['topic'] ); ?></span>
+							<div class="inline-flex items-center gap-1 bg-[#4d4d4d] px-2 py-0.5 rounded text-[11px] font-medium text-white/80 w-fit mt-1">
+								<?php echo tedx_get_icon( 'globe', 'w-3 h-3' ); ?>
+								<span><?php echo esc_html( $mock['lang'] ); ?></span>
+							</div>
+						<?php endif; ?>
 					</div>
 				</div>
 				<?php if(!empty($mock['bio'])): ?>
@@ -169,28 +202,19 @@ if ( $show_cfs ) {
 	$all_cards[] = ob_get_clean();
 }
 
-// 2. Distribute cards into 3 columns (Left-to-Right reading order)
-$columns = array( array(), array(), array() );
-$col_idx = 0;
-foreach ( $all_cards as $card ) {
-	$columns[ $col_idx ][] = $card;
-	$col_idx = ( $col_idx + 1 ) % 3;
-}
+// 2. Render cards using responsive CSS multi-column masonry (prevents grid row-wrap gaps)
 ?>
 
-<section id="speakers" class="relative bg-tedx-dark py-16 md:py-24 px-4 md:px-8 lg:px-12 overflow-hidden border-t border-white/5">
+<section id="<?php echo esc_attr( $section_id ); ?>" class="relative bg-tedx-dark py-16 md:py-24 px-4 md:px-8 lg:px-12 overflow-hidden border-t border-white/5">
 	<div class="absolute left-0 top-1/4 w-[600px] h-[600px] bg-tedx-green/5 rounded-full blur-3xl pointer-events-none -translate-x-1/2"></div>
 	<div class="max-w-figma mx-auto relative z-10">
 		
-
-		<!-- Speakers Grid (List view nested in a Column view for precise 24px vertical gap) -->
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
-			<?php foreach ( $columns as $col_cards ) : ?>
-				<?php if ( ! empty( $col_cards ) ) : ?>
-					<div class="flex flex-col gap-6 lg:gap-8">
-						<?php foreach ( $col_cards as $card ) { echo $card; } ?>
-					</div>
-				<?php endif; ?>
+		<!-- Speakers Grid (Responsive Masonry) -->
+		<div class="columns-1 md:columns-2 lg:columns-3 gap-6 lg:gap-8">
+			<?php foreach ( $all_cards as $card ) : ?>
+				<div class="inline-block w-full break-inside-avoid mb-6 lg:mb-8">
+					<?php echo $card; ?>
+				</div>
 			<?php endforeach; ?>
 		</div>
 	</div>

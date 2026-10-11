@@ -63,6 +63,14 @@ $about_tedxregensburg = get_theme_mod( 'tedx_about_tedxregensburg_text', "Lorem 
 	<?php
 	// Include the Team grid
 	get_template_part( 'template-parts/team' );
+
+	// Include Speaker Coaches (using Speakers component, all coaches regardless of year)
+	get_template_part( 'template-parts/speakers', null, array(
+		'post_type'   => 'speaker_coach',
+		'title'       => __( 'Speaker Coaches', 'tedx-regensburg' ),
+		'target_year' => '', // All years
+		'show_cfs'    => false,
+	) );
 	?>
 
 </main>
