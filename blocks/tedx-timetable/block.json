@@ -3,7 +3,7 @@
     "apiVersion": 3,
     "name": "tedx/timetable",
     "title": "TEDx Timetable",
-    "category": "widgets",
+    "category": "tedx",
     "icon": "clock",
     "description": "Visual timeline schedule and timetable for TEDx events.",
     "keywords": ["timetable", "schedule", "agenda", "timeline", "tedx"],

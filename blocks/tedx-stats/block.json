@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/stats",
+    "title": "TEDx Stats",
+    "category": "tedx",
+    "icon": "chart-bar",
+    "description": "Counter stat squircle cards with configurable icons, numbers, and labels.",
+    "keywords": ["stats", "counter", "numbers", "tedx"],
+    "supports": { "html": false, "align": false },
+    "attributes": {
+        "sectionId": { "type": "string", "default": "stats" },
+        "items": {
+            "type": "array",
+            "default": [
+                { "icon": "stat-1", "value": "676", "label": "Guests" },
+                { "icon": "stat-2", "value": "18", "label": "Talks" },
+                { "icon": "stat-3", "value": "100+", "label": "Ideas" }
+            ]
+        }
+    },
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}

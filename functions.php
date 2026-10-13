@@ -106,18 +106,8 @@ require_once TEDX_DIR . '/inc/customizer-helpers.php';
 require_once TEDX_DIR . '/inc/customizer.php';
 require_once TEDX_DIR . '/inc/customizer-additions.php';
 require_once TEDX_DIR . '/inc/nav-walker.php';
-
-
-/**
- * Register Custom Blocks (Native Gutenberg)
- */
-function tedx_register_native_blocks() {
-	if ( function_exists( 'register_block_type' ) ) {
-		register_block_type( TEDX_DIR . '/blocks/tedx-gallery' );
-		register_block_type( TEDX_DIR . '/blocks/tedx-timetable' );
-	}
-}
-add_action( 'init', 'tedx_register_native_blocks' );
+require_once TEDX_DIR . '/inc/blocks.php';
+require_once TEDX_DIR . '/inc/block-patterns.php';
 
 /**
  * Enable SVG and Video Uploads (WebM, MP4)

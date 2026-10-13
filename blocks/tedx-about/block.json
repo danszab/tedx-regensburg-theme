@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/about",
+    "title": "TEDx About",
+    "category": "tedx",
+    "icon": "info-outline",
+    "description": "Image next to a heading, description and optional button.",
+    "keywords": ["about", "image", "tedx"],
+    "supports": { "html": false, "align": false },
+    "attributes": {
+        "sectionId": { "type": "string", "default": "about" },
+        "eyebrow": { "type": "string", "default": "About" },
+        "showLogo": { "type": "boolean", "default": true },
+        "image": { "type": "object", "default": {} },
+        "description": { "type": "string", "default": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum." },
+        "showButton": { "type": "boolean", "default": true },
+        "buttonText": { "type": "string", "default": "Learn More" },
+        "buttonUrl": { "type": "string", "default": "/about" },
+        "imagePosition": { "type": "string", "default": "left" }
+    },
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}

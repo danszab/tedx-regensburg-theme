@@ -1,0 +1,16 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/text-section",
+    "title": "TEDx Text Section",
+    "category": "tedx",
+    "icon": "editor-alignleft",
+    "description": "Rich text and headings styled exactly like the About Us page.",
+    "keywords": ["text", "about", "content", "tedx"],
+    "supports": { "html": false, "align": false },
+    "attributes": {
+        "sectionId": { "type": "string", "default": "" }
+    },
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}

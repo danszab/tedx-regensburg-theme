@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/sponsors",
+    "title": "TEDx Sponsors",
+    "category": "tedx",
+    "icon": "awards",
+    "description": "Featured partner or sponsors logo grid.",
+    "keywords": ["sponsors", "partners", "logos", "tedx"],
+    "supports": { "html": false, "align": false },
+    "attributes": {
+        "layout": { "type": "string", "default": "grid" },
+        "sectionId": { "type": "string", "default": "sponsors" },
+        "eyebrow": { "type": "string", "default": "Partners" },
+        "title": { "type": "string", "default": "Other Sponsors" },
+        "description": { "type": "string", "default": "Proudly supported by local companies and organizations standing behind TEDxRegensburg." },
+        "sponsors": {
+            "type": "array",
+            "default": []
+        }
+    },
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}

@@ -3,7 +3,7 @@
     "apiVersion": 3,
     "name": "tedx/gallery",
     "title": "TEDx Gallery",
-    "category": "media",
+    "category": "tedx",
     "icon": "format-gallery",
     "description": "Custom 2-row gallery slider for TEDx.",
     "supports": {

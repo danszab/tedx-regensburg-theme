@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/speakers",
+    "title": "TEDx Speakers",
+    "category": "tedx",
+    "icon": "microphone",
+    "description": "Speaker cards for a selected event year, with optional event button and call-for-speakers card.",
+    "keywords": ["speakers", "tedx", "talks"],
+    "supports": { "html": false, "align": false },
+    "usesContext": ["postId", "postType"],
+    "attributes": {
+        "yearSource": { "type": "string", "default": "fixed" },
+        "year": { "type": "string", "default": "2026" },
+        "title": { "type": "string", "default": "Speakers" },
+        "showYear": { "type": "boolean", "default": true },
+        "showEventButton": { "type": "boolean", "default": false },
+        "eventButtonText": { "type": "string", "default": "Learn more about the event" },
+        "eventButtonUrl": { "type": "string", "default": "#event-pitch" },
+        "showCfs": { "type": "boolean", "default": true },
+        "cfsTitle": { "type": "string", "default": "Your Name Here?" },
+        "cfsDescription": { "type": "string", "default": "Apply to be a speaker at our next TEDx Regensburg event." },
+        "cfsUrl": { "type": "string", "default": "/apply" },
+        "cfsButtonText": { "type": "string", "default": "APPLY NOW" }
+    },
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}

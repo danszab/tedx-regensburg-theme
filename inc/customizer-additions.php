@@ -1,44 +1,5 @@
 <?php
 function tedx_add_new_hero_customizer_settings( $wp_customize ) {
-	// 0. Hero Style / Layout Selector
-	$wp_customize->add_setting( 'tedx_hero_type', array(
-		'default'           => 'default',
-		'sanitize_callback' => 'sanitize_key',
-	) );
-	$wp_customize->add_control( 'tedx_hero_type', array(
-		'label'       => __( 'Hero Layout / Style', 'tedx-regensburg' ),
-		'description' => __( 'Choose between the Default (Typography & Event Poster) and the Video Hero.', 'tedx-regensburg' ),
-		'section'     => 'tedx_hero_section',
-		'type'        => 'select',
-		'choices'     => array(
-			'default' => __( 'Default (Typography & Event Poster)', 'tedx-regensburg' ),
-			'video'   => __( 'Video Hero (Looping Video & Bottom Button)', 'tedx-regensburg' ),
-		),
-		'priority'    => 1,
-	) );
-
-	// Hero Background Image (Default hero)
-	$wp_customize->add_setting( 'tedx_hero_background_image', array(
-		'default'           => '',
-		'sanitize_callback' => 'esc_url_raw',
-	) );
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'tedx_hero_background_image', array(
-		'label'       => __( 'Default Hero: Background Image', 'tedx-regensburg' ),
-		'section'     => 'tedx_hero_section',
-		'settings'    => 'tedx_hero_background_image',
-	) ) );
-
-	// Hero Poster Image (Default hero)
-	$wp_customize->add_setting( 'tedx_hero_poster_image', array(
-		'default'           => '',
-		'sanitize_callback' => 'esc_url_raw',
-	) );
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'tedx_hero_poster_image', array(
-		'label'       => __( 'Default Hero: Event Poster Image', 'tedx-regensburg' ),
-		'section'     => 'tedx_hero_section',
-		'settings'    => 'tedx_hero_poster_image',
-	) ) );
-
 	// --- Video Hero Settings (Figma 166:2617) ---
 
 	// Horizontal / Desktop Video: WebM

@@ -182,92 +182,6 @@ function tedx_register_event_cpt() {
 add_action( 'init', 'tedx_register_event_cpt', 0 );
 
 /**
- * Register Sponsor Custom Post Type
- */
-function tedx_register_sponsor_cpt() {
-	$labels = array(
-		'name'                  => _x( 'Sponsors', 'Post Type General Name', 'tedx-regensburg' ),
-		'singular_name'         => _x( 'Sponsor', 'Post Type Singular Name', 'tedx-regensburg' ),
-		'menu_name'             => __( 'Sponsors', 'tedx-regensburg' ),
-		'name_admin_bar'        => __( 'Sponsor', 'tedx-regensburg' ),
-		'archives'              => __( 'Sponsor Archives', 'tedx-regensburg' ),
-		'all_items'             => __( 'All Sponsors', 'tedx-regensburg' ),
-		'add_new_item'          => __( 'Add New Sponsor', 'tedx-regensburg' ),
-		'add_new'               => __( 'Add New', 'tedx-regensburg' ),
-		'new_item'              => __( 'New Sponsor', 'tedx-regensburg' ),
-		'edit_item'             => __( 'Edit Sponsor', 'tedx-regensburg' ),
-		'update_item'           => __( 'Update Sponsor', 'tedx-regensburg' ),
-		'view_item'             => __( 'View Sponsor', 'tedx-regensburg' ),
-		'search_items'          => __( 'Search Sponsor', 'tedx-regensburg' ),
-		'featured_image'        => __( 'Sponsor Logo', 'tedx-regensburg' ),
-		'set_featured_image'    => __( 'Set sponsor logo', 'tedx-regensburg' ),
-		'remove_featured_image' => __( 'Remove sponsor logo', 'tedx-regensburg' ),
-		'use_featured_image'    => __( 'Use as sponsor logo', 'tedx-regensburg' ),
-	);
-
-	$args = array(
-		'label'                 => __( 'Sponsor', 'tedx-regensburg' ),
-		'description'           => __( 'TEDx Regensburg event sponsors', 'tedx-regensburg' ),
-		'labels'                => $labels,
-		'supports'              => array( 'title', 'thumbnail', 'page-attributes', 'custom-fields' ),
-		'hierarchical'          => false,
-		'public'                => true,
-		'show_ui'               => true,
-		'show_in_menu'          => true,
-		'menu_position'         => 22,
-		'menu_icon'             => 'dashicons-awards',
-		'show_in_admin_bar'     => true,
-		'show_in_nav_menus'     => false,
-		'can_export'            => true,
-		'has_archive'           => true,
-		'exclude_from_search'   => false,
-		'publicly_queryable'    => true,
-		'capability_type'       => 'post',
-		'show_in_rest'          => true,
-		'rewrite'               => array( 'slug' => 'sponsors' ),
-	);
-
-	register_post_type( 'sponsor', $args );
-}
-add_action( 'init', 'tedx_register_sponsor_cpt', 0 );
-
-/**
- * Register Sponsor Meta Fields for REST/API access
- */
-function tedx_register_sponsor_meta() {
-	register_post_meta( 'sponsor', '_sponsor_event_year', array(
-		'type'              => 'string',
-		'single'            => true,
-		'show_in_rest'      => true,
-		'sanitize_callback' => 'sanitize_text_field',
-		'auth_callback'     => function() {
-			return current_user_can( 'edit_posts' );
-		},
-	) );
-
-	register_post_meta( 'sponsor', '_sponsor_link', array(
-		'type'              => 'string',
-		'single'            => true,
-		'show_in_rest'      => true,
-		'sanitize_callback' => 'esc_url_raw',
-		'auth_callback'     => function() {
-			return current_user_can( 'edit_posts' );
-		},
-	) );
-
-	register_post_meta( 'sponsor', '_sponsor_exclusive', array(
-		'type'              => 'boolean',
-		'single'            => true,
-		'show_in_rest'      => true,
-		'sanitize_callback' => 'wp_validate_boolean',
-		'auth_callback'     => function() {
-			return current_user_can( 'edit_posts' );
-		},
-	) );
-}
-add_action( 'init', 'tedx_register_sponsor_meta', 0 );
-
-/**
  * Register Speaker and Speaker Coach Meta Fields for REST/API access
  */
 function tedx_register_speaker_and_coach_meta() {
@@ -292,8 +206,9 @@ function tedx_register_speaker_and_coach_meta() {
 		) );
 	}
 
-	// Speaker Coach post meta (only linkedin, show_more; no topic, language, year, youtube)
+	// Speaker Coach post meta (includes year, linkedin, show_more)
 	$coach_fields = array(
+		'year'      => 'sanitize_text_field',
 		'linkedin'  => 'esc_url_raw',
 		'show_more' => 'sanitize_text_field',
 	);
@@ -310,118 +225,6 @@ function tedx_register_speaker_and_coach_meta() {
 	}
 }
 add_action( 'init', 'tedx_register_speaker_and_coach_meta', 0 );
-
-/**
- * Add Meta Box for Sponsor Details
- */
-function tedx_add_sponsor_meta_boxes() {
-	add_meta_box(
-		'tedx_sponsor_details',
-		__( 'Sponsor Details', 'tedx-regensburg' ),
-		'tedx_render_sponsor_meta_box',
-		'sponsor',
-		'normal',
-		'high'
-	);
-}
-add_action( 'add_meta_boxes', 'tedx_add_sponsor_meta_boxes' );
-
-/**
- * Render Sponsor Meta Box Form
- */
-function tedx_render_sponsor_meta_box( $post ) {
-	wp_nonce_field( 'tedx_save_sponsor_meta', 'tedx_sponsor_meta_nonce' );
-
-	$event_year = get_post_meta( $post->ID, '_sponsor_event_year', true ) ?: tedx_mod( 'tedx_event_year', '2026' );
-	$link       = get_post_meta( $post->ID, '_sponsor_link', true );
-	$exclusive  = get_post_meta( $post->ID, '_sponsor_exclusive', true );
-	?>
-	<table class="form-table" style="width: 100%;">
-		<tr>
-			<th scope="row"><label for="sponsor_event_year"><?php _e( 'Event Year', 'tedx-regensburg' ); ?></label></th>
-			<td>
-				<input type="text" id="sponsor_event_year" name="sponsor_event_year" value="<?php echo esc_attr( $event_year ); ?>" class="small-text" placeholder="2026" />
-				<p class="description"><?php _e( 'The event year this sponsor belongs to.', 'tedx-regensburg' ); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="sponsor_link"><?php _e( 'Sponsor Link', 'tedx-regensburg' ); ?></label></th>
-			<td>
-				<input type="text" id="sponsor_link" name="sponsor_link" value="<?php echo esc_attr( $link ); ?>" class="large-text" style="max-width: 420px;" placeholder="https://example.com" />
-				<p class="description"><?php _e( 'Optional URL for the sponsor logo link.', 'tedx-regensburg' ); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><?php _e( 'Exclusive Partner', 'tedx-regensburg' ); ?></th>
-			<td>
-				<label for="sponsor_exclusive">
-					<input type="checkbox" id="sponsor_exclusive" name="sponsor_exclusive" value="1" <?php checked( $exclusive, '1' ); ?> />
-					<?php _e( 'Feature this sponsor in the exclusive partner block.', 'tedx-regensburg' ); ?>
-				</label>
-			</td>
-		</tr>
-	</table>
-	<?php
-}
-
-/**
- * Save Sponsor Meta Box Data
- */
-function tedx_save_sponsor_meta_data( $post_id ) {
-	if ( ! isset( $_POST['tedx_sponsor_meta_nonce'] ) || ! wp_verify_nonce( $_POST['tedx_sponsor_meta_nonce'], 'tedx_save_sponsor_meta' ) ) {
-		return;
-	}
-
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		return;
-	}
-
-	if ( ! current_user_can( 'edit_post', $post_id ) ) {
-		return;
-	}
-
-	if ( isset( $_POST['sponsor_event_year'] ) ) {
-		update_post_meta( $post_id, '_sponsor_event_year', trim( sanitize_text_field( $_POST['sponsor_event_year'] ) ) );
-	}
-
-	if ( isset( $_POST['sponsor_link'] ) ) {
-		update_post_meta( $post_id, '_sponsor_link', esc_url_raw( $_POST['sponsor_link'] ) );
-	}
-
-	$exclusive = isset( $_POST['sponsor_exclusive'] ) ? '1' : '0';
-	update_post_meta( $post_id, '_sponsor_exclusive', $exclusive );
-}
-add_action( 'save_post_sponsor', 'tedx_save_sponsor_meta_data' );
-
-/**
- * Sponsor Admin Columns
- */
-function tedx_sponsor_admin_columns( $columns ) {
-	$columns['sponsor_event_year'] = __( 'Event Year', 'tedx-regensburg' );
-	$columns['sponsor_exclusive']  = __( 'Exclusive', 'tedx-regensburg' );
-	$columns['sponsor_link']       = __( 'Link', 'tedx-regensburg' );
-
-	return $columns;
-}
-add_filter( 'manage_sponsor_posts_columns', 'tedx_sponsor_admin_columns' );
-
-function tedx_render_sponsor_admin_columns( $column, $post_id ) {
-	switch ( $column ) {
-		case 'sponsor_event_year':
-			echo esc_html( get_post_meta( $post_id, '_sponsor_event_year', true ) );
-			break;
-		case 'sponsor_exclusive':
-			echo get_post_meta( $post_id, '_sponsor_exclusive', true ) === '1' ? esc_html__( 'Yes', 'tedx-regensburg' ) : esc_html__( 'No', 'tedx-regensburg' );
-			break;
-		case 'sponsor_link':
-			$link = get_post_meta( $post_id, '_sponsor_link', true );
-			if ( ! empty( $link ) ) {
-				printf( '<a href="%1$s" target="_blank" rel="noopener noreferrer">%1$s</a>', esc_url( $link ) );
-			}
-			break;
-	}
-}
-add_action( 'manage_sponsor_posts_custom_column', 'tedx_render_sponsor_admin_columns', 10, 2 );
 
 /**
  * Add Meta Box for Speaker Details
@@ -564,6 +367,7 @@ add_action( 'add_meta_boxes', 'tedx_add_speaker_coach_meta_boxes' );
 function tedx_render_speaker_coach_meta_box( $post ) {
 	wp_nonce_field( 'tedx_save_speaker_coach_meta', 'tedx_speaker_coach_meta_nonce' );
 
+	$year      = get_post_meta( $post->ID, '_speaker_coach_year', true );
 	$linkedin  = get_post_meta( $post->ID, '_speaker_coach_linkedin', true ) ?: get_post_meta( $post->ID, '_speaker_linkedin', true );
 	$show_more = get_post_meta( $post->ID, '_speaker_coach_show_more', true );
 	if ( '' === $show_more ) {
@@ -574,6 +378,13 @@ function tedx_render_speaker_coach_meta_box( $post ) {
 	}
 	?>
 	<table class="form-table" style="width: 100%;">
+		<tr>
+			<th scope="row"><label for="speaker_coach_year"><?php _e( 'Year', 'tedx-regensburg' ); ?></label></th>
+			<td>
+				<input type="text" id="speaker_coach_year" name="speaker_coach_year" value="<?php echo esc_attr( $year ); ?>" class="small-text" placeholder="2026" />
+				<p class="description"><?php _e( 'The event year this coach was active for (leave empty to show across all years).', 'tedx-regensburg' ); ?></p>
+			</td>
+		</tr>
 		<tr>
 			<th scope="row"><?php _e( 'Card Display', 'tedx-regensburg' ); ?></th>
 			<td>
@@ -608,6 +419,10 @@ function tedx_save_speaker_coach_meta_data( $post_id ) {
 
 	if ( ! current_user_can( 'edit_post', $post_id ) ) {
 		return;
+	}
+
+	if ( isset( $_POST['speaker_coach_year'] ) ) {
+		update_post_meta( $post_id, '_speaker_coach_year', sanitize_text_field( $_POST['speaker_coach_year'] ) );
 	}
 
 	if ( isset( $_POST['speaker_coach_linkedin'] ) ) {
@@ -703,13 +518,6 @@ function tedx_render_team_member_meta_box( $post ) {
 				<input type="url" id="team_member_linkedin" name="team_member_linkedin" value="<?php echo esc_url( $linkedin ); ?>" class="regular-text" />
 			</td>
 		</tr>
-			<tr>
-			<th scope="row"><label for="speaker_youtube"><?php _e( 'YouTube URL', 'tedx-regensburg' ); ?></label></th>
-			<td>
-				<input type="url" id="speaker_youtube" name="speaker_youtube" value="<?php echo esc_url( $youtube ); ?>" class="regular-text" placeholder="https://youtube.com/watch?v=..." />
-				<p class="description"><?php _e( 'URL for "WATCH THE TALK" button.', 'tedx-regensburg' ); ?></p>
-			</td>
-		</tr>
 	</table>
 	<?php
 }
@@ -743,14 +551,14 @@ add_action( 'save_post_team_member', 'tedx_save_team_member_meta_data' );
 
 
 /**
- * Add Meta Box for Page Templates and Events
+ * Add Meta Box for Events (Location & Year)
  */
 function tedx_add_page_event_meta_boxes() {
 	add_meta_box(
 		'tedx_page_event_details',
 		__( 'Event Details', 'tedx-regensburg' ),
 		'tedx_render_page_event_meta_box',
-		array( 'page', 'tedx_event' ),
+		'tedx_event',
 		'normal',
 		'high'
 	);
@@ -760,143 +568,27 @@ add_action( 'add_meta_boxes', 'tedx_add_page_event_meta_boxes' );
 function tedx_render_page_event_meta_box( $post ) {
 	wp_nonce_field( 'tedx_save_page_event_meta', 'tedx_page_event_meta_nonce' );
 
-	$pitch_title = get_post_meta( $post->ID, '_event_pitch_title', true );
-	$pitch_meta = get_post_meta( $post->ID, '_event_pitch_meta', true );
-	$pitch_desc = get_post_meta( $post->ID, '_event_pitch_desc', true );
-	$ticket_url = get_post_meta( $post->ID, '_event_ticket_url', true );
-	$show_more_url = get_post_meta( $post->ID, '_event_show_more_url', true );
-	$enable_tickets = get_post_meta( $post->ID, '_event_enable_tickets', true );
-	if ( '' === $enable_tickets ) {
-		$enable_tickets = '1';
-	}
-	$enable_show_more = get_post_meta( $post->ID, '_event_enable_show_more', true );
-	if ( '' === $enable_show_more ) {
-		$enable_show_more = '1';
-	}
-	$event_year = get_post_meta( $post->ID, '_event_year', true );
-	
-	$event_venue_name = get_post_meta( $post->ID, '_event_venue_name', true );
-	$event_venue_address_1 = get_post_meta( $post->ID, '_event_venue_address_1', true );
-	$event_venue_address_2 = get_post_meta( $post->ID, '_event_venue_address_2', true );
-	$event_venue_maps_url = get_post_meta( $post->ID, '_event_venue_maps_url', true );
-	$venue_maps_embed = get_post_meta( $post->ID, '_event_venue_maps_embed', true );
-	$event_venue_image = get_post_meta( $post->ID, '_event_venue_image', true );
-	$venue_name = $event_venue_name;
-	$venue_address_1 = $event_venue_address_1;
-	$venue_address_2 = $event_venue_address_2;
-	$venue_maps_url = $event_venue_maps_url;
-	$venue_image = $event_venue_image;
-
-	$show_sponsors = get_post_meta( $post->ID, '_event_show_sponsors', true );
-	if ( '' === $show_sponsors ) {
-		$show_sponsors = tedx_mod( 'tedx_show_event_sponsors', false ) ? '1' : '0';
-	}
-	$event_sponsors_title = get_post_meta( $post->ID, '_event_sponsors_title', true );
-	$event_partner_title  = get_post_meta( $post->ID, '_event_partner_title', true );
-
-	// Event Card Meta
-	$card_image = get_post_meta( $post->ID, '_event_card_image', true );
-	$card_show_label = get_post_meta( $post->ID, '_event_card_show_label', true );
-	if ( '' === $card_show_label ) {
-		$card_show_label = '1';
-	}
-	$card_label_text = get_post_meta( $post->ID, '_event_card_label_text', true );
-	$card_is_clickable = get_post_meta( $post->ID, '_event_card_is_clickable', true );
-	$card_link_url = get_post_meta( $post->ID, '_event_card_link_url', true );
+	$event_year            = get_post_meta( $post->ID, '_event_year', true );
+	$venue_name            = get_post_meta( $post->ID, '_event_venue_name', true );
+	$venue_address_1       = get_post_meta( $post->ID, '_event_venue_address_1', true );
+	$venue_address_2       = get_post_meta( $post->ID, '_event_venue_address_2', true );
+	$venue_maps_embed      = get_post_meta( $post->ID, '_event_venue_maps_embed', true );
+	$venue_maps_url        = get_post_meta( $post->ID, '_event_venue_maps_url', true );
+	$venue_image           = get_post_meta( $post->ID, '_event_venue_image', true );
 	?>
-	<p><em><?php _e('These fields are used if this page is set to the "Event Page" template.', 'tedx-regensburg'); ?></em></p>
 	<table class="form-table" style="width: 100%;">
 		<tr>
-			<th scope="row" colspan="2"><h3 style="margin: 0; padding-top: 15px; border-bottom: 1px solid #ccc;"><?php _e('General Settings', 'tedx-regensburg'); ?></h3></th>
+			<th scope="row" colspan="2"><h3 style="margin: 0; padding-top: 15px; border-bottom: 1px solid #ccc;"><?php _e( 'Event Settings', 'tedx-regensburg' ); ?></h3></th>
 		</tr>
 		<tr>
-			<th scope="row"><label for="event_year"><?php _e( 'Event Year (for Speakers)', 'tedx-regensburg' ); ?></label></th>
-			<td><input type="text" id="event_year" name="event_year" value="<?php echo esc_attr( $event_year ); ?>" class="regular-text" placeholder="e.g. 2026" /> <span class="description">Which year's speakers should be shown?</span></td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="event_pitch_title"><?php _e( 'Event Title', 'tedx-regensburg' ); ?></label></th>
-			<td><input type="text" id="event_pitch_title" name="event_pitch_title" value="<?php echo esc_attr( $pitch_title ); ?>" class="large-text" /></td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="event_pitch_meta"><?php _e( 'Event Meta (Date/Location)', 'tedx-regensburg' ); ?></label></th>
-			<td><input type="text" id="event_pitch_meta" name="event_pitch_meta" value="<?php echo esc_attr( $pitch_meta ); ?>" class="regular-text" /></td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="event_pitch_desc"><?php _e( 'Event Description', 'tedx-regensburg' ); ?></label></th>
-			<td><textarea id="event_pitch_desc" name="event_pitch_desc" class="large-text" rows="4"><?php echo esc_textarea( $pitch_desc ); ?></textarea></td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="event_ticket_url"><?php _e( 'Ticket / Action URL', 'tedx-regensburg' ); ?></label></th>
-			<td><input type="url" id="event_ticket_url" name="event_ticket_url" value="<?php echo esc_url( $ticket_url ); ?>" class="regular-text" /></td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="event_show_more_url"><?php _e( 'Show More / Subpage URL', 'tedx-regensburg' ); ?></label></th>
-			<td><input type="url" id="event_show_more_url" name="event_show_more_url" value="<?php echo esc_url( $show_more_url ); ?>" class="regular-text" placeholder="<?php echo esc_attr( home_url( '/about' ) ); ?>" /></td>
-		</tr>
-		<tr>
-			<th scope="row"><?php _e( 'Button Controls', 'tedx-regensburg' ); ?></th>
+			<th scope="row"><label for="event_year"><?php _e( 'Event Year', 'tedx-regensburg' ); ?></label></th>
 			<td>
-				<label for="event_enable_tickets" style="display: inline-block; margin-right: 20px; margin-bottom: 6px;">
-					<input type="checkbox" id="event_enable_tickets" name="event_enable_tickets" value="1" <?php checked( $enable_tickets, '1' ); ?> />
-					<strong><?php _e( 'Enable Tickets Button', 'tedx-regensburg' ); ?></strong>
-				</label>
-				<label for="event_enable_show_more" style="display: inline-block; margin-bottom: 6px;">
-					<input type="checkbox" id="event_enable_show_more" name="event_enable_show_more" value="1" <?php checked( $enable_show_more, '1' ); ?> />
-					<strong><?php _e( 'Enable Show More Button', 'tedx-regensburg' ); ?></strong>
-				</label>
-				<p class="description"><?php _e( 'Uncheck both buttons to completely hide all action buttons (e.g. for past events).', 'tedx-regensburg' ); ?></p>
+				<input type="text" id="event_year" name="event_year" value="<?php echo esc_attr( $event_year ); ?>" class="regular-text" placeholder="e.g. 2026" />
+				<p class="description"><?php _e( 'Which year does this event belong to? (Used by speakers blocks set to "current event").', 'tedx-regensburg' ); ?></p>
 			</td>
 		</tr>
 		<tr>
-			<th scope="row"><?php _e( 'Sponsors Blocks', 'tedx-regensburg' ); ?></th>
-			<td>
-				<label for="event_show_sponsors" style="display: inline-block; margin-bottom: 6px;">
-					<input type="checkbox" id="event_show_sponsors" name="event_show_sponsors" value="1" <?php checked( $show_sponsors, '1' ); ?> />
-					<strong><?php _e( 'Show Sponsors Blocks', 'tedx-regensburg' ); ?></strong>
-				</label>
-				<p class="description"><?php _e( 'Check this option to display the exclusive partner and sponsors blocks on this event page (positioned below the speakers section).', 'tedx-regensburg' ); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="event_sponsors_title"><?php _e( 'Sponsors Block Title', 'tedx-regensburg' ); ?></label></th>
-			<td>
-				<input type="text" id="event_sponsors_title" name="event_sponsors_title" value="<?php echo esc_attr( $event_sponsors_title ); ?>" class="regular-text" placeholder="<?php echo esc_attr( tedx_mod( 'tedx_sponsors_title', 'Other Sponsors' ) ); ?>" />
-				<p class="description"><?php _e( 'Custom title heading for the sponsors grid on this event page (leave empty to use default).', 'tedx-regensburg' ); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="event_partner_title"><?php _e( 'Partner Block Title', 'tedx-regensburg' ); ?></label></th>
-			<td>
-				<input type="text" id="event_partner_title" name="event_partner_title" value="<?php echo esc_attr( $event_partner_title ); ?>" class="regular-text" placeholder="<?php echo esc_attr( tedx_mod( 'tedx_partner_title', 'Our Partner' ) ); ?>" />
-				<p class="description"><?php _e( 'Custom title heading for the exclusive partner block on this event page (leave empty to use default).', 'tedx-regensburg' ); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row" colspan="2"><h3 style="margin: 0; padding-top: 15px; border-bottom: 1px solid #ccc;"><?php _e('Event Card Settings (Visual Theme Card)', 'tedx-regensburg'); ?></h3></th>
-		</tr>
-		<tr>
-			<th scope="row"><label for="event_card_image"><?php _e( 'Custom Card Image URL', 'tedx-regensburg' ); ?></label></th>
-			<td>
-				<input type="url" id="event_card_image" name="event_card_image" value="<?php echo esc_url( $card_image ); ?>" class="large-text" placeholder="https://..." />
-				<p class="description"><?php _e( 'URL to the custom card image (e.g. from Media Library).', 'tedx-regensburg' ); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="event_card_label_text"><?php _e( 'Date / Badge Label Text', 'tedx-regensburg' ); ?></label></th>
-			<td>
-				<input type="text" id="event_card_label_text" name="event_card_label_text" value="<?php echo esc_attr( $card_label_text ); ?>" class="regular-text" placeholder="TEDxRegensburg 2026" />
-				<p class="description"><?php _e( 'Text inside the pill badge. To toggle the badge on/off, use the Customizer.', 'tedx-regensburg' ); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row"><label for="event_card_link_url"><?php _e( 'Custom Card Link URL', 'tedx-regensburg' ); ?></label></th>
-			<td>
-				<input type="url" id="event_card_link_url" name="event_card_link_url" value="<?php echo esc_url( $card_link_url ); ?>" class="regular-text" placeholder="https://..." />
-				<p class="description"><?php _e( 'Optional redirect link. If left empty, it defaults to this Event Page. To disable card clicking animations entirely, use the Customizer.', 'tedx-regensburg' ); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row" colspan="2"><h3 style="margin: 0; padding-top: 15px; border-bottom: 1px solid #ccc;"><?php _e('Location Settings', 'tedx-regensburg'); ?></h3></th>
+			<th scope="row" colspan="2"><h3 style="margin: 0; padding-top: 15px; border-bottom: 1px solid #ccc;"><?php _e( 'Location Settings', 'tedx-regensburg' ); ?></h3></th>
 		</tr>
 		<tr>
 			<th scope="row"><label for="event_venue_name"><?php _e( 'Venue Name', 'tedx-regensburg' ); ?></label></th>
@@ -910,9 +602,9 @@ function tedx_render_page_event_meta_box( $post ) {
 			<th scope="row"><label for="event_venue_address_2"><?php _e( 'Address Line 2', 'tedx-regensburg' ); ?></label></th>
 			<td><input type="text" id="event_venue_address_2" name="event_venue_address_2" value="<?php echo esc_attr( $venue_address_2 ); ?>" class="regular-text" /></td>
 		</tr>
-				<tr>
+		<tr>
 			<th scope="row"><label for="event_venue_maps_embed"><?php _e( 'Google Maps Embed HTML', 'tedx-regensburg' ); ?></label></th>
-			<td><textarea id="event_venue_maps_embed" name="event_venue_maps_embed" rows="4" class="large-text" placeholder="<iframe src=\"...\"></iframe>"><?php echo esc_textarea( $venue_maps_embed ); ?></textarea></td>
+			<td><textarea id="event_venue_maps_embed" name="event_venue_maps_embed" rows="4" class="large-text" placeholder="<iframe src=&quot;...&quot;></iframe>"><?php echo esc_textarea( $venue_maps_embed ); ?></textarea></td>
 		</tr>
 		<tr>
 			<th scope="row"><label for="event_venue_maps_url"><?php _e( 'Google Maps URL', 'tedx-regensburg' ); ?></label></th>
@@ -922,13 +614,6 @@ function tedx_render_page_event_meta_box( $post ) {
 			<th scope="row"><label for="event_venue_image"><?php _e( 'Venue Image URL', 'tedx-regensburg' ); ?></label></th>
 			<td><input type="url" id="event_venue_image" name="event_venue_image" value="<?php echo esc_url( $venue_image ); ?>" class="regular-text" /></td>
 		</tr>
-			<tr>
-			<th scope="row"><label for="speaker_youtube"><?php _e( 'YouTube URL', 'tedx-regensburg' ); ?></label></th>
-			<td>
-				<input type="url" id="speaker_youtube" name="speaker_youtube" value="<?php echo esc_url( $youtube ); ?>" class="regular-text" placeholder="https://youtube.com/watch?v=..." />
-				<p class="description"><?php _e( 'URL for "WATCH THE TALK" button.', 'tedx-regensburg' ); ?></p>
-			</td>
-		</tr>
 	</table>
 	<?php
 }
@@ -937,22 +622,13 @@ function tedx_save_page_event_meta_data( $post_id ) {
 	if ( ! isset( $_POST['tedx_page_event_meta_nonce'] ) || ! wp_verify_nonce( $_POST['tedx_page_event_meta_nonce'], 'tedx_save_page_event_meta' ) ) {
 		return;
 	}
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) { return; }
-	if ( ! current_user_can( 'edit_page', $post_id ) ) { return; }
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
 
-	update_post_meta( $post_id, '_event_pitch_title', sanitize_text_field( $_POST['event_pitch_title'] ?? '' ) );
-	update_post_meta( $post_id, '_event_pitch_meta', sanitize_text_field( $_POST['event_pitch_meta'] ?? '' ) );
-	update_post_meta( $post_id, '_event_pitch_desc', sanitize_textarea_field( $_POST['event_pitch_desc'] ?? '' ) );
-	update_post_meta( $post_id, '_event_ticket_url', esc_url_raw( $_POST['event_ticket_url'] ?? '' ) );
-	update_post_meta( $post_id, '_event_show_more_url', esc_url_raw( $_POST['event_show_more_url'] ?? '' ) );
-	update_post_meta( $post_id, '_event_enable_tickets', isset( $_POST['event_enable_tickets'] ) ? '1' : '0' );
-	update_post_meta( $post_id, '_event_enable_show_more', isset( $_POST['event_enable_show_more'] ) ? '1' : '0' );
-	update_post_meta( $post_id, '_event_show_sponsors', isset( $_POST['event_show_sponsors'] ) ? '1' : '0' );
-	update_post_meta( $post_id, '_event_sponsors_title', sanitize_text_field( $_POST['event_sponsors_title'] ?? '' ) );
-	update_post_meta( $post_id, '_event_partner_title', sanitize_text_field( $_POST['event_partner_title'] ?? '' ) );
-	update_post_meta( $post_id, '_event_card_image', esc_url_raw( $_POST['event_card_image'] ?? '' ) );
-	update_post_meta( $post_id, '_event_card_label_text', sanitize_text_field( $_POST['event_card_label_text'] ?? '' ) );
-	update_post_meta( $post_id, '_event_card_link_url', esc_url_raw( $_POST['event_card_link_url'] ?? '' ) );
 	update_post_meta( $post_id, '_event_year', sanitize_text_field( $_POST['event_year'] ?? '' ) );
 	update_post_meta( $post_id, '_event_venue_name', sanitize_text_field( $_POST['event_venue_name'] ?? '' ) );
 	update_post_meta( $post_id, '_event_venue_address_1', sanitize_text_field( $_POST['event_venue_address_1'] ?? '' ) );
@@ -961,5 +637,4 @@ function tedx_save_page_event_meta_data( $post_id ) {
 	update_post_meta( $post_id, '_event_venue_maps_embed', wp_unslash( $_POST['event_venue_maps_embed'] ?? '' ) );
 	update_post_meta( $post_id, '_event_venue_image', esc_url_raw( $_POST['event_venue_image'] ?? '' ) );
 }
-add_action( 'save_post_page', 'tedx_save_page_event_meta_data' );
 add_action( 'save_post_tedx_event', 'tedx_save_page_event_meta_data' );

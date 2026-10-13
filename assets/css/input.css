@@ -268,5 +268,67 @@
           padding-bottom: 3rem !important;
       }
   }
+
+  /* TEDx Free Text Prose (About Us style headings & body text) */
+  .tedx-prose h1,
+  .editor-styles-wrapper .tedx-prose h1 {
+    font-size: 2.25rem;
+    line-height: 1.1;
+    font-weight: 900 !important;
+    color: #ffffff;
+    letter-spacing: -3.2px;
+    margin-bottom: 3rem;
+  }
+  @media (min-width: 640px) {
+    .tedx-prose h1, .editor-styles-wrapper .tedx-prose h1 { font-size: 3rem; }
+  }
+  @media (min-width: 768px) {
+    .tedx-prose h1, .editor-styles-wrapper .tedx-prose h1 { font-size: 64px; }
+  }
+
+  .tedx-prose h2,
+  .editor-styles-wrapper .tedx-prose h2 {
+    font-size: 22px;
+    font-weight: 700 !important;
+    color: #eb0028;
+    letter-spacing: -1.1px;
+    line-height: 1.375;
+    margin-top: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tedx-prose h3,
+  .editor-styles-wrapper .tedx-prose h3 {
+    font-size: 18px;
+    font-weight: 700 !important;
+    color: #ffffff;
+    letter-spacing: -0.9px;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .tedx-prose p,
+  .tedx-prose li,
+  .editor-styles-wrapper .tedx-prose p,
+  .editor-styles-wrapper .tedx-prose li {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .tedx-prose p + p {
+    margin-top: 1rem;
+  }
+
+  /* Offset first block on non-front pages to clear the fixed transparent header */
+  body:not(.home) .tedx-page-content > section:first-child {
+    padding-top: 7rem;
+  }
+  @media (min-width: 768px) {
+    body:not(.home) .tedx-page-content > section:first-child {
+      padding-top: 6rem;
+    }
+  }
 }
 

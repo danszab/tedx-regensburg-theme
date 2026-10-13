@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/speaker-coaches",
+    "title": "TEDx Speaker Coaches",
+    "category": "tedx",
+    "icon": "groups",
+    "description": "Speaker coach cards, optionally filtered by year.",
+    "keywords": ["coaches", "speaker coaches", "tedx"],
+    "supports": { "html": false, "align": false },
+    "usesContext": ["postId", "postType"],
+    "attributes": {
+        "year": { "type": "string", "default": "" },
+        "title": { "type": "string", "default": "Speaker Coaches" },
+        "showMore": { "type": "boolean", "default": true }
+    },
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}
