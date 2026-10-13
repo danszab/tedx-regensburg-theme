@@ -52,19 +52,48 @@ $sponsors_query = new WP_Query( array(
 if ( ! $sponsors_query->have_posts() ) {
 	return;
 }
+
+$sponsors_title = ! empty( $args['title'] ) ? $args['title'] : '';
+$sponsors_eyebrow = ! empty( $args['eyebrow'] ) ? $args['eyebrow'] : '';
+$sponsors_description = ! empty( $args['description'] ) ? $args['description'] : '';
+
+if ( empty( $sponsors_title ) && ( is_page() || is_singular( 'tedx_event' ) ) ) {
+	$sponsors_title = get_post_meta( get_the_ID(), '_event_sponsors_title', true );
+}
+if ( empty( $sponsors_title ) ) {
+	$sponsors_title = tedx_mod( 'tedx_sponsors_title', __( 'Other Sponsors', 'tedx-regensburg' ) );
+}
+
+if ( empty( $sponsors_eyebrow ) && ( is_page() || is_singular( 'tedx_event' ) ) ) {
+	$sponsors_eyebrow = get_post_meta( get_the_ID(), '_event_sponsors_eyebrow', true );
+}
+if ( empty( $sponsors_eyebrow ) ) {
+	$sponsors_eyebrow = tedx_mod( 'tedx_sponsors_eyebrow', __( 'Partners', 'tedx-regensburg' ) );
+}
+
+if ( empty( $sponsors_description ) && ( is_page() || is_singular( 'tedx_event' ) ) ) {
+	$sponsors_description = get_post_meta( get_the_ID(), '_event_sponsors_desc', true );
+}
+if ( empty( $sponsors_description ) ) {
+	$sponsors_description = tedx_mod( 'tedx_sponsors_description', __( 'Proudly supported by local companies and organizations standing behind TEDxRegensburg.', 'tedx-regensburg' ) );
+}
 ?>
 
 <section id="sponsors" class="bg-tedx-dark px-4 py-16 md:px-8" aria-labelledby="sponsors-heading">
 	<div class="mx-auto flex max-w-figma flex-col items-start gap-6">
-		<?php tedx_category_header( __( 'Partners', 'tedx-regensburg' ) ); ?>
+		<?php if ( ! empty( $sponsors_eyebrow ) ) : ?>
+			<?php tedx_category_header( $sponsors_eyebrow ); ?>
+		<?php endif; ?>
 
 		<h2 id="sponsors-heading" class="w-full text-5xl font-medium leading-none tracking-[-0.05em] text-white md:text-[64px]">
-			<?php esc_html_e( 'Other Sponsors', 'tedx-regensburg' ); ?>
+			<?php echo esc_html( $sponsors_title ); ?>
 		</h2>
 
+		<?php if ( ! empty( $sponsors_description ) ) : ?>
 		<p class="w-full text-base leading-none text-white">
-			<?php esc_html_e( 'Proudly supported by local companies and organizations standing behind TEDxRegensburg.', 'tedx-regensburg' ); ?>
+			<?php echo esc_html( $sponsors_description ); ?>
 		</p>
+		<?php endif; ?>
 
 		<div class="grid w-full grid-cols-1 gap-6 overflow-hidden pt-10 sm:grid-cols-2 lg:grid-cols-3">
 			<?php

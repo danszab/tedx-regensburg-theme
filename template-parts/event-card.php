@@ -14,13 +14,9 @@ $context = isset( $args['context'] ) && 'hero' === $args['context'] ? 'hero' : '
 
 if ( 'hero' === $context ) {
 	$customizer_prefix = 'tedx_hero_card_';
-	$meta_prefix       = '_hero_card_';
-	$default_title     = tedx_mod( 'tedx_theme_name', __( 'This years Theme', 'tedx-regensburg' ) );
 	$default_label     = 'TEDxRegensburg ' . tedx_mod( 'tedx_event_year', '2026' );
 } else {
 	$customizer_prefix = 'tedx_card_';
-	$meta_prefix       = '_event_card_';
-	$default_title     = __( 'This Events Theme', 'tedx-regensburg' );
 	$default_label     = 'Nov. 14 | TEDxRegensburg';
 }
 
@@ -47,21 +43,25 @@ if ( ! empty( $selected_event_id ) && get_post_type( $selected_event_id ) === 't
 	
 	// Use customizer toggle for clickability, but pull link from the database event
 	$card_is_clickable = (bool) tedx_mod( $customizer_prefix . 'is_clickable', false );
-	$card_link_url     = get_post_meta( $selected_event_id, '_event_card_link_url', true ) ?: get_permalink( $selected_event_id );
-	
+	$card_link_url     = ! empty( $args['card_link_url'] ) ? $args['card_link_url'] : ( get_post_meta( $selected_event_id, '_event_card_link_url', true ) ?: tedx_mod( $customizer_prefix . 'link_url', '' ) );
+	if ( empty( $card_link_url ) ) {
+		$card_link_url = get_permalink( $selected_event_id );
+	}
+	$card_alt          = get_the_title( $selected_event_id );
 } else {
 	// Fallback: Manual Customizer settings
 	$card_image        = tedx_mod( $customizer_prefix . 'image', '' );
 	$card_show_label   = (bool) tedx_mod( $customizer_prefix . 'show_label', true );
 	$card_label_text   = tedx_mod( $customizer_prefix . 'label_text', $default_label );
 	$card_is_clickable = (bool) tedx_mod( $customizer_prefix . 'is_clickable', false );
-	$card_link_url     = tedx_mod( $customizer_prefix . 'link_url', '' );
+	$card_link_url     = ! empty( $args['card_link_url'] ) ? $args['card_link_url'] : tedx_mod( $customizer_prefix . 'link_url', '' );
+	$card_alt          = __( 'Event Card', 'tedx-regensburg' );
 }
 
 // 2. Compute Clickable State & Animation Classes
 $is_link = $card_is_clickable && ! empty( $card_link_url );
 $tag = $is_link ? 'a' : 'div';
-$link_attrs = $is_link ? 'href="' . esc_url( $card_link_url ) . '" target="_blank" rel="noopener noreferrer"' : '';
+$link_attrs = $is_link ? 'href="' . esc_url( $card_link_url ) . '"' : '';
 
 // Base container classes: exact Figma 166:1430 rounded-[48px] + border-2 border-white/40
 $container_classes = 'event-card-container w-full max-w-[460px] aspect-[4/5] rounded-[40px] md:rounded-[48px] border-2 border-white/40 relative flex flex-col justify-between overflow-hidden shadow-2xl p-6 sm:p-8 ';
@@ -78,7 +78,7 @@ if ( $is_link ) {
 	<?php if ( ! empty( $card_image ) ) : ?>
 		<img 
 			src="<?php echo esc_url( $card_image ); ?>" 
-			alt="<?php echo esc_attr( $card_theme_title ); ?>" 
+			alt="<?php echo esc_attr( $card_alt ); ?>" 
 			class="event-card-image absolute inset-0 w-full h-full object-cover object-center pointer-events-none" 
 		/>
 	<?php else : ?>
@@ -86,7 +86,6 @@ if ( $is_link ) {
 		<div class="event-card-image absolute inset-0 w-full h-full bg-gradient-to-br from-[#2a1015] via-[#1c1c1c] to-[#0a0a0a] pointer-events-none"></div>
 		<div class="absolute inset-0 w-full h-full bg-radial-gradient from-tedx-red/20 to-transparent opacity-60 pointer-events-none"></div>
 	<?php endif; ?>
-
 
 	<!-- Top Pill Badge (Date / Event Label - Optional via checkbox) -->
 	<div class="relative z-10 w-full flex justify-center">

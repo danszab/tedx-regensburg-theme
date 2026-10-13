@@ -20,6 +20,59 @@ $show_more_text    = tedx_mod( 'tedx_show_more_text', __( 'Show More', 'tedx-reg
 $enable_tickets    = true;
 $enable_show_more  = true;
 
+// Check if an event is selected in the Customizer or if on singular event
+$selected_pitch_event = 0;
+if ( is_singular( 'tedx_event' ) ) {
+	$selected_pitch_event = get_the_ID();
+} else {
+	$selected_pitch_event = tedx_mod( 'tedx_pitch_selected_event', 0 );
+}
+
+$card_link_url = '';
+
+if ( ! empty( $selected_pitch_event ) && get_post_type( $selected_pitch_event ) === 'tedx_event' ) {
+	$db_pitch_title = get_post_meta( $selected_pitch_event, '_event_pitch_title', true ) ?: get_the_title( $selected_pitch_event );
+	if ( ! empty( $db_pitch_title ) ) {
+		$pitch_title = $db_pitch_title;
+	}
+	$db_pitch_meta = get_post_meta( $selected_pitch_event, '_event_pitch_meta', true );
+	if ( ! empty( $db_pitch_meta ) ) {
+		$pitch_meta = $db_pitch_meta;
+	}
+	$db_pitch_desc = get_post_meta( $selected_pitch_event, '_event_pitch_desc', true );
+	if ( ! empty( $db_pitch_desc ) ) {
+		$pitch_description = $db_pitch_desc;
+	}
+	$db_ticket_url = get_post_meta( $selected_pitch_event, '_event_ticket_url', true );
+	if ( ! empty( $db_ticket_url ) ) {
+		$ticket_url = $db_ticket_url;
+	}
+
+	$card_link_url = get_post_meta( $selected_pitch_event, '_event_card_link_url', true );
+	if ( empty( $card_link_url ) ) {
+		$card_link_url = tedx_mod( 'tedx_card_link_url', '' );
+	}
+	if ( empty( $card_link_url ) ) {
+		$card_link_url = get_permalink( $selected_pitch_event );
+	}
+} else {
+	$card_link_url = tedx_mod( 'tedx_card_link_url', '' );
+}
+
+// Manual overrides from Event Pitch Card settings
+$manual_card_title   = tedx_mod( 'tedx_card_title', '' );
+$manual_card_eyebrow = tedx_mod( 'tedx_card_eyebrow', '' );
+$manual_card_link    = tedx_mod( 'tedx_card_link_url', '' );
+if ( ! empty( $manual_card_title ) ) {
+	$pitch_title = $manual_card_title;
+}
+if ( ! empty( $manual_card_eyebrow ) ) {
+	$pitch_meta = $manual_card_eyebrow;
+}
+if ( ! empty( $manual_card_link ) ) {
+	$card_link_url = $manual_card_link;
+}
+
 if ( is_page() || is_singular( 'tedx_event' ) ) {
 	$page_id = get_the_ID();
 	$page_title = get_post_meta( $page_id, '_event_pitch_title', true );
@@ -28,10 +81,11 @@ if ( is_page() || is_singular( 'tedx_event' ) ) {
 		$pitch_meta        = get_post_meta( $page_id, '_event_pitch_meta', true );
 		$pitch_description = get_post_meta( $page_id, '_event_pitch_desc', true );
 		$ticket_url        = get_post_meta( $page_id, '_event_ticket_url', true ) ?: $ticket_url;
-		$meta_show_more    = get_post_meta( $page_id, '_event_show_more_url', true );
-		if ( ! empty( $meta_show_more ) ) {
-			$show_more_url = $meta_show_more;
-		}
+	}
+
+	$page_card_link = get_post_meta( $page_id, '_event_card_link_url', true );
+	if ( ! empty( $page_card_link ) ) {
+		$card_link_url = $page_card_link;
 	}
 
 	$meta_enable_tickets = get_post_meta( $page_id, '_event_enable_tickets', true );
@@ -43,6 +97,11 @@ if ( is_page() || is_singular( 'tedx_event' ) ) {
 	if ( '' !== $meta_enable_show_more ) {
 		$enable_show_more = ( '1' === $meta_enable_show_more );
 	}
+}
+
+// Use the specified card link for the "Show More" button in the event section
+if ( ! empty( $card_link_url ) ) {
+	$show_more_url = $card_link_url;
 }
 
 $pitch_classes = 'bg-tedx-surface py-16 md:py-24 px-4 md:px-8 lg:px-12 border-t border-white/5';
@@ -90,7 +149,7 @@ if ( ! is_front_page() ) {
 
 		<!-- Right Column: Visual Theme Graphic Card (Figma 166:1430) -->
 		<div class="flex justify-center lg:justify-end">
-			<?php get_template_part( 'template-parts/event-card' ); ?>
+			<?php get_template_part( 'template-parts/event-card', null, array( 'context' => 'pitch', 'card_link_url' => $card_link_url ) ); ?>
 		</div>
 
 	</div>

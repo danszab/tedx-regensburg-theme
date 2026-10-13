@@ -14,6 +14,38 @@ $default_title = ( 'speaker_coach' === $post_type ) ? __( 'Speaker Coaches', 'te
 $section_title = ! empty( $args['title'] ) ? $args['title'] : $default_title;
 $section_id    = ! empty( $args['section_id'] ) ? $args['section_id'] : ( 'speaker_coach' === $post_type ? 'speaker-coaches' : 'speakers' );
 
+$is_front_page = ! empty( $args['is_front_page'] ) || is_front_page();
+if ( $is_front_page && ! tedx_mod( 'tedx_show_speakers_home', true ) ) {
+	return;
+}
+
+$is_button_hidden  = (bool) tedx_mod( 'tedx_speaker_hide_event_button', false );
+$is_button_shown   = (bool) tedx_mod( 'tedx_speaker_show_event_button', true );
+$show_event_button = isset( $args['show_event_button'] )
+	? (bool) $args['show_event_button']
+	: ( $is_front_page && 'speaker_coach' !== $post_type && $is_button_shown && ! $is_button_hidden );
+
+$event_name = tedx_mod( 'tedx_speaker_event_name', __( 'Event Name', 'tedx-regensburg' ) );
+if ( empty( trim( $event_name ) ) ) {
+	$event_name = tedx_mod( 'tedx_pitch_title', __( 'Event Name', 'tedx-regensburg' ) );
+}
+
+$event_url = tedx_mod( 'tedx_speaker_event_url', '#event-pitch' );
+if ( empty( trim( $event_url ) ) ) {
+	$event_url = '#event-pitch';
+}
+
+$custom_btn_text = tedx_mod( 'tedx_speaker_event_button_text', '' );
+if ( ! empty( trim( $custom_btn_text ) ) ) {
+	if ( false !== strpos( $custom_btn_text, '%s' ) ) {
+		$event_btn_text = sprintf( $custom_btn_text, trim( $event_name, "\"'" ) );
+	} else {
+		$event_btn_text = $custom_btn_text;
+	}
+} else {
+	$event_btn_text = sprintf( __( 'Learn more about the event: "%s"', 'tedx-regensburg' ), trim( $event_name, "\"'" ) );
+}
+
 $query_args = array(
 	'post_type'      => $post_type,
 	'posts_per_page' => -1,
@@ -49,6 +81,14 @@ ob_start();
 		<?php tedx_category_header( $section_title, '', 'h2' ); ?>
 		<?php if ( ! empty( $target_year ) && ! $ignore_year ) : ?>
 			<span class="block text-5xl sm:text-6xl font-normal text-white tracking-tighter leading-none"><?php echo esc_html( $target_year ); ?></span>
+		<?php endif; ?>
+		<?php if ( $show_event_button && ! empty( $event_name ) ) : ?>
+			<div class="pt-2">
+				<a href="<?php echo esc_url( $event_url ); ?>" class="inline-flex items-center justify-center gap-2 border border-tedx-red text-tedx-red text-sm font-medium px-5 py-3 rounded-xl transition-all duration-200 btn-shadcn-anim w-fit">
+					<span><?php echo esc_html( $event_btn_text ); ?></span>
+					<span aria-hidden="true">&rarr;</span>
+				</a>
+			</div>
 		<?php endif; ?>
 	<?php endif; ?>
 </div>

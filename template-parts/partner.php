@@ -64,6 +64,23 @@ if ( empty( $partner_logo ) ) {
 	return;
 }
 
+$partner_title = ! empty( $args['title'] ) ? $args['title'] : '';
+$partner_eyebrow = ! empty( $args['eyebrow'] ) ? $args['eyebrow'] : '';
+
+if ( empty( $partner_title ) && ( is_page() || is_singular( 'tedx_event' ) ) ) {
+	$partner_title = get_post_meta( get_the_ID(), '_event_partner_title', true );
+}
+if ( empty( $partner_title ) ) {
+	$partner_title = tedx_mod( 'tedx_partner_title', __( 'Our Partner', 'tedx-regensburg' ) );
+}
+
+if ( empty( $partner_eyebrow ) && ( is_page() || is_singular( 'tedx_event' ) ) ) {
+	$partner_eyebrow = get_post_meta( get_the_ID(), '_event_partner_eyebrow', true );
+}
+if ( empty( $partner_eyebrow ) ) {
+	$partner_eyebrow = tedx_mod( 'tedx_partner_eyebrow', __( 'Exclusive Partner', 'tedx-regensburg' ) );
+}
+
 $logo = sprintf(
 	'<img src="%1$s" alt="%2$s" class="h-full w-auto max-w-full object-contain" loading="lazy" decoding="async">',
 	esc_url( $partner_logo ),
@@ -74,9 +91,11 @@ $logo = sprintf(
 <section id="partner" class="bg-tedx-dark px-4 py-16 md:px-8" aria-labelledby="partner-heading">
 	<div class="mx-auto flex max-w-figma flex-col items-start gap-6">
 		<div class="flex w-full flex-col items-start gap-6 break-words font-medium">
-			<?php tedx_category_header( __( 'Exclusive Partner', 'tedx-regensburg' ) ); ?>
+			<?php if ( ! empty( $partner_eyebrow ) ) : ?>
+				<?php tedx_category_header( $partner_eyebrow ); ?>
+			<?php endif; ?>
 			<h2 id="partner-heading" class="w-full text-5xl leading-none tracking-[-0.05em] text-white md:text-[64px]">
-				<?php esc_html_e( 'Our Partner', 'tedx-regensburg' ); ?>
+				<?php echo esc_html( $partner_title ); ?>
 			</h2>
 		</div>
 

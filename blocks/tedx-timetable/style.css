@@ -1,0 +1,221 @@
+/**
+ * TEDx Timetable Block Styles
+ */
+
+.tedx-timetable-block {
+    background-color: transparent;
+    color: #ffffff;
+    font-family: "Helvetica Neue", Inter, sans-serif;
+    position: relative;
+    width: 100%;
+}
+
+.tedx-timetable-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.tedx-timetable-title {
+    font-size: 48px;
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: -2.4px;
+    color: #ffffff;
+    margin: 0 0 32px 0;
+}
+
+@media (min-width: 768px) {
+    .tedx-timetable-title {
+        font-size: 64px;
+        letter-spacing: -3.2px;
+        margin-bottom: 40px;
+    }
+}
+
+.tedx-timetable-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 16px 0;
+}
+
+/* Timeline Vertical Line */
+.tedx-timetable-line {
+    position: absolute;
+    left: 7px;
+    top: 14px;
+    bottom: 14px;
+    width: 2px;
+    background-color: rgba(255, 255, 255, 0.25);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Timeline Row Item */
+.tedx-timetable-row {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+@media (min-width: 768px) {
+    .tedx-timetable-row {
+        gap: 59px;
+    }
+}
+
+/* Timeline Dots (16x16px) */
+.tedx-timetable-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tedx-timetable-dot.is-highlight {
+    background-color: #2ad17e;
+    box-shadow: 0 0 12px rgba(42, 209, 126, 0.6);
+}
+
+.tedx-timetable-dot.is-standard {
+    background-color: #ffffff;
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+/* Time & Title */
+.tedx-timetable-time {
+    width: 80px;
+    flex-shrink: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+}
+
+@media (min-width: 768px) {
+    .tedx-timetable-time {
+        width: 112px;
+        font-size: 16px;
+    }
+}
+
+.tedx-timetable-text {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+}
+
+@media (min-width: 768px) {
+    .tedx-timetable-text {
+        font-size: 16px;
+    }
+}
+
+.tedx-timetable-row.is-highlight .tedx-timetable-time,
+.tedx-timetable-row.is-highlight .tedx-timetable-text {
+    color: #2ad17e;
+}
+
+.tedx-timetable-row.is-standard .tedx-timetable-time,
+.tedx-timetable-row.is-standard .tedx-timetable-text {
+    color: #ffffff;
+}
+
+/* Editor Specific Styles */
+.tedx-timetable-editor {
+    background: #0d0d0d;
+    padding: 32px 24px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.tedx-timetable-editor .tedx-timetable-row {
+    padding: 6px 10px;
+    border-radius: 12px;
+    transition: background 0.15s ease;
+}
+
+.tedx-timetable-editor .tedx-timetable-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.tedx-timetable-editor input[type="text"] {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    padding: 4px 6px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.tedx-timetable-editor input[type="text"]:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 1px rgba(42, 209, 126, 0.5);
+}
+
+.tedx-timetable-editor .item-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    opacity: 0.4;
+    transition: opacity 0.2s ease;
+}
+
+.tedx-timetable-editor .tedx-timetable-row:hover .item-actions {
+    opacity: 1;
+}
+
+.tedx-timetable-editor .action-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+    transition: background 0.2s ease;
+}
+
+.tedx-timetable-editor .action-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.tedx-timetable-editor .action-btn.delete-btn:hover {
+    background: #eb0028;
+}
+
+.tedx-timetable-editor .add-item-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    margin-left: 75px;
+    background: transparent;
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.tedx-timetable-editor .add-item-btn:hover {
+    border-color: #2ad17e;
+    color: #2ad17e;
+    background: rgba(42, 209, 126, 0.08);
+}

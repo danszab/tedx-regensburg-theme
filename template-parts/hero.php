@@ -9,6 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+$hero_type = tedx_mod( 'tedx_hero_type', 'default' );
+
+if ( 'video' === $hero_type ) {
+	get_template_part( 'template-parts/hero-video' );
+	return;
+}
+
 $bg_image     = tedx_mod( 'tedx_hero_background_image', '' );
 $poster_image = tedx_mod( 'tedx_hero_poster_image', '' );
 ?>

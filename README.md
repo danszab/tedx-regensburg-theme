@@ -111,6 +111,10 @@ Every event (e.g. "TEDxRegensburg 2026", "Past Event 2025") is stored as an inde
    - **Ticket & Show More Buttons:**
      - Check/uncheck **Enable Tickets Button** and **Enable Show More Button** to show or hide them independently.
      - Specify custom URLs for both buttons (e.g., direct ticketing link or custom subpage).
+   - **Sponsors Blocks:**
+     - Check/uncheck **Show Sponsors Blocks** to control whether the partner and sponsors blocks appear on this event page (positioned below the speakers section).
+     - **Sponsors Block Title:** Optional custom title for the sponsors grid on this event page (overrides "Other Sponsors").
+     - **Partner Block Title:** Optional custom title for the exclusive partner block on this event page (overrides "Our Partner").
    - **Event Card Settings:**
      - **Card Image URL:** (Optional override if different from the Featured Image).
      - **Date / Badge Label Text:** Text displayed in the pill badge (e.g., `Nov. 14 | TEDxRegensburg`).
@@ -127,7 +131,8 @@ Every event (e.g. "TEDxRegensburg 2026", "Past Event 2025") is stored as an inde
 When viewing the published event link (`/events/your-event-slug/`), WordPress automatically renders a dedicated event page featuring:
 1. **Event Pitch & Card:** Populated exclusively with the data, buttons, and card image you defined for this event.
 2. **Speaker Lineup:** Automatically queries and displays all speakers assigned to this event's year.
-3. **Venue / Location Section:** Shows the venue name, address, photo (or Maps embed), and Google Maps button specific to this event.
+3. **Sponsors Blocks (Optional):** Positioned directly below the speaker lineup when enabled in the event page settings, showcasing the exclusive partner and sponsors grid for that event's year.
+4. **Venue / Location Section:** Shows the venue name, address, photo (or Maps embed), and Google Maps button specific to this event.
 
 ---
 
@@ -237,10 +242,13 @@ Repeat for every sponsor. You can create sponsors for multiple years — each bl
 Go to **Appearance → Customize → TEDx Event Settings → Partners & Sponsors**:
 
 - **Show Exclusive Partner Block:** Toggles the "Our Partner" block on/off. When enabled, the theme automatically pulls whichever sponsor has **Exclusive Partner** checked for the configured event year — there's nothing else to select manually.
+- **Exclusive Partner Eyebrow & Title:** Customize the eyebrow (default: "Exclusive Partner") and title heading (default: "Our Partner").
 - **Show Sponsors Grid:** Toggles the "Other Sponsors" grid on/off. It automatically pulls every **non-exclusive** sponsor published for the configured event year.
+- **Sponsors Block Eyebrow, Title & Description:** Customize the eyebrow (default: "Partners"), title heading (default: "Other Sponsors"), and description text.
+- **Show Sponsors Blocks on Event Pages:** Sets the global default for displaying sponsors blocks on event pages.
 - **Event Year:** The year used by both blocks on the **homepage**. Change this each year once sponsors for the new event are added.
 
-**On individual event pages** (`single-tedx_event.php`), both blocks automatically use that event's own **Event Year** post meta instead of the Customizer setting, so each event page always shows only its own year's sponsors. If no sponsor exists for that year, the block simply doesn't render — no empty section is shown.
+**On individual event pages** (`single-tedx_event.php`), both blocks appear directly below the speakers section when the "Show Sponsors Blocks" option is enabled in the event details (or enabled globally via Customizer). Both blocks automatically use that event's own **Event Year** post meta instead of the Customizer setting, so each event page always shows only its own year's sponsors. If no sponsor exists for that year, the block simply doesn't render — no empty section is shown.
 
 > **Tip:** If a block isn't showing up, double-check that (a) the sponsor is **Published** (not a draft), (b) its **Event Year** exactly matches the year expected on that page, and (c) it has a **Featured Image** set — sponsors without a logo image are skipped.
 

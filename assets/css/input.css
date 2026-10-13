@@ -252,4 +252,21 @@
   .nav-link-anim:active {
       transform: translateY(1px);
   }
+
+  /* Video Hero Section & Mobile Safe Area Padding */
+  .tedx-hero-video-section {
+      height: 100vh;
+      height: 100dvh;
+      min-height: 100vh;
+      min-height: 100dvh;
+  }
+  .tedx-hero-video-btn-wrap {
+      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  }
+  @media (min-width: 768px) {
+      .tedx-hero-video-btn-wrap {
+          padding-bottom: 3rem !important;
+      }
+  }
 }
+

@@ -114,15 +114,18 @@ require_once TEDX_DIR . '/inc/nav-walker.php';
 function tedx_register_native_blocks() {
 	if ( function_exists( 'register_block_type' ) ) {
 		register_block_type( TEDX_DIR . '/blocks/tedx-gallery' );
+		register_block_type( TEDX_DIR . '/blocks/tedx-timetable' );
 	}
 }
 add_action( 'init', 'tedx_register_native_blocks' );
 
 /**
- * Enable SVG Uploads
+ * Enable SVG and Video Uploads (WebM, MP4)
  */
 function tedx_mime_types( $mimes ) {
-	$mimes['svg'] = 'image/svg+xml';
+	$mimes['svg']  = 'image/svg+xml';
+	$mimes['webm'] = 'video/webm';
+	$mimes['mp4']  = 'video/mp4';
 	return $mimes;
 }
 add_filter( 'upload_mimes', 'tedx_mime_types' );
@@ -133,6 +136,12 @@ function tedx_check_filetype_and_ext( $data, $file, $filename, $mimes ) {
 	if ( strtolower( $ext ) === 'svg' ) {
 		$data['ext']  = 'svg';
 		$data['type'] = 'image/svg+xml';
+	} elseif ( strtolower( $ext ) === 'webm' ) {
+		$data['ext']  = 'webm';
+		$data['type'] = 'video/webm';
+	} elseif ( strtolower( $ext ) === 'mp4' ) {
+		$data['ext']  = 'mp4';
+		$data['type'] = 'video/mp4';
 	}
 	return $data;
 }

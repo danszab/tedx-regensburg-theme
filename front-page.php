@@ -36,9 +36,14 @@ get_header();
 	get_template_part( 'template-parts/about' );
 
 	// 4. 2026 Speakers Section (Speaker cards & CFS card)
-	$event_year = get_theme_mod( 'tedx_speaker_year', '2026' );
-	set_query_var( 'target_year', $event_year );
-	get_template_part( 'template-parts/speakers', null, array( 'target_year' => $event_year ) );
+	if ( tedx_mod( 'tedx_show_speakers_home', true ) ) {
+		$event_year = get_theme_mod( 'tedx_speaker_year', '2026' );
+		set_query_var( 'target_year', $event_year );
+		get_template_part( 'template-parts/speakers', null, array(
+			'target_year'   => $event_year,
+			'is_front_page' => true,
+		) );
+	}
 
 	// 5. Stats Section (Counter squircle cards)
 	get_template_part( 'template-parts/stats' );

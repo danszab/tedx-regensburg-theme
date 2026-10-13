@@ -179,6 +179,30 @@ function tedx_customize_register( $wp_customize ) {
 		'choices'     => tedx_get_events_choices(),
 	) );
 
+	// Manual Title Eyebrow
+	$wp_customize->add_setting( 'tedx_card_eyebrow', array(
+		'default'           => '',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'tedx_card_eyebrow', array(
+		'label'       => __( 'Title Eyebrow', 'tedx-regensburg' ),
+		'description' => __( 'Manually set the eyebrow text (e.g. TEDxREGENSBURG | NOV 14 | MARINAFORUM). Overrides database event when set.', 'tedx-regensburg' ),
+		'section'     => 'tedx_card_section',
+		'type'        => 'text',
+	) );
+
+	// Manual Title Header
+	$wp_customize->add_setting( 'tedx_card_title', array(
+		'default'           => '',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'tedx_card_title', array(
+		'label'       => __( 'Title Header', 'tedx-regensburg' ),
+		'description' => __( 'Manually set the title\'s header text (e.g. This Events Title). Overrides database event when set.', 'tedx-regensburg' ),
+		'section'     => 'tedx_card_section',
+		'type'        => 'text',
+	) );
+
 	// Event Card Image
 	$wp_customize->add_setting( 'tedx_card_image', array(
 		'default'           => '',
@@ -295,6 +319,19 @@ function tedx_customize_register( $wp_customize ) {
 		'priority' => 30,
 	) );
 
+	// Toggle entire speakers section on home page
+	$wp_customize->add_setting( 'tedx_show_speakers_home', array(
+		'default'           => true,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'tedx_show_speakers_home', array(
+		'label'       => __( 'Show Speakers Section on Home Page', 'tedx-regensburg' ),
+		'description' => __( 'Toggle visibility to completely show or hide the Speakers section on the home page.', 'tedx-regensburg' ),
+		'section'     => 'tedx_speakers_section',
+		'type'        => 'checkbox',
+		'priority'    => 5,
+	) );
+
 	$wp_customize->add_setting( 'tedx_speaker_year', array(
 		'default'           => '2026',
 		'sanitize_callback' => 'sanitize_text_field',
@@ -304,6 +341,63 @@ function tedx_customize_register( $wp_customize ) {
 		'description' => __( 'Enter the year to display speakers for (e.g. 2026).' , 'tedx-regensburg' ),
 		'section'  => 'tedx_speakers_section',
 		'type'     => 'text',
+	) );
+
+	// Event button in speakers grid (main page)
+	$wp_customize->add_setting( 'tedx_speaker_show_event_button', array(
+		'default'           => true,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'tedx_speaker_show_event_button', array(
+		'label'       => __( 'Show "Learn more about the event" Button', 'tedx-regensburg' ),
+		'description' => __( 'Toggle visibility of the "Learn more about the event" button in the speakers grid.', 'tedx-regensburg' ),
+		'section'     => 'tedx_speakers_section',
+		'type'        => 'checkbox',
+	) );
+
+	// Explicit Hide Event Button toggle
+	$wp_customize->add_setting( 'tedx_speaker_hide_event_button', array(
+		'default'           => false,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'tedx_speaker_hide_event_button', array(
+		'label'       => __( 'Hide "Learn more about the event" Button', 'tedx-regensburg' ),
+		'description' => __( 'Check this option to completely hide the button from the speakers grid.', 'tedx-regensburg' ),
+		'section'     => 'tedx_speakers_section',
+		'type'        => 'checkbox',
+	) );
+
+	$wp_customize->add_setting( 'tedx_speaker_event_name', array(
+		'default'           => 'Event Name',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'tedx_speaker_event_name', array(
+		'label'       => __( 'Event Name', 'tedx-regensburg' ),
+		'description' => __( 'Event Name for the button: learn more about the event: "Event Name".', 'tedx-regensburg' ),
+		'section'     => 'tedx_speakers_section',
+		'type'        => 'text',
+	) );
+
+	$wp_customize->add_setting( 'tedx_speaker_event_url', array(
+		'default'           => '#event-pitch',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+	$wp_customize->add_control( 'tedx_speaker_event_url', array(
+		'label'       => __( 'Event Button URL', 'tedx-regensburg' ),
+		'description' => __( 'Destination link for the event button (e.g. #event-pitch or event subpage URL).', 'tedx-regensburg' ),
+		'section'     => 'tedx_speakers_section',
+		'type'        => 'url',
+	) );
+
+	$wp_customize->add_setting( 'tedx_speaker_event_button_text', array(
+		'default'           => '',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'tedx_speaker_event_button_text', array(
+		'label'       => __( 'Custom Button Label (Optional)', 'tedx-regensburg' ),
+		'description' => __( 'Leave empty for default: Learn more about the event: "Event Name". Use %s as placeholder for Event Name if desired.', 'tedx-regensburg' ),
+		'section'     => 'tedx_speakers_section',
+		'type'        => 'text',
 	) );
 
 	$wp_customize->add_setting( 'tedx_show_cfs', array(
@@ -405,6 +499,26 @@ function tedx_customize_register( $wp_customize ) {
 		'type'        => 'checkbox',
 	) );
 
+	$wp_customize->add_setting( 'tedx_partner_eyebrow', array(
+		'default'           => 'Exclusive Partner',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'tedx_partner_eyebrow', array(
+		'label'       => __( 'Exclusive Partner Eyebrow', 'tedx-regensburg' ),
+		'section'     => 'tedx_partner_section',
+		'type'        => 'text',
+	) );
+
+	$wp_customize->add_setting( 'tedx_partner_title', array(
+		'default'           => 'Our Partner',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'tedx_partner_title', array(
+		'label'       => __( 'Exclusive Partner Title', 'tedx-regensburg' ),
+		'section'     => 'tedx_partner_section',
+		'type'        => 'text',
+	) );
+
 	$wp_customize->add_setting( 'tedx_show_sponsors_section', array(
 		'default'           => true,
 		'sanitize_callback' => 'wp_validate_boolean',
@@ -416,6 +530,38 @@ function tedx_customize_register( $wp_customize ) {
 		'type'        => 'checkbox',
 	) );
 
+	$wp_customize->add_setting( 'tedx_sponsors_eyebrow', array(
+		'default'           => 'Partners',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'tedx_sponsors_eyebrow', array(
+		'label'       => __( 'Sponsors Block Eyebrow', 'tedx-regensburg' ),
+		'section'     => 'tedx_partner_section',
+		'type'        => 'text',
+	) );
+
+	$wp_customize->add_setting( 'tedx_sponsors_title', array(
+		'default'           => 'Other Sponsors',
+		'sanitize_callback' => 'sanitize_text_field',
+	) );
+	$wp_customize->add_control( 'tedx_sponsors_title', array(
+		'label'       => __( 'Sponsors Block Title', 'tedx-regensburg' ),
+		'description' => __( 'Title heading for the sponsors section.', 'tedx-regensburg' ),
+		'section'     => 'tedx_partner_section',
+		'type'        => 'text',
+	) );
+
+	$wp_customize->add_setting( 'tedx_sponsors_description', array(
+		'default'           => 'Proudly supported by local companies and organizations standing behind TEDxRegensburg.',
+		'sanitize_callback' => 'sanitize_textarea_field',
+	) );
+	$wp_customize->add_control( 'tedx_sponsors_description', array(
+		'label'       => __( 'Sponsors Block Description', 'tedx-regensburg' ),
+		'description' => __( 'Descriptive paragraph displayed under the sponsors title.', 'tedx-regensburg' ),
+		'section'     => 'tedx_partner_section',
+		'type'        => 'textarea',
+	) );
+
 	$wp_customize->add_setting( 'tedx_sponsors_event_year', array(
 		'default'           => '2026',
 		'sanitize_callback' => 'sanitize_text_field',
@@ -425,6 +571,17 @@ function tedx_customize_register( $wp_customize ) {
 		'description' => __( 'Both sponsor blocks pull sponsors assigned to this event year from the sponsor database.', 'tedx-regensburg' ),
 		'section'     => 'tedx_partner_section',
 		'type'        => 'text',
+	) );
+
+	$wp_customize->add_setting( 'tedx_show_event_sponsors', array(
+		'default'           => false,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'tedx_show_event_sponsors', array(
+		'label'       => __( 'Show Sponsors Blocks on Event Pages', 'tedx-regensburg' ),
+		'description' => __( 'Toggle visibility of sponsors blocks (exclusive partner & sponsors grid) on event pages by default. Can also be overridden on each event edit screen.', 'tedx-regensburg' ),
+		'section'     => 'tedx_partner_section',
+		'type'        => 'checkbox',
 	) );
 
 	// --- Section: Social & Footer ---

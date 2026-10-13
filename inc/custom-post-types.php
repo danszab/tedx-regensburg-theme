@@ -781,6 +781,18 @@ function tedx_render_page_event_meta_box( $post ) {
 	$event_venue_maps_url = get_post_meta( $post->ID, '_event_venue_maps_url', true );
 	$venue_maps_embed = get_post_meta( $post->ID, '_event_venue_maps_embed', true );
 	$event_venue_image = get_post_meta( $post->ID, '_event_venue_image', true );
+	$venue_name = $event_venue_name;
+	$venue_address_1 = $event_venue_address_1;
+	$venue_address_2 = $event_venue_address_2;
+	$venue_maps_url = $event_venue_maps_url;
+	$venue_image = $event_venue_image;
+
+	$show_sponsors = get_post_meta( $post->ID, '_event_show_sponsors', true );
+	if ( '' === $show_sponsors ) {
+		$show_sponsors = tedx_mod( 'tedx_show_event_sponsors', false ) ? '1' : '0';
+	}
+	$event_sponsors_title = get_post_meta( $post->ID, '_event_sponsors_title', true );
+	$event_partner_title  = get_post_meta( $post->ID, '_event_partner_title', true );
 
 	// Event Card Meta
 	$card_image = get_post_meta( $post->ID, '_event_card_image', true );
@@ -791,7 +803,6 @@ function tedx_render_page_event_meta_box( $post ) {
 	$card_label_text = get_post_meta( $post->ID, '_event_card_label_text', true );
 	$card_is_clickable = get_post_meta( $post->ID, '_event_card_is_clickable', true );
 	$card_link_url = get_post_meta( $post->ID, '_event_card_link_url', true );
-	$card_theme_title = get_post_meta( $post->ID, '_event_card_theme_title', true );
 	?>
 	<p><em><?php _e('These fields are used if this page is set to the "Event Page" template.', 'tedx-regensburg'); ?></em></p>
 	<table class="form-table" style="width: 100%;">
@@ -834,6 +845,30 @@ function tedx_render_page_event_meta_box( $post ) {
 					<strong><?php _e( 'Enable Show More Button', 'tedx-regensburg' ); ?></strong>
 				</label>
 				<p class="description"><?php _e( 'Uncheck both buttons to completely hide all action buttons (e.g. for past events).', 'tedx-regensburg' ); ?></p>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row"><?php _e( 'Sponsors Blocks', 'tedx-regensburg' ); ?></th>
+			<td>
+				<label for="event_show_sponsors" style="display: inline-block; margin-bottom: 6px;">
+					<input type="checkbox" id="event_show_sponsors" name="event_show_sponsors" value="1" <?php checked( $show_sponsors, '1' ); ?> />
+					<strong><?php _e( 'Show Sponsors Blocks', 'tedx-regensburg' ); ?></strong>
+				</label>
+				<p class="description"><?php _e( 'Check this option to display the exclusive partner and sponsors blocks on this event page (positioned below the speakers section).', 'tedx-regensburg' ); ?></p>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row"><label for="event_sponsors_title"><?php _e( 'Sponsors Block Title', 'tedx-regensburg' ); ?></label></th>
+			<td>
+				<input type="text" id="event_sponsors_title" name="event_sponsors_title" value="<?php echo esc_attr( $event_sponsors_title ); ?>" class="regular-text" placeholder="<?php echo esc_attr( tedx_mod( 'tedx_sponsors_title', 'Other Sponsors' ) ); ?>" />
+				<p class="description"><?php _e( 'Custom title heading for the sponsors grid on this event page (leave empty to use default).', 'tedx-regensburg' ); ?></p>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row"><label for="event_partner_title"><?php _e( 'Partner Block Title', 'tedx-regensburg' ); ?></label></th>
+			<td>
+				<input type="text" id="event_partner_title" name="event_partner_title" value="<?php echo esc_attr( $event_partner_title ); ?>" class="regular-text" placeholder="<?php echo esc_attr( tedx_mod( 'tedx_partner_title', 'Our Partner' ) ); ?>" />
+				<p class="description"><?php _e( 'Custom title heading for the exclusive partner block on this event page (leave empty to use default).', 'tedx-regensburg' ); ?></p>
 			</td>
 		</tr>
 		<tr>
@@ -912,10 +947,12 @@ function tedx_save_page_event_meta_data( $post_id ) {
 	update_post_meta( $post_id, '_event_show_more_url', esc_url_raw( $_POST['event_show_more_url'] ?? '' ) );
 	update_post_meta( $post_id, '_event_enable_tickets', isset( $_POST['event_enable_tickets'] ) ? '1' : '0' );
 	update_post_meta( $post_id, '_event_enable_show_more', isset( $_POST['event_enable_show_more'] ) ? '1' : '0' );
+	update_post_meta( $post_id, '_event_show_sponsors', isset( $_POST['event_show_sponsors'] ) ? '1' : '0' );
+	update_post_meta( $post_id, '_event_sponsors_title', sanitize_text_field( $_POST['event_sponsors_title'] ?? '' ) );
+	update_post_meta( $post_id, '_event_partner_title', sanitize_text_field( $_POST['event_partner_title'] ?? '' ) );
 	update_post_meta( $post_id, '_event_card_image', esc_url_raw( $_POST['event_card_image'] ?? '' ) );
 	update_post_meta( $post_id, '_event_card_label_text', sanitize_text_field( $_POST['event_card_label_text'] ?? '' ) );
 	update_post_meta( $post_id, '_event_card_link_url', esc_url_raw( $_POST['event_card_link_url'] ?? '' ) );
-	update_post_meta( $post_id, '_event_card_theme_title', sanitize_text_field( $_POST['event_card_theme_title'] ?? '' ) );
 	update_post_meta( $post_id, '_event_year', sanitize_text_field( $_POST['event_year'] ?? '' ) );
 	update_post_meta( $post_id, '_event_venue_name', sanitize_text_field( $_POST['event_venue_name'] ?? '' ) );
 	update_post_meta( $post_id, '_event_venue_address_1', sanitize_text_field( $_POST['event_venue_address_1'] ?? '' ) );
