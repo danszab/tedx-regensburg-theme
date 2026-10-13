@@ -20,6 +20,7 @@ A modern, standards-compliant, and high-performance WordPress theme for **[TEDx 
     - `tedx/sponsors`: Featured partner or multi-column logo grid with individual logo uploads and links directly in the block editor (no database required).
     - `tedx/text-section`: Container block for rich content and headings styled with the exact Figma About Us typography.
     - `tedx/team`: Automatic 6-column team member grid querying the team directory.
+    - `tedx/venue`: Venue location map with customizable coordinates/embed, address, and Google Maps directions link.
   - **Ready-to-Use Block Patterns:** Pre-packaged patterns for Homepage, Event Page, and About Us page layouts.
   - **Dynamic Responsive Layouts:** Max width 1000px on standard content containers. 2-column layouts smoothly collapse into 2 rows on mobile/tablet screens. The Gallery slider intentionally overflows to full-bleed.
 - **Zero-Dependency Production Build:** Pre-compiled CSS located at `assets/css/style.css`.
@@ -37,7 +38,7 @@ tedx-regensburg-theme/
 ├── footer.php                # Site footer, social icons & newsletter subscription
 ├── front-page.php            # Homepage template (video hero + dynamic content)
 ├── page-about.php            # About Us page template (renders block content)
-├── single-tedx_event.php     # Event page template (renders block content + location)
+├── single-tedx_event.php     # Event page template (renders block content)
 ├── single-speaker.php        # Template for single Speaker pages
 ├── single-speaker_coach.php  # Template for single Speaker Coach detail pages
 ├── archive-speaker.php       # Archive overview for all speakers
@@ -63,10 +64,10 @@ tedx-regensburg-theme/
 │   ├── tedx-stats/           # Counter stats block
 │   ├── tedx-sponsors/        # Sponsors & partner logos block
 │   ├── tedx-text-section/    # Rich text section with About Us typography
-│   └── tedx-team/            # Team members grid block
+│   ├── tedx-team/            # Team members grid block
+│   └── tedx-venue/           # Venue map and address block
 ├── template-parts/
 │   ├── hero-video.php        # Looping full-screen video hero
-│   ├── location.php          # Venue section with Google Maps embed
 │   └── content.php           # Default content loop
 ├── assets/
 │   ├── css/

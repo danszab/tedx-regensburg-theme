@@ -50,7 +50,8 @@ function tedx_register_block_patterns() {
 <!-- wp:tedx/speakers {"yearSource":"event","title":"Speakers","showYear":true,"showEventButton":false} /-->
 <!-- wp:tedx/timetable /-->
 <!-- wp:tedx/sponsors {"layout":"featured","sectionId":"partner","eyebrow":"Exclusive Partner","title":"Our Partner"} /-->
-<!-- wp:tedx/sponsors {"layout":"grid","sectionId":"sponsors","eyebrow":"Partners","title":"Other Sponsors"} /-->',
+<!-- wp:tedx/sponsors {"layout":"grid","sectionId":"sponsors","eyebrow":"Partners","title":"Other Sponsors"} /-->
+<!-- wp:tedx/venue /-->',
 		)
 	);
 
@@ -103,6 +104,7 @@ function tedx_register_event_block_template() {
 			array( 'tedx/timetable', array() ),
 			array( 'tedx/sponsors', array( 'layout' => 'featured', 'sectionId' => 'partner' ) ),
 			array( 'tedx/sponsors', array( 'layout' => 'grid', 'sectionId' => 'sponsors' ) ),
+			array( 'tedx/venue', array() ),
 		);
 	}
 }

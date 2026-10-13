@@ -18,9 +18,6 @@ get_header();
 		</div>
 		<?php
 	endwhile;
-
-	// Location Section
-	get_template_part( 'template-parts/location' );
 	?>
 </main>
 

@@ -24,6 +24,7 @@ function tedx_get_block_dirs() {
 		'tedx-sponsors',
 		'tedx-text-section',
 		'tedx-team',
+		'tedx-venue',
 	);
 }
 

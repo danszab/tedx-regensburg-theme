@@ -1,0 +1,26 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/venue",
+    "title": "TEDx Venue",
+    "category": "tedx",
+    "icon": "location-alt",
+    "description": "Interactive venue location map, address details and Google Maps directions button.",
+    "keywords": ["venue", "location", "map", "address", "directions", "tedx"],
+    "supports": { "html": false, "align": false },
+    "usesContext": ["postId", "postType"],
+    "attributes": {
+        "sectionId": { "type": "string", "default": "location" },
+        "title": { "type": "string", "default": "Venue" },
+        "venueName": { "type": "string", "default": "Marinaforum Regensburg" },
+        "addressLine1": { "type": "string", "default": "Johanna-Dachs-Straße 46" },
+        "addressLine2": { "type": "string", "default": "93055 Regensburg" },
+        "mapsUrl": { "type": "string", "default": "" },
+        "mapsEmbed": { "type": "string", "default": "" },
+        "showButton": { "type": "boolean", "default": true },
+        "buttonText": { "type": "string", "default": "VIEW ON GOOGLE MAPS" },
+        "syncWithEvent": { "type": "boolean", "default": true }
+    },
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}
