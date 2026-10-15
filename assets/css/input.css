@@ -291,19 +291,20 @@
       transform: translateY(1px);
   }
 
-  /* Video Hero Section & Mobile Safe Area Padding */
+  /* Video Hero Section: static sizes so the hero never resizes or jumps while mobile toolbars collapse/expand.
+     100vh = large viewport (toolbars retracted). The mobile bottom padding keeps the button clear of the
+     expanded bottom toolbars that overlay it: iOS Safari bottom address bar incl. home indicator (~80–90px),
+     Chrome iOS bottom toolbar (~83px), Chrome Android bottom address bar (~56px). */
   .tedx-hero-video-section {
       height: 100vh;
-      height: 100dvh;
       min-height: 100vh;
-      min-height: 100dvh;
   }
   .tedx-hero-video-btn-wrap {
-      padding-bottom: calc(env(safe-area-max-inset-bottom, 0px) + 16px);
+      padding-bottom: 7rem;
   }
   @media (min-width: 768px) {
       .tedx-hero-video-btn-wrap {
-          padding-bottom: 3rem !important;
+          padding-bottom: 3rem;
       }
   }
 

@@ -30,23 +30,6 @@ $button_url  = tedx_mod( 'tedx_hero_video_btn_url', '#event-pitch' );
 $show_button = (bool) tedx_mod( 'tedx_hero_video_btn_show', true );
 ?>
 
-<style>
-	.tedx-hero-video-section {
-		height: 100vh;
-		height: 100dvh;
-		min-height: 100vh;
-		min-height: 100dvh;
-	}
-	.tedx-hero-video-btn-wrap {
-		padding-bottom: calc(env(safe-area-max-inset-bottom, 0px) + 16px);
-	}
-	@media (min-width: 768px) {
-		.tedx-hero-video-btn-wrap {
-			padding-bottom: 3rem !important;
-		}
-	}
-</style>
-
 <section id="hero" class="tedx-hero-video-section relative w-full h-screen min-h-screen overflow-hidden flex flex-col justify-end items-center bg-[#0a0a0a] text-white">
 
 	<!-- Media Background: Vertical (Mobile) & Horizontal (Desktop) Videos or Preview Posters -->
