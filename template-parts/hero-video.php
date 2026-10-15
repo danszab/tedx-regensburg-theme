@@ -12,16 +12,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Desktop / Horizontal Video
 $desktop_webm   = tedx_mod( 'tedx_hero_video_webm', '' );
 $desktop_mp4    = tedx_mod( 'tedx_hero_video_mp4', '' );
-$desktop_poster = tedx_mod( 'tedx_hero_video_poster', '' );
+$posters        = tedx_hero_posters();
+$desktop_poster = $posters['desktop'];
 
 // Mobile / Vertical Video
 $mobile_webm   = tedx_mod( 'tedx_hero_video_mobile_webm', '' );
 $mobile_mp4    = tedx_mod( 'tedx_hero_video_mobile_mp4', '' );
-$mobile_poster = tedx_mod( 'tedx_hero_video_mobile_poster', '' );
-
-// Fallbacks for posters
-$effective_mobile_poster  = ! empty( $mobile_poster ) ? $mobile_poster : $desktop_poster;
-$effective_desktop_poster = ! empty( $desktop_poster ) ? $desktop_poster : $mobile_poster;
+$mobile_poster = $posters['mobile'];
 
 $has_desktop_video = ! empty( $desktop_webm ) || ! empty( $desktop_mp4 );
 $has_mobile_video  = ! empty( $mobile_webm ) || ! empty( $mobile_mp4 );
@@ -41,7 +38,7 @@ $show_button = (bool) tedx_mod( 'tedx_hero_video_btn_show', true );
 		min-height: 100dvh;
 	}
 	.tedx-hero-video-btn-wrap {
-		padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+		padding-bottom: calc(env(safe-area-max-inset-bottom, 0px) + 16px);
 	}
 	@media (min-width: 768px) {
 		.tedx-hero-video-btn-wrap {
@@ -54,75 +51,7 @@ $show_button = (bool) tedx_mod( 'tedx_hero_video_btn_show', true );
 
 	<!-- Media Background: Vertical (Mobile) & Horizontal (Desktop) Videos or Preview Posters -->
 	<div class="tedx-hero-video-media absolute inset-0 w-full h-full z-0 overflow-hidden">
-		<?php if ( $has_both_videos ) : ?>
-			<!-- Mobile Video (Vertical / Portrait - Visible on screens < 768px) -->
-			<video
-				autoplay
-				loop
-				muted
-				playsinline
-				<?php if ( ! empty( $effective_mobile_poster ) ) : ?>poster="<?php echo esc_url( $effective_mobile_poster ); ?>"<?php endif; ?>
-				class="block md:hidden absolute inset-0 w-full h-full object-cover pointer-events-none"
-			>
-				<?php if ( ! empty( $mobile_webm ) ) : ?>
-					<source src="<?php echo esc_url( $mobile_webm ); ?>" type="video/webm">
-				<?php endif; ?>
-				<?php if ( ! empty( $mobile_mp4 ) ) : ?>
-					<source src="<?php echo esc_url( $mobile_mp4 ); ?>" type="video/mp4">
-				<?php endif; ?>
-			</video>
-
-			<!-- Desktop Video (Horizontal / Landscape - Visible on screens >= 768px) -->
-			<video
-				autoplay
-				loop
-				muted
-				playsinline
-				<?php if ( ! empty( $effective_desktop_poster ) ) : ?>poster="<?php echo esc_url( $effective_desktop_poster ); ?>"<?php endif; ?>
-				class="hidden md:block absolute inset-0 w-full h-full object-cover pointer-events-none"
-			>
-				<?php if ( ! empty( $desktop_webm ) ) : ?>
-					<source src="<?php echo esc_url( $desktop_webm ); ?>" type="video/webm">
-				<?php endif; ?>
-				<?php if ( ! empty( $desktop_mp4 ) ) : ?>
-					<source src="<?php echo esc_url( $desktop_mp4 ); ?>" type="video/mp4">
-				<?php endif; ?>
-			</video>
-		<?php elseif ( $has_desktop_video ) : ?>
-			<!-- Desktop Video (Used across all devices when no mobile-specific video is uploaded) -->
-			<video
-				autoplay
-				loop
-				muted
-				playsinline
-				<?php if ( ! empty( $effective_desktop_poster ) ) : ?>poster="<?php echo esc_url( $effective_desktop_poster ); ?>"<?php endif; ?>
-				class="absolute inset-0 w-full h-full object-cover pointer-events-none"
-			>
-				<?php if ( ! empty( $desktop_webm ) ) : ?>
-					<source src="<?php echo esc_url( $desktop_webm ); ?>" type="video/webm">
-				<?php endif; ?>
-				<?php if ( ! empty( $desktop_mp4 ) ) : ?>
-					<source src="<?php echo esc_url( $desktop_mp4 ); ?>" type="video/mp4">
-				<?php endif; ?>
-			</video>
-		<?php elseif ( $has_mobile_video ) : ?>
-			<!-- Mobile Video (Used when only vertical video is uploaded) -->
-			<video
-				autoplay
-				loop
-				muted
-				playsinline
-				<?php if ( ! empty( $effective_mobile_poster ) ) : ?>poster="<?php echo esc_url( $effective_mobile_poster ); ?>"<?php endif; ?>
-				class="absolute inset-0 w-full h-full object-cover pointer-events-none"
-			>
-				<?php if ( ! empty( $mobile_webm ) ) : ?>
-					<source src="<?php echo esc_url( $mobile_webm ); ?>" type="video/webm">
-				<?php endif; ?>
-				<?php if ( ! empty( $mobile_mp4 ) ) : ?>
-					<source src="<?php echo esc_url( $mobile_mp4 ); ?>" type="video/mp4">
-				<?php endif; ?>
-			</video>
-		<?php elseif ( ! empty( $mobile_poster ) && ! empty( $desktop_poster ) ) : ?>
+		<?php if ( ! empty( $desktop_poster ) ) : ?>
 			<!-- Responsive Preview Poster Frame (<picture> switching between vertical and horizontal frames) -->
 			<picture class="absolute inset-0 w-full h-full pointer-events-none">
 				<source media="(max-width: 767px)" srcset="<?php echo esc_url( $mobile_poster ); ?>">
@@ -130,15 +59,12 @@ $show_button = (bool) tedx_mod( 'tedx_hero_video_btn_show', true );
 					src="<?php echo esc_url( $desktop_poster ); ?>"
 					alt="<?php esc_attr_e( 'Hero preview frame', 'tedx-regensburg' ); ?>"
 					class="w-full h-full object-cover"
+					loading="eager"
+					fetchpriority="high"
+					decoding="async"
 				/>
 			</picture>
-		<?php elseif ( ! empty( $effective_desktop_poster ) ) : ?>
-			<img
-				src="<?php echo esc_url( $effective_desktop_poster ); ?>"
-				alt="<?php esc_attr_e( 'Hero preview frame', 'tedx-regensburg' ); ?>"
-				class="absolute inset-0 w-full h-full object-cover pointer-events-none"
-			/>
-		<?php else : ?>
+		<?php elseif ( ! $has_any_video ) : ?>
 			<!-- Placeholder when admin hasn't uploaded video or preview poster yet -->
 			<div class="absolute inset-0 w-full h-full bg-[#111] flex flex-col items-center justify-center pointer-events-none">
 				<div class="text-white/40 text-center px-4 max-w-md">
@@ -150,6 +76,52 @@ $show_button = (bool) tedx_mod( 'tedx_hero_video_btn_show', true );
 				</div>
 			</div>
 		<?php endif; ?>
+		<?php if ( $has_any_video ) : ?>
+			<?php // Sources stay in data-src until window load so the video never competes with critical CSS, fonts, the logo and the still. ?>
+			<video loop muted playsinline preload="none" data-tedx-hero-video class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-0">
+				<?php
+				$video_sets = $has_both_videos
+					? array(
+						array( $mobile_webm, $mobile_mp4, '(max-width: 767px)' ),
+						array( $desktop_webm, $desktop_mp4, '(min-width: 768px)' ),
+					)
+					: array( array( $has_desktop_video ? $desktop_webm : $mobile_webm, $has_desktop_video ? $desktop_mp4 : $mobile_mp4, 'all' ) );
+				foreach ( $video_sets as $sources ) :
+					foreach ( array( 'video/webm', 'video/mp4' ) as $index => $mime ) :
+						if ( $sources[ $index ] ) :
+							?>
+							<source data-src="<?php echo esc_url( $sources[ $index ] ); ?>" type="<?php echo esc_attr( $mime ); ?>" media="<?php echo esc_attr( $sources[2] ); ?>">
+							<?php
+						endif;
+					endforeach;
+				endforeach;
+				?>
+			</video>
+			<script>
+			(function () {
+				var video = document.querySelector('[data-tedx-hero-video]');
+				if (!video) { return; }
+				function start() {
+					var conn = navigator.connection || {};
+					if (conn.saveData || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+					Array.prototype.slice.call(video.querySelectorAll('source[data-src]')).forEach(function (source) {
+						if (window.matchMedia(source.media || 'all').matches) {
+							source.src = source.getAttribute('data-src');
+						} else {
+							source.parentNode.removeChild(source);
+						}
+					});
+					if (!video.querySelector('source[src]')) { return; }
+					video.muted = true;
+					video.addEventListener('playing', function () { video.classList.remove('opacity-0'); }, { once: true });
+					video.load();
+					var playing = video.play();
+					if (playing && playing.catch) { playing.catch(function () {}); }
+				}
+				if (document.readyState === 'complete') { start(); } else { window.addEventListener('load', start, { once: true }); }
+			})();
+			</script>
+		<?php endif; ?>
 	</div>
 
 	<!-- Top Vignette Overlay (Guarantees header and navigation readability) -->
@@ -160,7 +132,7 @@ $show_button = (bool) tedx_mod( 'tedx_hero_video_btn_show', true );
 
 	<!-- Bottom Action Button (Figma node 2629:1764) -->
 	<?php if ( $show_button && ! empty( $button_text ) ) : ?>
-		<div class="relative z-20 tedx-hero-video-btn-wrap flex justify-center items-center w-full px-4" style="padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));">
+		<div class="relative z-20 tedx-hero-video-btn-wrap flex justify-center items-center w-full px-4">
 			<a
 				href="<?php echo esc_url( $button_url ); ?>"
 				class="inline-flex items-center justify-center gap-2 border border-tedx-green text-tedx-green hover:text-tedx-green text-sm font-medium px-4 py-2.5 rounded-[12px] transition-all duration-200 btn-shadcn-anim backdrop-blur-sm bg-black/30 hover:bg-tedx-green/10 hover:shadow-glow-green"

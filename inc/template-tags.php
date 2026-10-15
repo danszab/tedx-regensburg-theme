@@ -10,22 +10,168 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Resolve the same logo URLs (and attachment IDs) for markup and viewport-specific preloads.
+ */
+function tedx_logo_images() {
+	static $cache = array();
+	$id         = (int) get_theme_mod( 'custom_logo' );
+	$mobile_url = (string) get_theme_mod( 'tedx_mobile_logo' );
+	$key        = $id . '|' . $mobile_url;
+	if ( ! isset( $cache[ $key ] ) ) {
+		$desktop_url   = $id ? wp_get_attachment_image_url( $id, 'full' ) : '';
+		$cache[ $key ] = array(
+			'desktop'    => $desktop_url ? $desktop_url : '',
+			'mobile'     => $mobile_url,
+			'desktop_id' => $desktop_url ? $id : 0,
+			'mobile_id'  => $mobile_url ? (int) attachment_url_to_postid( $mobile_url ) : 0,
+		);
+	}
+	return $cache[ $key ];
+}
+
+/**
+ * Sanitize SVG markup for inline output. Returns '' when the SVG cannot be inlined safely
+ * (invalid XML, entities, embedded <style>, or no viewBox), so callers fall back to <img>.
+ *
+ * @param string $svg    Raw SVG file contents.
+ * @param string $prefix Unique prefix applied to IDs and their url(#…)/href="#…" references.
+ * @param array  $attrs  Attributes to set on the root <svg> (class, aria-label, …).
+ */
+function tedx_sanitize_svg( $svg, $prefix, $attrs = array() ) {
+	if ( '' === trim( (string) $svg ) || false !== stripos( $svg, '<!ENTITY' ) || ! class_exists( 'DOMDocument' ) ) {
+		return '';
+	}
+
+	$doc      = new DOMDocument();
+	$previous = libxml_use_internal_errors( true );
+	$loaded   = $doc->loadXML( $svg, LIBXML_NONET );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $previous );
+
+	$root = $doc->documentElement;
+	if ( ! $loaded || ! $root || 'svg' !== strtolower( $root->localName ) || ! $root->hasAttribute( 'viewBox' ) ) {
+		return '';
+	}
+
+	$xpath = new DOMXPath( $doc );
+	if ( $xpath->query( '//*[local-name()="style"]' )->length ) {
+		return '';
+	}
+
+	$blocked = array( 'script', 'foreignobject', 'iframe', 'object', 'embed', 'a', 'set', 'animate', 'animatemotion', 'animatetransform', 'handler', 'listener' );
+	foreach ( iterator_to_array( $xpath->query( '//*|//comment()|//processing-instruction()' ) ) as $node ) {
+		if ( XML_ELEMENT_NODE !== $node->nodeType || in_array( strtolower( $node->localName ), $blocked, true ) ) {
+			if ( $node->parentNode ) {
+				$node->parentNode->removeChild( $node );
+			}
+			continue;
+		}
+		foreach ( iterator_to_array( $node->attributes ) as $attr ) {
+			$name    = strtolower( $attr->localName );
+			$value   = $attr->value;
+			$compact = strtolower( preg_replace( '/[\s\x00-\x1f]+/', '', $value ) );
+			$unsafe  = 0 === strpos( $name, 'on' )
+				|| false !== strpos( $compact, 'javascript:' )
+				|| false !== strpos( $compact, 'data:' )
+				|| ( 'href' === $name && 0 !== strpos( $value, '#' ) )
+				|| preg_match( '/url\((?![\'"]?#)/', $compact );
+			if ( $unsafe ) {
+				$node->removeAttributeNode( $attr );
+				continue;
+			}
+			if ( 'id' === $name ) {
+				$attr->value = $prefix . '-' . $value;
+			} elseif ( false !== strpos( $value, '#' ) ) {
+				$value       = preg_replace( '/url\(\s*([\'"]?)#/', 'url($1#' . $prefix . '-', $value );
+				$attr->value = 'href' === $name ? '#' . $prefix . '-' . substr( $value, 1 ) : $value;
+			}
+		}
+	}
+
+	// Intrinsic size from the viewBox lets CSS height + width:auto keep the aspect ratio.
+	$box = preg_split( '/[\s,]+/', trim( $root->getAttribute( 'viewBox' ) ) );
+	if ( 4 !== count( $box ) || (float) $box[2] <= 0 || (float) $box[3] <= 0 ) {
+		return '';
+	}
+	$root->setAttribute( 'width', (string) (float) $box[2] );
+	$root->setAttribute( 'height', (string) (float) $box[3] );
+	foreach ( $attrs as $name => $value ) {
+		$root->setAttribute( $name, $value );
+	}
+
+	return $doc->saveXML( $root );
+}
+
+/**
+ * Inline a local SVG attachment (max 50 KB). Returns '' if it is not an inlinable SVG.
+ */
+function tedx_inline_svg_attachment( $attachment_id, $prefix, $attrs = array() ) {
+	static $cache = array();
+	$file = $attachment_id ? get_attached_file( $attachment_id ) : '';
+	if ( ! $file || 'svg' !== strtolower( pathinfo( $file, PATHINFO_EXTENSION ) ) || ! is_readable( $file ) || filesize( $file ) > 51200 ) {
+		return '';
+	}
+	$key = md5( $file . filemtime( $file ) . $prefix . serialize( $attrs ) );
+	if ( ! isset( $cache[ $key ] ) ) {
+		$cache[ $key ] = tedx_sanitize_svg( file_get_contents( $file ), $prefix, $attrs );
+	}
+	return $cache[ $key ];
+}
+
+/**
+ * Inline header logo markup for a device, or '' when the <img> fallback is needed.
+ */
+function tedx_header_logo_svg( $device, $classes = '' ) {
+	$logos = tedx_logo_images();
+	return tedx_inline_svg_attachment(
+		$logos[ $device . '_id' ],
+		'tedx-logo-' . $device,
+		array(
+			'class'      => trim( $classes ),
+			'role'       => 'img',
+			'aria-label' => get_bloginfo( 'name' ),
+			'focusable'  => 'false',
+		)
+	);
+}
+
+function tedx_preload_header_logo() {
+	$logos = tedx_logo_images();
+	foreach ( array( 'mobile' => '(max-width: 1023px)', 'desktop' => '(min-width: 1024px)' ) as $device => $media ) {
+		$source = ( 'mobile' === $device && $logos['mobile'] ) ? 'mobile' : 'desktop';
+		// Inlined SVG logos need no request.
+		if ( $logos[ $source ] && '' === tedx_header_logo_svg( $source ) ) {
+			printf(
+				'<link rel="preload" as="image" href="%s" media="%s" fetchpriority="high">' . "\n",
+				esc_url( $logos[ $source ] ),
+				esc_attr( $media )
+			);
+		}
+	}
+}
+add_action( 'wp_head', 'tedx_preload_header_logo', 1 );
+
+/**
  * Render standard TEDx Regensburg SVG Logo
  *
  * @param string $classes Optional Tailwind CSS classes.
  * @param bool   $show_link Whether to wrap in home link.
+ * @param bool   $prioritize Whether this is the critical header logo (inlined when it is a local SVG).
  */
-function tedx_regensburg_logo( $classes = 'h-8 w-auto', $show_link = true ) {
-	$custom_logo_id  = get_theme_mod( 'custom_logo' );
-	$mobile_logo_url = get_theme_mod( 'tedx_mobile_logo' );
+function tedx_regensburg_logo( $classes = 'h-8 w-auto', $show_link = true, $prioritize = false ) {
+	$logos           = tedx_logo_images();
+	$mobile_logo_url = $logos['mobile'];
 	$site_name       = get_bloginfo( 'name' );
+	$loading_attrs   = $prioritize ? ' loading="eager" fetchpriority="high"' : ' fetchpriority="auto"';
+	$desktop_classes = $classes . ' object-contain block';
+	$mobile_classes  = 'h-6 w-auto object-contain block lg:hidden';
 
 	// 1. Build desktop logo
 	$desktop_logo = '';
-	if ( $custom_logo_id ) {
-		$logo_url = wp_get_attachment_image_url( $custom_logo_id, 'full' );
-		if ( $logo_url ) {
-			$desktop_logo = '<img src="' . esc_url( $logo_url ) . '" alt="' . esc_attr( $site_name ) . '" class="' . esc_attr( $classes ) . ' object-contain block">';
+	if ( $logos['desktop'] ) {
+		$desktop_logo = $prioritize ? tedx_header_logo_svg( 'desktop', $desktop_classes ) : '';
+		if ( '' === $desktop_logo ) {
+			$desktop_logo = '<img src="' . esc_url( $logos['desktop'] ) . '" alt="' . esc_attr( $site_name ) . '" class="' . esc_attr( $desktop_classes ) . '"' . $loading_attrs . '>';
 		}
 	}
 
@@ -39,7 +185,10 @@ function tedx_regensburg_logo( $classes = 'h-8 w-auto', $show_link = true ) {
 
 	// 2. Build final output with responsive mobile logo switch if set
 	if ( ! empty( $mobile_logo_url ) ) {
-		$mobile_logo = '<img src="' . esc_url( $mobile_logo_url ) . '" alt="' . esc_attr( $site_name ) . '" class="h-6 w-auto object-contain block lg:hidden">';
+		$mobile_logo = $prioritize ? tedx_header_logo_svg( 'mobile', $mobile_classes ) : '';
+		if ( '' === $mobile_logo ) {
+			$mobile_logo = '<img src="' . esc_url( $mobile_logo_url ) . '" alt="' . esc_attr( $site_name ) . '" class="' . esc_attr( $mobile_classes ) . '"' . $loading_attrs . '>';
+		}
 		$desktop_wrapped = '<div class="hidden lg:flex items-center">' . $desktop_logo . '</div>';
 		$final_output = $desktop_wrapped . $mobile_logo;
 	} else {
@@ -104,6 +253,45 @@ function tedx_language_switcher() {
  */
 function tedx_mod( $key, $default = '' ) {
 	return get_theme_mod( $key, $default );
+}
+
+/**
+ * Check alignment in parsed blocks, including groups and synced patterns.
+ */
+function tedx_blocks_have_full_width( $blocks, $visited_refs = array() ) {
+	foreach ( $blocks as $block ) {
+		if ( 'full' === ( $block['attrs']['align'] ?? '' ) ) {
+			return true;
+		}
+
+		if ( tedx_blocks_have_full_width( $block['innerBlocks'] ?? array(), $visited_refs ) ) {
+			return true;
+		}
+
+		if ( 'core/block' === $block['blockName'] && ! empty( $block['attrs']['ref'] ) ) {
+			$ref = absint( $block['attrs']['ref'] );
+			if ( in_array( $ref, $visited_refs, true ) ) {
+				continue;
+			}
+			$pattern = get_post( $ref );
+			if ( $pattern && 'wp_block' === $pattern->post_type && tedx_blocks_have_full_width(
+				parse_blocks( $pattern->post_content ),
+				array_merge( $visited_refs, array( $ref ) )
+			) ) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Full-width content must not be wrapped in the default page card.
+ */
+function tedx_page_has_full_width_blocks( $post_id ) {
+	$page = get_post( $post_id );
+	return $page && tedx_blocks_have_full_width( parse_blocks( $page->post_content ) );
 }
 
 /**

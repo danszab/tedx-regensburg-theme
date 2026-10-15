@@ -42,12 +42,6 @@
 }
 
 .gallery-title-block h2 {
-    /* Matching the 'About' section font styling */
-     font-weight: 400;
-    font-size: 60px;
-    color: white;
-    letter-spacing: -0.025em;
-    line-height: 1;
     margin: 0;
 }
 
@@ -187,9 +181,6 @@
 }
 
 @media (max-width: 768px) {
-    .gallery-title-block h2 {
-        font-size: 48px;
-    }
     .tedx-gallery-item {
         width: 180px;
         height: 120px;

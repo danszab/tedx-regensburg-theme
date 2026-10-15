@@ -44,13 +44,22 @@ document.addEventListener('DOMContentLoaded', function() {
         var lightbox = wrapper.querySelector('.tedx-lightbox');
         var lightboxImg = wrapper.querySelector('.lightbox-img');
         var closeBtn = wrapper.querySelector('.lightbox-close');
+        var closeTimer;
         
         if (lightbox) {
             var items = wrapper.querySelectorAll('.tedx-gallery-item img');
             items.forEach(function(img) {
                 img.addEventListener('click', function(e) {
                     e.preventDefault();
-                    lightboxImg.src = img.src;
+                    clearTimeout(closeTimer);
+                    lightboxImg.sizes = '90vw';
+                    var lightboxSrcset = img.getAttribute('data-lightbox-srcset');
+                    if (lightboxSrcset) {
+                        lightboxImg.srcset = lightboxSrcset;
+                    } else {
+                        lightboxImg.removeAttribute('srcset');
+                    }
+                    lightboxImg.src = img.getAttribute('data-lightbox-src') || img.currentSrc || img.src;
                     lightboxImg.alt = img.alt || '';
                     lightbox.style.display = 'flex';
                     void lightbox.offsetWidth; // Reflow
@@ -61,9 +70,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             var closeLightbox = function() {
                 lightbox.classList.remove('active');
-                setTimeout(function() {
+                closeTimer = setTimeout(function() {
                     lightbox.style.display = 'none';
-                    lightboxImg.src = '';
+                    lightboxImg.removeAttribute('srcset');
+                    lightboxImg.removeAttribute('sizes');
+                    lightboxImg.removeAttribute('src');
                     document.body.style.overflow = '';
                 }, 300);
             };

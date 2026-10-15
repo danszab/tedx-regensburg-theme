@@ -1,0 +1,16 @@
+{
+    "name": "tedx-regensburg/theme",
+    "description": "PDF generation for TEDx Regensburg press releases.",
+    "type": "wordpress-theme",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4",
+        "dompdf/dompdf": "^3.1"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4.33"
+        },
+        "sort-packages": true
+    }
+}

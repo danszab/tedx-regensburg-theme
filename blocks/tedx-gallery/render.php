@@ -5,23 +5,35 @@ if ( empty($images) ) {
     return;
 }
 
-$block_classes = 'tedx-gallery-wrapper';
-if (!empty($attributes['className'])) {
-    $block_classes .= ' ' . $attributes['className'];
-}
 ?>
-<div class="<?php echo esc_attr($block_classes); ?>" <?php echo get_block_wrapper_attributes(); ?>>
+<div <?php echo get_block_wrapper_attributes( array( 'class' => 'tedx-gallery-wrapper' ) ); ?>>
     
     <div class="tedx-gallery-scroll-container">
         <div class="tedx-gallery-grid">
             <!-- Title is forced to Row 1 -->
             <div class="gallery-title-block">
-                <h2>Gallery</h2>
+                <h2 class="tedx-block-heading">Gallery</h2>
             </div>
             
-            <?php foreach($images as $img): ?>
+            <?php foreach($images as $img):
+                $image_id = absint( $img['id'] ?? 0 );
+                if ( ! $image_id && ! empty( $img['url'] ) ) {
+                    $image_id = attachment_url_to_postid( $img['url'] );
+                }
+                $lightbox_src = $image_id ? wp_get_attachment_image_url( $image_id, 'large' ) : false;
+                $lightbox_srcset = $image_id ? wp_get_attachment_image_srcset( $image_id, 'large' ) : false;
+                ?>
                 <div class="tedx-gallery-item">
-                    <img src="<?php echo esc_url($img['url']); ?>" alt="<?php echo esc_attr($img['alt']); ?>" />
+                    <?php echo tedx_block_image(
+                        array( 'id' => $image_id, 'url' => $img['url'] ?? '' ),
+                        'medium',
+                        array(
+                            'alt' => $img['alt'] ?? '',
+                            'sizes' => '(max-width: 768px) 180px, 231px',
+                            'data-lightbox-src' => $lightbox_src ? $lightbox_src : ( $img['url'] ?? '' ),
+                            'data-lightbox-srcset' => $lightbox_srcset ? $lightbox_srcset : '',
+                        )
+                    ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -49,6 +61,6 @@ if (!empty($attributes['className'])) {
     <!-- Lightbox Modal -->
     <div class="tedx-lightbox">
         <button class="lightbox-close">&times;</button>
-        <img class="lightbox-img" src="" alt="">
+        <img class="lightbox-img" alt="" decoding="async">
     </div>
 </div>

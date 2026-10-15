@@ -17,7 +17,7 @@
         }
     },
     "editorScript": "file:./index.js",
-    "script": "file:./script.js",
+    "viewScript": "file:./script.js",
     "style": "file:./style.css",
     "render": "file:./render.php"
 }

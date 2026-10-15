@@ -84,7 +84,7 @@ $wrapper = get_block_wrapper_attributes(
 
 		<!-- Right Column: Location / Venue Info -->
 		<div class="flex flex-col items-start text-left break-words">
-			<h2 class="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight mb-4">
+			<h2 class="tedx-block-heading mb-4">
 				<?php echo esc_html( $title ); ?>
 			</h2>
 

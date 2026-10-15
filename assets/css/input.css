@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Self-hosted Inter variable font (SIL OFL 1.1, see assets/fonts/Inter-OFL.txt). */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('../fonts/inter-latin-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('../fonts/inter-latin-ext-var.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -34,6 +53,25 @@
 }
 
 @layer utilities {
+  .tedx-block-heading,
+  .tedx-prose h1,
+  .editor-styles-wrapper .tedx-prose h1 {
+    font-family: "Helvetica Neue", Inter, sans-serif;
+    font-size: 3rem;
+    font-weight: 400 !important;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+
+  @media (min-width: 640px) {
+    .tedx-block-heading,
+    .tedx-prose h1,
+    .editor-styles-wrapper .tedx-prose h1 {
+      font-size: 3.75rem;
+    }
+  }
+
   /* Topography contour background styling */
   .bg-topo-pattern {
     background-image: radial-gradient(circle at 50% 50%, rgba(42, 209, 126, 0.15) 0%, transparent 60%),
@@ -261,7 +299,7 @@
       min-height: 100dvh;
   }
   .tedx-hero-video-btn-wrap {
-      padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+      padding-bottom: calc(env(safe-area-max-inset-bottom, 0px) + 16px);
   }
   @media (min-width: 768px) {
       .tedx-hero-video-btn-wrap {
@@ -272,18 +310,7 @@
   /* TEDx Free Text Prose (About Us style headings & body text) */
   .tedx-prose h1,
   .editor-styles-wrapper .tedx-prose h1 {
-    font-size: 2.25rem;
-    line-height: 1.1;
-    font-weight: 900 !important;
-    color: #ffffff;
-    letter-spacing: -3.2px;
     margin-bottom: 3rem;
-  }
-  @media (min-width: 640px) {
-    .tedx-prose h1, .editor-styles-wrapper .tedx-prose h1 { font-size: 3rem; }
-  }
-  @media (min-width: 768px) {
-    .tedx-prose h1, .editor-styles-wrapper .tedx-prose h1 { font-size: 64px; }
   }
 
   .tedx-prose h2,
@@ -332,3 +359,50 @@
   }
 }
 
+/* Navbar logo sizing and full-width page layout (formerly in the root style.css). */
+.tedx-navbar-logo {
+  --tedx-navbar-logo-height: 1rem;
+}
+
+.tedx-navbar-logo img,
+.tedx-navbar-logo svg,
+.tedx-navbar-logo .select-none {
+  height: var(--tedx-navbar-logo-height);
+}
+
+.tedx-navbar-logo svg {
+  width: auto;
+}
+
+.tedx-navbar-logo .select-none > span {
+  font-size: var(--tedx-navbar-logo-height);
+  line-height: 1;
+}
+
+.tedx-navbar-logo sup {
+  font-size: 0.65em;
+}
+
+@media (min-width: 1024px) {
+  .tedx-navbar-logo {
+    --tedx-navbar-logo-height: 1.5rem;
+  }
+}
+
+.tedx-full-width-page .entry-header,
+.tedx-full-width-page-featured,
+.tedx-full-width-page-content > :not(.alignfull):not(:has(.alignfull)) {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  box-sizing: border-box;
+}
+
+.tedx-full-width-page-content > .alignfull {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}

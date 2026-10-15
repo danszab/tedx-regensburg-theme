@@ -40,7 +40,7 @@ $wrapper = get_block_wrapper_attributes(
 		<div class="flex flex-col gap-6 items-start">
 			<?php tedx_category_header( $attributes['eyebrow'] ); ?>
 
-			<h2 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none">
+			<h2 class="tedx-block-heading">
 				<?php echo esc_html( $attributes['title'] ); ?>
 			</h2>
 
@@ -67,7 +67,7 @@ $wrapper = get_block_wrapper_attributes(
 		<div class="flex justify-center <?php echo ! empty( $attributes['reverseColumns'] ) ? 'lg:justify-start lg:order-first' : 'lg:justify-end'; ?>">
 			<<?php echo $tag; ?> <?php echo $is_link ? 'href="' . esc_url( $card_url ) . '"' : ''; ?> class="<?php echo esc_attr( $container_classes ); ?>">
 				<?php if ( $card_image ) : ?>
-					<img src="<?php echo esc_url( $card_image ); ?>" alt="<?php echo esc_attr( $card_alt ); ?>" class="event-card-image absolute inset-0 w-full h-full object-cover object-center pointer-events-none" />
+					<img src="<?php echo esc_url( $card_image ); ?>" alt="<?php echo esc_attr( $card_alt ); ?>" class="event-card-image absolute inset-0 w-full h-full object-cover object-center pointer-events-none" loading="eager" fetchpriority="high" decoding="async" />
 				<?php else : ?>
 					<div class="event-card-image absolute inset-0 w-full h-full bg-gradient-to-br from-[#2a1015] via-[#1c1c1c] to-[#0a0a0a] pointer-events-none"></div>
 					<div class="absolute inset-0 w-full h-full bg-radial-gradient from-tedx-red/20 to-transparent opacity-60 pointer-events-none"></div>

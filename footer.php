@@ -25,7 +25,8 @@ $newsletter_action = tedx_mod( 'tedx_newsletter_action', '#' );
 			</div>
 
 			<!-- Legal Navigation Links -->
-			<div class="flex flex-col gap-1.5 text-base font-medium text-white/90">
+			<?php if ( get_theme_mod( 'tedx_show_footer_links', true ) ) : ?>
+			<nav aria-label="<?php esc_attr_e( 'Footer links', 'tedx-regensburg' ); ?>" class="flex flex-col gap-1.5 text-base font-medium text-white/90">
 				<?php
 				if ( has_nav_menu( 'footer' ) ) {
 					wp_nav_menu( array(
@@ -41,7 +42,8 @@ $newsletter_action = tedx_mod( 'tedx_newsletter_action', '#' );
 					<?php
 				}
 				?>
-			</div>
+			</nav>
+			<?php endif; ?>
 
 			<!-- TEDx License Notice -->
 			<p class="text-sm text-tedx-light/70 font-normal leading-relaxed mt-2 max-w-sm">

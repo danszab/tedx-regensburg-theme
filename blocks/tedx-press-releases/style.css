@@ -1,0 +1,163 @@
+.tedx-press-releases {
+    background: #0a0a0a;
+    color: #fff;
+    padding: 64px 0;
+    width: 100%;
+    overflow: hidden;
+    container-type: inline-size;
+}
+
+.tedx-press-heading {
+    max-width: 1000px;
+    margin: 0 auto 32px;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+.tedx-press-heading h2 {
+    margin: 0;
+}
+
+.tedx-press-scroll {
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: max(16px, calc((100% - 1000px) / 2 + 16px));
+    scrollbar-color: #938f99 #252525;
+    padding-bottom: 20px;
+}
+
+.tedx-press-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(306.66px, calc(100vw - 48px));
+    grid-auto-columns: min(306.66px, calc(100cqw - 32px));
+    gap: 24px;
+    width: max-content;
+    margin-inline: max(16px, calc((100% - 1000px) / 2 + 16px));
+}
+
+.tedx-press-grid-two-rows {
+    grid-template-rows: repeat(2, auto);
+}
+
+.tedx-press-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background: #252525;
+    border: 1px solid rgb(255 255 255 / 5%);
+    border-radius: 32px;
+    scroll-snap-align: start;
+    transition: border-color 0.2s;
+}
+
+.tedx-press-card:hover {
+    border-color: rgb(255 255 255 / 20%);
+}
+
+.tedx-press-image {
+    display: flex;
+    aspect-ratio: 3 / 2;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #333;
+    text-decoration: none;
+}
+
+.tedx-press-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tedx-press-placeholder {
+    color: #eb0028;
+    font-size: 48px;
+    font-weight: 700;
+}
+
+.tedx-press-placeholder span {
+    font-size: 32px;
+    vertical-align: top;
+}
+
+.tedx-press-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 24px;
+}
+
+.tedx-press-card h3 {
+    margin: 0 0 16px;
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+}
+
+.tedx-press-card h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.tedx-press-excerpt {
+    margin: 0 0 24px;
+    color: #a9a9a9;
+    font-size: 14px;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+}
+
+.tedx-press-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: auto;
+}
+
+.tedx-press-actions a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 1px solid #eb0028;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.tedx-press-more {
+    background: #eb0028;
+    color: #fff;
+}
+
+.tedx-press-download {
+    color: #eb0028;
+}
+
+.tedx-press-actions a:hover {
+    background: #c80022;
+    color: #fff;
+}
+
+.tedx-press-releases a:focus-visible,
+.tedx-press-scroll:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: -3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tedx-press-card,
+    .tedx-press-actions a {
+        transition: none;
+    }
+}

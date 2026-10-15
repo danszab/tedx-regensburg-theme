@@ -4,8 +4,6 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<?php wp_head(); ?>
 	<?php
 	$ticket_url  = tedx_mod( 'tedx_ticket_url', '#' );
@@ -24,8 +22,8 @@
 	<div class="max-w-figma-wide mx-auto flex items-center justify-between h-[60px] lg:h-[70px] px-4 md:px-8 lg:px-[64px]">
 		
 		<!-- Left Group: Logo -->
-		<div class="flex-shrink-0 flex items-center">
-			<?php tedx_regensburg_logo( 'h-7 lg:h-8 w-auto' ); ?>
+		<div class="tedx-navbar-logo flex-shrink-0 flex items-center">
+			<?php tedx_regensburg_logo( 'h-4 lg:h-6 w-auto', true, true ); ?>
 		</div>
 
 		<!-- Center Group: Desktop Navigation Menu -->

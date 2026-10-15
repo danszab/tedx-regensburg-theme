@@ -14,4 +14,7 @@ Text Domain: tedx-regensburg
 Tags: one-column, custom-colors, custom-menu, custom-logo, featured-images, translation-ready, dark-theme
 */
 
-/* Core theme styles are loaded from assets/css/style.css */
+/*
+ * Theme metadata only. All front-end styles are compiled from assets/css/input.css
+ * into assets/css/style.css, so this file is not enqueued (one render-blocking request less).
+ */

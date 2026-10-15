@@ -99,6 +99,22 @@ function tedx_customize_register( $wp_customize ) {
 		'priority' => 50,
 	) );
 
+	$wp_customize->add_setting( 'tedx_show_footer_links', array(
+		'default'           => true,
+		'sanitize_callback' => 'wp_validate_boolean',
+	) );
+	$wp_customize->add_control( 'tedx_show_footer_links', array(
+		'label'       => __( 'Show footer navigation links', 'tedx-regensburg' ),
+		'description' => sprintf(
+			/* translators: %s: URL of the WordPress menu editor. */
+			__( 'Add, remove, reorder, or rename links in <a href="%s" target="_blank" rel="noopener noreferrer">Appearance &rarr; Menus</a>. Assign your menu to Footer Legal Menu. Use Custom Links for a URL and Navigation Label for its title. Without an assigned menu, the default Imprint and Privacy links are shown.', 'tedx-regensburg' ),
+			esc_url( admin_url( 'nav-menus.php' ) )
+		),
+		'section'     => 'tedx_social_section',
+		'type'        => 'checkbox',
+		'priority'    => 5,
+	) );
+
 	$wp_customize->add_setting( 'tedx_social_linkedin', array(
 		'default'           => 'https://linkedin.com/company/tedxregensburg',
 		'sanitize_callback' => 'esc_url_raw',

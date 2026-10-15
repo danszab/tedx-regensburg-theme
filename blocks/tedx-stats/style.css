@@ -1,0 +1,16 @@
+.tedx-stat-custom-icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    background-color: #2ad17e;
+    -webkit-mask-image: var(--tedx-stat-icon);
+    mask-image: var(--tedx-stat-icon);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    mask-mode: alpha;
+}

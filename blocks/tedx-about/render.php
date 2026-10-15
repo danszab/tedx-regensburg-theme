@@ -7,8 +7,16 @@
  * @var WP_Block $block      Block instance.
  */
 
-$image_url = ! empty( $attributes['image']['url'] ) ? $attributes['image']['url'] : '';
 $image_alt = ! empty( $attributes['image']['alt'] ) ? $attributes['image']['alt'] : __( 'About TEDx Regensburg', 'tedx-regensburg' );
+$image_html = tedx_block_image(
+	$attributes['image'] ?? array(),
+	'large',
+	array(
+		'alt'   => $image_alt,
+		'class' => 'absolute inset-0 w-full h-full object-cover',
+		'sizes' => '(min-width: 1024px) 600px, 100vw',
+	)
+);
 $text_col  = ( 'right' === $attributes['imagePosition'] ) ? 'lg:order-first' : '';
 
 $button_url = $attributes['buttonUrl'];
@@ -27,8 +35,8 @@ $wrapper = get_block_wrapper_attributes(
 	<div class="max-w-figma mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
 		<div class="relative w-full h-[360px] md:h-[420px] rounded-[32px] overflow-hidden border border-white/10 shadow-2xl bg-tedx-card flex items-center justify-center <?php echo ( 'right' === $attributes['imagePosition'] ) ? 'lg:order-last' : ''; ?>">
-			<?php if ( $image_url ) : ?>
-				<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $image_alt ); ?>" class="absolute inset-0 w-full h-full object-cover">
+			<?php if ( $image_html ) : ?>
+				<?php echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?>
 			<?php else : ?>
 				<div class="absolute inset-0 bg-gradient-to-tr from-black via-[#1c1c1c] to-[#2a1015]"></div>
 				<div class="relative z-10 flex flex-col items-center justify-center p-6 text-center">

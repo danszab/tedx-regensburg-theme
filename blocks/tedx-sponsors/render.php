@@ -37,7 +37,7 @@ $wrapper = get_block_wrapper_attributes(
 				<?php if ( ! empty( $eyebrow ) ) : ?>
 					<?php tedx_category_header( $eyebrow ); ?>
 				<?php endif; ?>
-				<h2 id="<?php echo esc_attr( $section_id ); ?>-heading" class="w-full text-5xl leading-none tracking-[-0.05em] text-white md:text-[64px]">
+				<h2 id="<?php echo esc_attr( $section_id ); ?>-heading" class="w-full tedx-block-heading">
 					<?php echo esc_html( $title ); ?>
 				</h2>
 			</div>
@@ -45,18 +45,21 @@ $wrapper = get_block_wrapper_attributes(
 			<div class="w-full max-w-[301px] py-16">
 				<?php
 				$first_sponsor = reset( $sponsors );
-				$logo_url      = $first_sponsor['url'] ?? '';
 				$sponsor_name  = $first_sponsor['name'] ?? __( 'Exclusive partner', 'tedx-regensburg' );
 				$sponsor_link  = $first_sponsor['link'] ?? '';
-				$logo_img      = sprintf(
-					'<img src="%1$s" alt="%2$s" class="h-full w-auto max-w-full object-contain" loading="lazy" decoding="async">',
-					esc_url( $logo_url ),
-					esc_attr( $sponsor_name )
+				$logo_img      = tedx_block_image(
+					$first_sponsor,
+					'medium',
+					array(
+						'alt'   => $sponsor_name,
+						'class' => 'tedx-sponsor-logo',
+						'sizes' => '(max-width: 333px) calc(100vw - 32px), 301px',
+					)
 				);
 				?>
-				<div class="flex h-10 items-center">
+				<div class="tedx-sponsor-logo-frame tedx-sponsor-logo-frame-featured">
 					<?php if ( ! empty( $sponsor_link ) ) : ?>
-						<a href="<?php echo esc_url( $sponsor_link ); ?>" class="block h-full" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( $sponsor_name ); ?>">
+						<a href="<?php echo esc_url( $sponsor_link ); ?>" class="tedx-sponsor-logo-link" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( $sponsor_name ); ?>">
 							<?php echo $logo_img; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 						</a>
 					<?php else : ?>
@@ -70,7 +73,7 @@ $wrapper = get_block_wrapper_attributes(
 				<?php tedx_category_header( $eyebrow ); ?>
 			<?php endif; ?>
 
-			<h2 id="<?php echo esc_attr( $section_id ); ?>-heading" class="w-full text-5xl font-medium leading-none tracking-[-0.05em] text-white md:text-[64px]">
+			<h2 id="<?php echo esc_attr( $section_id ); ?>-heading" class="w-full tedx-block-heading">
 				<?php echo esc_html( $title ); ?>
 			</h2>
 
@@ -83,19 +86,29 @@ $wrapper = get_block_wrapper_attributes(
 			<div class="grid w-full grid-cols-1 gap-6 overflow-hidden pt-10 sm:grid-cols-2 lg:grid-cols-3">
 				<?php foreach ( $sponsors as $s ) : ?>
 					<?php
-					$s_url  = $s['url'] ?? '';
 					$s_name = $s['name'] ?? '';
 					$s_link = $s['link'] ?? '';
+					$s_image = tedx_block_image(
+						$s,
+						'medium',
+						array(
+							'alt'   => $s_name,
+							'class' => 'tedx-sponsor-logo',
+							'sizes' => '(max-width: 639px) calc(100vw - 70px), (max-width: 767px) calc((100vw - 56px) / 2 - 38px), (max-width: 1023px) calc((100vw - 88px) / 2 - 38px), 280px',
+						)
+					);
 					?>
 					<article class="flex h-[92px] items-center justify-center overflow-hidden rounded-[32px] bg-tedx-card px-[19px] py-4">
-						<?php if ( ! empty( $s_url ) ) : ?>
+						<div class="tedx-sponsor-logo-frame">
+						<?php if ( $s_image ) : ?>
 							<?php if ( ! empty( $s_link ) ) : ?>
-								<a href="<?php echo esc_url( $s_link ); ?>" class="flex h-full w-full items-center justify-center" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( $s_name ); ?>">
-									<img src="<?php echo esc_url( $s_url ); ?>" alt="<?php echo esc_attr( $s_name ); ?>" class="max-h-full w-auto max-w-full object-contain" loading="lazy" decoding="async">
+								<a href="<?php echo esc_url( $s_link ); ?>" class="tedx-sponsor-logo-link" target="_blank" rel="noopener noreferrer" aria-label="<?php echo esc_attr( $s_name ); ?>">
+									<?php echo $s_image; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?>
 								</a>
 							<?php else : ?>
-								<img src="<?php echo esc_url( $s_url ); ?>" alt="<?php echo esc_attr( $s_name ); ?>" class="max-h-full w-auto max-w-full object-contain" loading="lazy" decoding="async">
+								<?php echo $s_image; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?>
 							<?php endif; ?>
+							</div>
 						<?php else : ?>
 							<span class="text-center text-sm font-medium text-white/60"><?php echo esc_html( $s_name ); ?></span>
 						<?php endif; ?>

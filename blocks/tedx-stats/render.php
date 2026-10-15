@@ -29,6 +29,15 @@ $wrapper = get_block_wrapper_attributes(
 			$icon_key  = $stat['icon'] ?? 'groups';
 			$icon_html = '';
 
+			if ( 'custom' === $icon_key ) {
+				$icon_id  = absint( $stat['customIconId'] ?? 0 );
+				$icon_url = $icon_id && 'image/svg+xml' === get_post_mime_type( $icon_id ) ? wp_get_attachment_url( $icon_id ) : false;
+				if ( $icon_url ) {
+					$icon_html = '<span class="tedx-stat-custom-icon" aria-hidden="true" style="' . esc_attr( '--tedx-stat-icon: url("' . esc_url( $icon_url ) . '");' ) . '"></span>';
+				} else {
+					$icon_html = tedx_block_editor_notice( __( 'Select an SVG from the Media Library for this custom stat icon.', 'tedx-regensburg' ) );
+				}
+			} else {
 			// Check local theme SVG files for stat-1, stat-2, stat-3
 			$candidate_files = array(
 				"assets/images/icons/{$icon_key}.svg",
@@ -50,6 +59,7 @@ $wrapper = get_block_wrapper_attributes(
 
 			if ( empty( $icon_html ) && function_exists( 'tedx_get_icon' ) ) {
 				$icon_html = tedx_get_icon( $icon_key, 'w-6 h-6' );
+			}
 			}
 			?>
 			<div class="w-[147px] h-[147px] border-2 border-tedx-green rounded-[32px] p-4 flex flex-col items-center justify-between text-center bg-black/20 backdrop-blur-sm shadow-glow-green">

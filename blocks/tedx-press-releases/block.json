@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/press-releases",
+    "title": "TEDx Press Releases",
+    "category": "tedx",
+    "icon": "media-document",
+    "description": "Scrollable grid of category-filtered posts with PDF downloads.",
+    "keywords": ["press", "news", "posts", "pdf", "tedx"],
+    "supports": { "html": false, "align": ["full"] },
+    "attributes": {
+        "title": { "type": "string", "default": "Press Releases" },
+        "categoryId": { "type": "integer", "default": 0 },
+        "postsToShow": { "type": "integer", "default": 6 },
+        "excerptLength": { "type": "integer", "default": 35 },
+        "showMoreText": { "type": "string", "default": "Show more" },
+        "downloadText": { "type": "string", "default": "Download PDF" }
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}

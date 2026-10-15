@@ -55,7 +55,7 @@ $wrapper_attributes = get_block_wrapper_attributes( array(
 		<?php endif; ?>
 
 		<?php if ( ! empty( $title ) ) : ?>
-			<h2 class="tedx-timetable-title text-4xl sm:text-5xl md:text-6xl font-normal text-white tracking-[-2.4px] md:tracking-[-3.2px] leading-none mb-8 md:mb-10">
+			<h2 class="tedx-timetable-title tedx-block-heading mb-8 md:mb-10">
 				<?php echo esc_html( $title ); ?>
 			</h2>
 		<?php endif; ?>

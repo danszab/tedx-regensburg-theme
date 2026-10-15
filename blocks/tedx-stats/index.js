@@ -2,10 +2,12 @@
 	var H = window.tedxBlocks;
 	var el = H.el;
 	var c = wp.components;
+	var be = wp.blockEditor;
+	var __ = wp.i18n.__;
 
 	H.registerServerBlock('tedx/stats', function (props) {
 		var items = props.attributes.items || [];
-		var iconOptions = H.data.icons || [];
+		var iconOptions = (H.data.icons || []).concat([{ value: 'custom', label: __('Custom SVG', 'tedx-regensburg') }]);
 
 		function updateItem(index, key, val) {
 			var newItems = items.slice();
@@ -36,6 +38,26 @@
 						options: iconOptions,
 						onChange: function (val) { updateItem(idx, 'icon', val); }
 					}),
+					item.icon === 'custom' ? el(
+						be.MediaUploadCheck,
+						null,
+						el(be.MediaUpload, {
+							allowedTypes: ['image/svg+xml'],
+							value: item.customIconId || 0,
+							onSelect: function (media) { updateItem(idx, 'customIconId', media.id); },
+							render: function (picker) {
+								return el(c.Button, {
+									variant: 'secondary',
+									onClick: picker.open
+								}, item.customIconId ? __('Replace SVG icon', 'tedx-regensburg') : __('Upload or select SVG icon', 'tedx-regensburg'));
+							}
+						})
+					) : null,
+					item.icon === 'custom' && item.customIconId ? el(c.Button, {
+						variant: 'link',
+						isDestructive: true,
+						onClick: function () { updateItem(idx, 'customIconId', 0); }
+					}, __('Remove SVG icon', 'tedx-regensburg')) : null,
 					el(c.TextControl, {
 						label: 'Number / Value',
 						value: item.value || '',

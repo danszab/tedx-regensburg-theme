@@ -17,18 +17,11 @@
 }
 
 .tedx-timetable-title {
-    font-size: 48px;
-    line-height: 1;
-    font-weight: 400;
-    letter-spacing: -2.4px;
-    color: #ffffff;
     margin: 0 0 32px 0;
 }
 
 @media (min-width: 768px) {
     .tedx-timetable-title {
-        font-size: 64px;
-        letter-spacing: -3.2px;
         margin-bottom: 40px;
     }
 }

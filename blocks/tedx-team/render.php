@@ -31,7 +31,7 @@ $wrapper = get_block_wrapper_attributes(
 <section <?php echo $wrapper; // phpcs:ignore WordPress.Security.EscapeOutput ?>>
 	<div class="max-w-figma mx-auto w-full">
 
-		<h2 class="text-4xl sm:text-5xl md:text-[64px] font-black text-white tracking-[-3.2px] leading-tight mb-12">
+		<h2 class="tedx-block-heading mb-12">
 			<?php echo esc_html( $title ); ?>
 		</h2>
 

@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function tedx_get_block_dirs() {
 	return array(
 		'tedx-gallery',
+		'tedx-press-releases',
 		'tedx-timetable',
 		'tedx-speakers',
 		'tedx-speaker-coaches',
@@ -45,7 +46,11 @@ function tedx_register_native_blocks() {
 	);
 
 	foreach ( tedx_get_block_dirs() as $dir ) {
-		register_block_type( TEDX_DIR . '/blocks/' . $dir );
+		$block_type = register_block_type( TEDX_DIR . '/blocks/' . $dir );
+		// Front-end block scripts are not needed for first paint; keep them out of the critical chain.
+		foreach ( ( $block_type && ! empty( $block_type->view_script_handles ) ) ? $block_type->view_script_handles : array() as $handle ) {
+			wp_script_add_data( $handle, 'strategy', 'defer' );
+		}
 	}
 }
 add_action( 'init', 'tedx_register_native_blocks' );
@@ -148,6 +153,12 @@ function tedx_enqueue_block_editor_data() {
 		'coachYears'   => tedx_get_distinct_meta_values( 'speaker_coach', '_speaker_coach_year' ),
 		'icons'        => $icons,
 		'events'       => $events,
+		'postCategories' => array_map(
+			function ( $category ) {
+				return array( 'value' => $category->term_id, 'label' => $category->name );
+			},
+			get_categories( array( 'hide_empty' => false ) )
+		),
 	);
 
 	wp_add_inline_script( 'tedx-block-helpers', 'window.tedxBlockData = ' . wp_json_encode( $data ) . ';', 'before' );
@@ -167,7 +178,6 @@ function tedx_enqueue_editor_canvas_styles() {
 	if ( file_exists( $compiled ) ) {
 		wp_enqueue_style( 'tedx-editor-tailwind', TEDX_URI . '/assets/css/style.css', array(), filemtime( $compiled ) );
 	}
-	wp_enqueue_style( 'tedx-editor-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap', array(), null );
 	wp_add_inline_style(
 		'tedx-editor-tailwind',
 		'.editor-styles-wrapper{background:#0a0a0a;color:#fff;font-family:"Helvetica Neue",Inter,sans-serif;}'
@@ -217,6 +227,32 @@ function tedx_block_post_id( $block ) {
 }
 
 /**
+ * Render a Media Library image at a generated size, preserving URL-only images.
+ */
+function tedx_block_image( $image, $size, $attrs = array() ) {
+	$attrs = wp_parse_args( $attrs, array( 'loading' => 'lazy', 'decoding' => 'async', 'fetchpriority' => 'auto' ) );
+	$id    = absint( $image['id'] ?? 0 );
+	if ( ! $id && ! empty( $image['url'] ) ) {
+		$id = attachment_url_to_postid( $image['url'] );
+	}
+	if ( $id ) {
+		$html = wp_get_attachment_image( $id, $size, false, $attrs );
+		if ( $html ) {
+			return $html;
+		}
+	}
+	if ( empty( $image['url'] ) ) {
+		return '';
+	}
+
+	$html = '<img src="' . esc_url( $image['url'] ) . '"';
+	foreach ( $attrs as $name => $value ) {
+		$html .= ' ' . esc_attr( $name ) . '="' . esc_attr( $value ) . '"';
+	}
+	return $html . '>';
+}
+
+/**
  * Render the speakers / speaker coaches grid (masonry cards).
  *
  * @param array $a Arguments, see defaults below.
@@ -248,6 +284,7 @@ function tedx_render_people_grid( $a ) {
 
 	$query_args = array(
 		'post_type'      => $a['post_type'],
+		'no_found_rows'  => true,
 		'posts_per_page' => -1,
 		'post_status'    => 'publish',
 		'orderby'        => 'menu_order',
@@ -277,11 +314,11 @@ function tedx_render_people_grid( $a ) {
 	?>
 	<div class="mb-4 pt-4 px-2 flex flex-col gap-6">
 		<?php if ( $is_coach ) : ?>
-			<h2 class="block text-5xl sm:text-6xl font-normal text-white tracking-tighter leading-none normal-case"><?php echo esc_html( $a['title'] ); ?></h2>
+			<h2 class="block tedx-block-heading normal-case"><?php echo esc_html( $a['title'] ); ?></h2>
 		<?php else : ?>
 			<?php tedx_category_header( $a['title'], '', 'h2' ); ?>
 			<?php if ( $a['show_year'] && '' !== $year ) : ?>
-				<span class="block text-5xl sm:text-6xl font-normal text-white tracking-tighter leading-none"><?php echo esc_html( $year ); ?></span>
+				<span class="block tedx-block-heading"><?php echo esc_html( $year ); ?></span>
 			<?php endif; ?>
 			<?php if ( $a['show_event_button'] && '' !== trim( (string) $a['event_button_text'] ) ) : ?>
 				<div class="pt-2">
@@ -317,7 +354,13 @@ function tedx_render_people_grid( $a ) {
 				<div class="flex gap-4 items-start mb-4">
 					<div class="w-[122px] h-[122px] rounded-2xl overflow-hidden shrink-0 bg-[#333] border border-white/10 relative">
 						<?php if ( has_post_thumbnail() ) : ?>
-							<?php the_post_thumbnail( 'tedx-speaker', array( 'class' => 'w-full h-full object-cover' ) ); ?>
+							<?php the_post_thumbnail( 'tedx-speaker', array(
+								'class'    => 'w-full h-full object-cover',
+								'sizes'    => '122px',
+								'loading'  => 'lazy',
+								'fetchpriority' => 'auto',
+								'decoding' => 'async',
+							) ); ?>
 						<?php else : ?>
 							<div class="w-full h-full flex items-center justify-center text-white/30 font-bold text-3xl bg-gradient-to-br from-[#333] to-[#222]"><?php echo esc_html( mb_substr( get_the_title(), 0, 1 ) ); ?></div>
 						<?php endif; ?>
