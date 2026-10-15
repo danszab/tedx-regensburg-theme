@@ -82,6 +82,7 @@ function tedx_enqueue_scripts() {
 	}
 
 	// Main JS
+	wp_enqueue_script( 'tedx-embed-consent', TEDX_URI . '/assets/js/embed-consent.js', array(), filemtime( TEDX_DIR . '/assets/js/embed-consent.js' ), array( 'in_footer' => true, 'strategy' => 'defer' ) );
 	$main_script_path = TEDX_DIR . '/assets/js/main.js';
 	if ( file_exists( $main_script_path ) ) {
 		wp_enqueue_script( 'tedx-main-js', TEDX_URI . '/assets/js/main.js', array(), filemtime( $main_script_path ), array( 'in_footer' => true, 'strategy' => 'defer' ) );
@@ -102,6 +103,7 @@ add_action( 'wp_enqueue_scripts', 'tedx_enqueue_scripts' );
 require_once TEDX_DIR . '/inc/template-tags.php';
 require_once TEDX_DIR . '/inc/hero-media.php';
 require_once TEDX_DIR . '/inc/performance.php';
+require_once TEDX_DIR . '/inc/embed-consent.php';
 require_once TEDX_DIR . '/inc/custom-post-types.php';
 require_once TEDX_DIR . '/inc/customizer-helpers.php';
 require_once TEDX_DIR . '/inc/customizer.php';

@@ -96,8 +96,8 @@ $youtube_url  = get_post_meta( $speaker_id, '_speaker_youtube', true );
 								<?php echo tedx_get_icon( 'youtube', 'w-6 h-6 text-tedx-red' ); ?>
 								<?php esc_html_e( 'The Talk', 'tedx-regensburg' ); ?>
 							</h3>
-							<div class="aspect-video w-full rounded-[20px] overflow-hidden bg-black shadow-2xl [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:border-0 border border-white/10">
-								<?php echo wp_oembed_get( $youtube_url ); ?>
+							<div class="relative w-full rounded-[20px] overflow-hidden bg-black shadow-2xl border border-white/10">
+								<?php echo tedx_consent_embed( tedx_youtube_embed_url( $youtube_url ), 'YouTube', get_the_title() ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?>
 							</div>
 						</div>
 					<?php endif; ?>

@@ -58,6 +58,26 @@ WP-admin / server checklist (not controlled by the theme):
 4. **Media:** keep hero videos short and compressed (WebM + fast-start MP4, ideally under 1 MB on mobile); upload WebP/AVIF stills.
 5. **Verify:** rerun Lighthouse (mobile + desktop) and check the LCP element in DevTools → Performance.
 
+## Privacy / Cookie Consent
+
+The theme gates the Venue block's Google Maps and speaker-page YouTube videos behind German, translatable consent placeholders. No iframe, remote preview, or provider script is emitted before clicking **Einwilligen und … laden**. Custom Maps HTML is reduced to an approved HTTPS Google Maps iframe URL; other markup is not executed. Invalid URLs show an explicit unavailable message. YouTube uses `youtube-nocookie.com`, but is still blocked until consent.
+
+Consent applies only to the clicked embed for the current page view. Nothing is saved in cookies, localStorage, or server-side consent records; reloading requires consent again. The other embeds remain blocked. **Inhalt deaktivieren / Einwilligung widerrufen** removes the iframe and restores the placeholder. This stops the embedded document but cannot undo transmitted data, erase Google's cookies, or recall requests already in flight. Without JavaScript, only the disclosure and external link are shown.
+
+After consent, iframe requests use `strict-origin-when-cross-origin`: Google receives the site's origin as the referrer, not the page path or query string. Suppressing the referrer entirely causes YouTube player error 153.
+
+Google Maps and YouTube iframes in standard post content are also gated server-side, including raw HTML, Gutenberg embeds, and `[embed]` shortcode/oEmbed output. Other providers and content injected later by JavaScript are not covered.
+
+This is technical consent gating, not legal certification or a complete consent-management platform. Section 25 TDDDG requires clear information before non-essential storage/access, alongside the applicable GDPR requirements. Have the disclosures, processing/legal basis, international transfers, and your method of demonstrating consent reviewed for your site. Analytics and other plugins require a separate audit.
+
+Deployment checklist:
+
+1. Set the site's privacy-policy page in **Settings → Privacy** so it is linked in each placeholder. Update it for Google Maps and YouTube, including provider, purposes, recipient/transfer information, and withdrawal.
+2. If Real Cookie Banner was installed only for these embeds, disable/deactivate it to avoid a second consent layer. If it manages other services, keep it and review its configuration separately; this component does not synchronize with it.
+3. Deploy PHP, JavaScript, and compiled CSS together and clear WP Fastest Cache.
+4. In a fresh private window, verify that Maps/YouTube/Google image requests do not occur before clicking. Verify separate consent for each embed, keyboard operation, withdrawal, and reset on reload. Test both generated and custom venue maps and speaker videos.
+5. No banner is provided by this component. Audit the rest of the site before deciding that no global consent mechanism is needed.
+
 ---
 
 ## 📁 File Structure

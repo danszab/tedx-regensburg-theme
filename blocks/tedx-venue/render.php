@@ -67,19 +67,16 @@ $wrapper = get_block_wrapper_attributes(
 <section <?php echo $wrapper; // phpcs:ignore WordPress.Security.EscapeOutput ?>>
 	<div class="max-w-figma mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
 
-		<!-- Left Column: Location / Venue Image or Embed -->
-		<div class="w-full aspect-[4/3] rounded-[32px] overflow-hidden relative shadow-2xl bg-tedx-card border border-white/10">
-			<?php if ( ! empty( $maps_embed ) ) : ?>
-				<div class="absolute inset-0 w-full h-full [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:border-0 grayscale hover:grayscale-0 transition-all duration-500">
-					<?php echo $maps_embed; // phpcs:ignore WordPress.Security.EscapeOutput ?>
-				</div>
-			<?php else : ?>
-				<?php
-				$map_query     = trim( $venue_name . ', ' . $address_1 . ', ' . $address_2 );
-				$map_embed_url = 'https://www.google.com/maps?q=' . rawurlencode( $map_query ) . '&output=embed';
-				?>
-				<iframe class="absolute inset-0 w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-500" src="<?php echo esc_url( $map_embed_url ); ?>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-			<?php endif; ?>
+		<div class="tedx-venue-map w-full rounded-[32px] overflow-hidden relative shadow-2xl bg-tedx-card border border-white/10">
+				<?php if ( ! empty( $maps_embed ) ) : ?>
+					<?php $map_embed_url = tedx_map_embed_url( $maps_embed ); ?>
+				<?php else : ?>
+					<?php
+					$map_query     = trim( $venue_name . ', ' . $address_1 . ', ' . $address_2 );
+					$map_embed_url = 'https://www.google.com/maps?q=' . rawurlencode( $map_query ) . '&output=embed';
+					?>
+				<?php endif; ?>
+				<?php echo tedx_consent_embed( $map_embed_url, 'Google Maps', sprintf( __( 'Map: %s', 'tedx-regensburg' ), $venue_name ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?>
 		</div>
 
 		<!-- Right Column: Location / Venue Info -->
