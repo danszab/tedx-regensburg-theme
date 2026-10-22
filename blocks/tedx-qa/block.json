@@ -1,0 +1,61 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/qa",
+    "title": "TEDx Q&A",
+    "category": "tedx",
+    "icon": "editor-help",
+    "description": "Accessible, animated Q&A Accordion component following shadcn / Base UI specifications.",
+    "keywords": ["qa", "faq", "accordion", "questions", "tedx"],
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"]
+    },
+    "attributes": {
+        "title": {
+            "type": "string",
+            "default": "Frequently Asked Questions"
+        },
+        "eyebrow": {
+            "type": "string",
+            "default": "Q&A"
+        },
+        "sectionId": {
+            "type": "string",
+            "default": "faq"
+        },
+        "type": {
+            "type": "string",
+            "default": "single"
+        },
+        "collapsible": {
+            "type": "boolean",
+            "default": true
+        },
+        "items": {
+            "type": "array",
+            "default": [
+                {
+                    "question": "What is TEDxRegensburg?",
+                    "answer": "TEDxRegensburg is a locally and independently organized event that brings people together to share a TED-like experience. Our event features inspiring live speakers and thought-provoking discussions."
+                },
+                {
+                    "question": "When and where does the event take place?",
+                    "answer": "Please check the Venue and Timetable sections on our event page for the exact date, time, and address details."
+                },
+                {
+                    "question": "Are food and drinks included with the ticket?",
+                    "answer": "Yes! Pinsa, snacks, and refreshing beverages are provided before and after the event as well as during the breaks for all ticket holders."
+                },
+                {
+                    "question": "Can I get a refund if I cannot attend?",
+                    "answer": "Tickets are generally transferable to another person. If you need assistance with ticket transfers or refunds, please reach out to our team via the contact form."
+                }
+            ]
+        }
+    },
+    "editorScript": "file:./index.js",
+    "viewScript": "file:./script.js",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}

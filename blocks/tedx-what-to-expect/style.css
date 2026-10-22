@@ -1,0 +1,21 @@
+/* TEDx What to Expect Block Styles */
+.tedx-what-to-expect-card {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #252525;
+  border-radius: 32px;
+  background-color: transparent;
+  transition: border-color 0.3s ease;
+}
+
+.tedx-what-to-expect-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.tedx-what-to-expect-custom-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background-color: #eb0028;
+}

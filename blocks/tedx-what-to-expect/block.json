@@ -1,0 +1,61 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/what-to-expect",
+    "title": "TEDx What to Expect",
+    "category": "tedx",
+    "icon": "grid-view",
+    "description": "Grid of benefit and expectation cards with configurable title, icon, and description.",
+    "keywords": ["what to expect", "benefits", "features", "tedx"],
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"]
+    },
+    "attributes": {
+        "title": {
+            "type": "string",
+            "default": "What to expect"
+        },
+        "eyebrow": {
+            "type": "string",
+            "default": ""
+        },
+        "sectionId": {
+            "type": "string",
+            "default": "what-to-expect"
+        },
+        "cards": {
+            "type": "array",
+            "default": [
+                {
+                    "title": "Free Food & Drinks",
+                    "icon": "globe",
+                    "description": "Pinsa and drinks will be available before and after the event as well as during the break for free."
+                },
+                {
+                    "title": "Free Food & Drinks",
+                    "icon": "globe",
+                    "description": "Pinsa and drinks will be available before and after the event as well as during the break for free."
+                },
+                {
+                    "title": "Free Food & Drinks",
+                    "icon": "globe",
+                    "description": "Pinsa and drinks will be available before and after the event as well as during the break for free."
+                },
+                {
+                    "title": "Free Food & Drinks",
+                    "icon": "globe",
+                    "description": "Pinsa and drinks will be available before and after the event as well as during the break for free."
+                },
+                {
+                    "title": "Free Food & Drinks",
+                    "icon": "globe",
+                    "description": "Pinsa and drinks will be available before and after the event as well as during the break for free."
+                }
+            ]
+        }
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}

@@ -1,0 +1,48 @@
+.tedx-press-gallery-card {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tedx-press-gallery-image {
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 24px;
+  background-color: #1a1a1a;
+  position: relative;
+}
+
+.tedx-press-gallery-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.tedx-press-gallery-card:hover .tedx-press-gallery-image img {
+  transform: scale(1.03);
+}
+
+.tedx-press-gallery-desc {
+  line-height: 1.35;
+}
+
+.tedx-press-gallery-desc p {
+  margin: 0;
+}
+
+.tedx-press-gallery-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #eb0028;
+  text-decoration: none;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.tedx-press-gallery-download:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}

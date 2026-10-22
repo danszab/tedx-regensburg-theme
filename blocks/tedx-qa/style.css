@@ -1,0 +1,82 @@
+/* shadcn / Base UI Accordion Styles */
+.tedx-accordion-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tedx-accordion-trigger {
+  display: flex;
+  flex: 1 1 0%;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 500;
+  color: #ffffff;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 640px) {
+  .tedx-accordion-trigger {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}
+
+.tedx-accordion-trigger:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.tedx-accordion-trigger:focus-visible {
+  outline: 2px solid #eb0028;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.tedx-accordion-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tedx-accordion-trigger[data-state="open"] .tedx-accordion-chevron {
+  transform: rotate(180deg);
+  color: #eb0028;
+}
+
+/* Accordion Content with smooth height transition */
+.tedx-accordion-content {
+  overflow: hidden;
+  font-size: 0.9375rem;
+  line-height: 1.625;
+  color: rgba(255, 255, 255, 0.8);
+  transition: height 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tedx-accordion-content[data-state="closed"] {
+  height: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tedx-accordion-content[data-state="open"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tedx-accordion-body {
+  padding-bottom: 1.25rem;
+  padding-top: 0.25rem;
+}

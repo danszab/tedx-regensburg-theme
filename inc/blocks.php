@@ -26,6 +26,9 @@ function tedx_get_block_dirs() {
 		'tedx-text-section',
 		'tedx-team',
 		'tedx-venue',
+		'tedx-what-to-expect',
+		'tedx-qa',
+		'tedx-press-gallery',
 	);
 }
 
@@ -111,14 +114,18 @@ add_action( 'deleted_post', 'tedx_flush_year_cache' );
  */
 function tedx_get_stat_icon_choices() {
 	return array(
+		'globe'       => __( 'Globe', 'tedx-regensburg' ),
+		'food'        => __( 'Food & Catering', 'tedx-regensburg' ),
+		'coffee'      => __( 'Coffee & Drinks', 'tedx-regensburg' ),
+		'sparkles'    => __( 'Sparkles', 'tedx-regensburg' ),
+		'star'        => __( 'Star', 'tedx-regensburg' ),
+		'groups'      => __( 'People', 'tedx-regensburg' ),
+		'ticket'      => __( 'Ticket', 'tedx-regensburg' ),
+		'info'        => __( 'Info', 'tedx-regensburg' ),
 		'stat-1'      => __( 'Theme icon 1', 'tedx-regensburg' ),
 		'stat-2'      => __( 'Theme icon 2', 'tedx-regensburg' ),
 		'stat-3'      => __( 'Theme icon 3', 'tedx-regensburg' ),
-		'groups'      => __( 'People', 'tedx-regensburg' ),
-		'globe'       => __( 'Globe', 'tedx-regensburg' ),
 		'send'        => __( 'Send', 'tedx-regensburg' ),
-		'ticket'      => __( 'Ticket', 'tedx-regensburg' ),
-		'info'        => __( 'Info', 'tedx-regensburg' ),
 		'mail'        => __( 'Mail', 'tedx-regensburg' ),
 		'youtube'     => __( 'YouTube', 'tedx-regensburg' ),
 		'linkedin'    => __( 'LinkedIn', 'tedx-regensburg' ),
@@ -185,14 +192,16 @@ function tedx_enqueue_editor_canvas_styles() {
 }
 add_action( 'enqueue_block_assets', 'tedx_enqueue_editor_canvas_styles' );
 
-/**
- * Notice shown only in the editor (REST/ServerSideRender) when a block has nothing to render.
- */
-function tedx_block_editor_notice( $message ) {
-	if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-		return '<div class="max-w-figma mx-auto px-4 py-10 text-sm text-white/60">' . esc_html( $message ) . '</div>';
+if ( ! function_exists( 'tedx_block_editor_notice' ) ) {
+	/**
+	 * Notice shown only in the editor (REST/ServerSideRender) when a block has nothing to render.
+	 */
+	function tedx_block_editor_notice( $message ) {
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return '<div class="max-w-figma mx-auto px-4 py-10 text-sm text-white/60">' . esc_html( $message ) . '</div>';
+		}
+		return '';
 	}
-	return '';
 }
 
 /**

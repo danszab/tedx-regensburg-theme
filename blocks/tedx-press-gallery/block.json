@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/press-gallery",
+    "title": "TEDx Press Gallery",
+    "category": "tedx",
+    "icon": "format-gallery",
+    "description": "Grid of press image previews with descriptions and high-resolution download links.",
+    "keywords": ["press", "gallery", "images", "media", "download", "tedx"],
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"]
+    },
+    "attributes": {
+        "title": {
+            "type": "string",
+            "default": "Press Gallery"
+        },
+        "eyebrow": {
+            "type": "string",
+            "default": "Media Downloads"
+        },
+        "sectionId": {
+            "type": "string",
+            "default": "press-gallery"
+        },
+        "downloadText": {
+            "type": "string",
+            "default": "Download high-resolution image"
+        },
+        "items": {
+            "type": "array",
+            "default": []
+        }
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}
