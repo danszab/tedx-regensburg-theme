@@ -44,8 +44,6 @@
     line-height: 1;
     letter-spacing: -0.03em;
     color: #ffffff;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
   }
 
   @media (min-width: 640px) {
@@ -61,8 +59,6 @@
     color: #eb0028;
     letter-spacing: -1.1px;
     line-height: 1.375;
-    margin-top: 2.5rem;
-    margin-bottom: 0.5rem;
   }
 
   h3 {
@@ -72,8 +68,6 @@
     color: #ffffff;
     letter-spacing: -0.9px;
     line-height: 1.4;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
   }
 
   h4,
@@ -84,8 +78,6 @@
     font-weight: 700;
     color: #ffffff;
     line-height: 1.5;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
   }
 
   p {
@@ -94,16 +86,6 @@
     font-weight: 400;
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.9);
-    margin-top: 0;
-    margin-bottom: 1rem;
-  }
-
-  p:last-child {
-    margin-bottom: 0;
-  }
-
-  p + p {
-    margin-top: 1rem;
   }
 
   ::selection {
@@ -550,9 +532,66 @@
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
     padding-left: 16px;
     padding-right: 16px;
     box-sizing: border-box;
+  }
+
+  @media (min-width: 1000px) {
+    .wp-block-heading:not(.alignfull):not(.alignwide),
+    .wp-block-paragraph:not(.alignfull):not(.alignwide),
+    .wp-block-list:not(.alignfull):not(.alignwide),
+    .wp-block-quote:not(.alignfull):not(.alignwide),
+    .editor-styles-wrapper .wp-block-heading:not([data-align="full"]):not([data-align="wide"]),
+    .editor-styles-wrapper .wp-block-paragraph:not([data-align="full"]):not([data-align="wide"]),
+    .editor-styles-wrapper .wp-block-list:not([data-align="full"]):not([data-align="wide"]),
+    .editor-styles-wrapper .wp-block-quote:not([data-align="full"]):not([data-align="wide"]),
+    .editor-styles-wrapper [data-type="core/heading"]:not([data-align="full"]):not([data-align="wide"]),
+    .editor-styles-wrapper [data-type="core/paragraph"]:not([data-align="full"]):not([data-align="wide"]),
+    .editor-styles-wrapper [data-type="core/list"]:not([data-align="full"]):not([data-align="wide"]),
+    .editor-styles-wrapper [data-type="core/quote"]:not([data-align="full"]):not([data-align="wide"]),
+    .editor-styles-wrapper .is-root-container > :not(.alignfull):not([data-align="full"]):not(.alignwide):not([data-align="wide"]),
+    .editor-styles-wrapper .block-editor-block-list__layout > :not(.alignfull):not([data-align="full"]):not(.alignwide):not([data-align="wide"]),
+    .editor-styles-wrapper > :not(.alignfull):not([data-align="full"]):not(.alignwide):not([data-align="wide"]):not(.is-root-container):not(.block-editor-block-list__layout),
+    .entry-content > h1:not(.alignfull),
+    .entry-content > h2:not(.alignfull),
+    .entry-content > h3:not(.alignfull),
+    .entry-content > h4:not(.alignfull),
+    .entry-content > h5:not(.alignfull),
+    .entry-content > h6:not(.alignfull),
+    .entry-content > p:not(.alignfull),
+    .entry-content > ul:not(.alignfull),
+    .entry-content > ol:not(.alignfull),
+    .entry-content > blockquote:not(.alignfull) {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  /* Prevent redundant inner padding when nested inside content containers */
+  .tedx-full-width-page-content > * p,
+  .tedx-full-width-page-content > * h1,
+  .tedx-full-width-page-content > * h2,
+  .tedx-full-width-page-content > * h3,
+  .tedx-full-width-page-content > * h4,
+  .tedx-full-width-page-content > * h5,
+  .tedx-full-width-page-content > * h6,
+  .tedx-full-width-page-content > * ul,
+  .tedx-full-width-page-content > * ol,
+  .tedx-full-width-page-content > * blockquote,
+  .entry-content > * p,
+  .entry-content > * h1,
+  .entry-content > * h2,
+  .entry-content > * h3,
+  .entry-content > * h4,
+  .entry-content > * h5,
+  .entry-content > * h6,
+  .entry-content > * ul,
+  .entry-content > * ol,
+  .entry-content > * blockquote {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .wp-block-heading.alignwide,
@@ -583,6 +622,15 @@
     width: 100%;
     padding-left: 0;
     padding-right: 0;
+  }
+
+  /* TEDx What to Expect Card Elements */
+  .tedx-what-to-expect-card h3 {
+    margin: 0 !important;
+  }
+
+  .tedx-what-to-expect-card p {
+    margin: 0 !important;
   }
 
   /* Offset first block on non-front pages to clear the fixed transparent header */
@@ -652,9 +700,19 @@
   max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
+  width: 100%;
   padding-left: 16px;
   padding-right: 16px;
   box-sizing: border-box;
+}
+
+@media (min-width: 1000px) {
+  .tedx-full-width-page .entry-header,
+  .tedx-full-width-page-featured,
+  .tedx-full-width-page-content > :not(.alignfull):not(:has(.alignfull)) {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 .tedx-full-width-page-content > .alignfull {

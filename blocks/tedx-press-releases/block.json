@@ -9,6 +9,7 @@
     "keywords": ["press", "news", "posts", "pdf", "tedx"],
     "supports": { "html": false, "align": ["full"] },
     "attributes": {
+        "align": { "type": "string", "default": "full" },
         "title": { "type": "string", "default": "Press Releases" },
         "categoryId": { "type": "integer", "default": 0 },
         "postsToShow": { "type": "integer", "default": 6 },

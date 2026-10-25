@@ -76,6 +76,9 @@ check( false !== strpos( $html, 'Pinsa &amp; Drinks' ), 'Card title is rendered'
 check( false !== strpos( $html, 'Delicious pinsa and refreshing beverages.' ), 'Card description is rendered' );
 check( false !== strpos( $html, 'border-tedx-card' ), 'Card has border-tedx-card styling' );
 check( false !== strpos( $html, 'rounded-4xl' ), 'Card has rounded-4xl radius' );
+check( false !== strpos( $html, 'items-center' ), 'Card header centers icon vertically with title text' );
+check( false !== strpos( $html, '<h3 class="m-0' ), 'Card title has m-0 to prevent rogue margin displacement' );
+check( false !== strpos( $html, '<p class="m-0' ), 'Card description has m-0' );
 check( false !== strpos( $html, 'grid-cols-1' ), 'Mobile grid has 1 column (1 card per row)' );
 check( false !== strpos( $html, 'sm:grid-cols-3' ), 'Tablet displays (<1000px) have 3 columns (3 cards per row)' );
 check( false !== strpos( $html, 'min-[1000px]:grid-cols-4' ), 'Displays >= 1000px have 4 columns (4 cards per row)' );

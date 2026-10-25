@@ -100,12 +100,12 @@ $wrapper = get_block_wrapper_attributes(
 							<div class="w-4 h-4 shrink-0 text-tedx-red flex items-center justify-center" aria-hidden="true">
 								<?php echo $icon_html; // phpcs:ignore WordPress.Security.EscapeOutput ?>
 							</div>
-							<h3 class="font-medium text-base leading-normal text-tedx-red flex-1 min-w-0 break-words">
+							<h3 class="m-0 font-medium text-base leading-normal text-tedx-red flex-1 min-w-0 break-words">
 								<?php echo esc_html( $card_title ); ?>
 							</h3>
 						</div>
 						<?php if ( ! empty( $card_desc ) ) : ?>
-							<p class="text-base text-white/90 font-normal leading-normal break-words">
+							<p class="m-0 text-base text-white/90 font-normal leading-normal break-words">
 								<?php echo esc_html( $card_desc ); ?>
 							</p>
 						<?php endif; ?>

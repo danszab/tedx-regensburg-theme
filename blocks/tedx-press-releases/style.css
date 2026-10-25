@@ -8,9 +8,10 @@
 }
 
 .tedx-press-heading {
+    width: 100%;
     max-width: 1000px;
     margin: 0 auto 32px;
-    padding: 0 16px;
+    padding-inline: 16px;
     box-sizing: border-box;
 }
 
@@ -21,7 +22,7 @@
 .tedx-press-scroll {
     overflow-x: auto;
     scroll-snap-type: x proximity;
-    scroll-padding-inline: max(16px, calc((100% - 1000px) / 2 + 16px));
+    scroll-padding-inline: 16px;
     scrollbar-color: #938f99 #252525;
     padding-bottom: 20px;
 }
@@ -29,11 +30,39 @@
 .tedx-press-grid {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: min(306.66px, calc(100vw - 48px));
-    grid-auto-columns: min(306.66px, calc(100cqw - 32px));
+    grid-auto-columns: min(calc((1000px - 48px) / 3), calc(100vw - 32px));
+    grid-auto-columns: min(calc((1000px - 48px) / 3), calc(100cqw - 32px));
     gap: 24px;
     width: max-content;
-    margin-inline: max(16px, calc((100% - 1000px) / 2 + 16px));
+    margin-inline: 16px;
+}
+
+@media (min-width: 1000px) {
+    .tedx-press-heading {
+        padding-inline: 0;
+    }
+
+    .tedx-press-scroll {
+        scroll-padding-inline: calc((100% - 1000px) / 2);
+    }
+
+    .tedx-press-grid {
+        margin-inline: calc((100% - 1000px) / 2);
+    }
+}
+
+@container (min-width: 1000px) {
+    .tedx-press-heading {
+        padding-inline: 0;
+    }
+
+    .tedx-press-scroll {
+        scroll-padding-inline: calc((100% - 1000px) / 2);
+    }
+
+    .tedx-press-grid {
+        margin-inline: calc((100% - 1000px) / 2);
+    }
 }
 
 .tedx-press-grid-two-rows {

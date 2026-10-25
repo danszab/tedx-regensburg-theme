@@ -31,8 +31,13 @@ if ( ! $releases ) {
 }
 
 $heading_id = wp_unique_id( 'tedx-press-heading-' );
+$align      = ! empty( $attributes['align'] ) ? $attributes['align'] : 'full';
+$extra_cls  = 'tedx-press-releases';
+if ( 'full' === $align ) {
+	$extra_cls .= ' alignfull';
+}
 ?>
-<section <?php echo get_block_wrapper_attributes( array( 'class' => 'tedx-press-releases' ) ); ?>>
+<section <?php echo get_block_wrapper_attributes( array( 'class' => $extra_cls ) ); ?>>
 	<div class="tedx-press-heading">
 		<h2 id="<?php echo esc_attr( $heading_id ); ?>" class="tedx-block-heading"><?php echo esc_html( $attributes['title'] ); ?></h2>
 	</div>
