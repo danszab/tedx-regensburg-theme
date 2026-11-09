@@ -4,7 +4,8 @@
   "description": "WordPress Theme for TEDx Regensburg based on Figma Design",
   "scripts": {
     "dev": "tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --watch",
-    "build": "tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --minify"
+    "build": "tailwindcss -i ./assets/css/input.css -o ./assets/css/style.css --minify",
+    "test": "for f in tests/*.php; do php \"$f\" || exit 1; done"
   },
   "keywords": [
     "wordpress",

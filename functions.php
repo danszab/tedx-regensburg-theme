@@ -105,6 +105,7 @@ require_once TEDX_DIR . '/inc/hero-media.php';
 require_once TEDX_DIR . '/inc/performance.php';
 require_once TEDX_DIR . '/inc/embed-consent.php';
 require_once TEDX_DIR . '/inc/custom-post-types.php';
+require_once TEDX_DIR . '/inc/page-options.php';
 require_once TEDX_DIR . '/inc/customizer-helpers.php';
 require_once TEDX_DIR . '/inc/customizer.php';
 require_once TEDX_DIR . '/inc/customizer-additions.php';

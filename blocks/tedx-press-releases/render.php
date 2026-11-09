@@ -32,7 +32,10 @@ if ( ! $releases ) {
 
 $heading_id = wp_unique_id( 'tedx-press-heading-' );
 $align      = ! empty( $attributes['align'] ) ? $attributes['align'] : 'full';
-$extra_cls  = 'tedx-press-releases';
+$spacing    = function_exists( 'tedx_get_block_spacing_classes' )
+	? tedx_get_block_spacing_classes( $attributes )
+	: 'pt-8 md:pt-12 pb-8 md:pb-12 border-t border-white/5';
+$extra_cls  = 'tedx-press-releases ' . $spacing;
 if ( 'full' === $align ) {
 	$extra_cls .= ' alignfull';
 }

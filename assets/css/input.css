@@ -39,35 +39,73 @@
   
   h1 {
     font-family: 'Helvetica Neue', Inter, sans-serif;
-    font-size: 3rem;
+    font-size: 2.125rem;
     font-weight: 400;
-    line-height: 1;
-    letter-spacing: -0.03em;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
     color: #ffffff;
   }
 
   @media (min-width: 640px) {
     h1 {
-      font-size: 3.75rem;
+      font-size: 2.75rem;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    h1 {
+      font-size: 3.5rem;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
     }
   }
 
   h2 {
     font-family: 'Helvetica Neue', Inter, sans-serif;
-    font-size: 22px;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #eb0028;
-    letter-spacing: -1.1px;
-    line-height: 1.375;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  @media (min-width: 640px) {
+    h2 {
+      font-size: 1.75rem;
+      line-height: 1.2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    h2 {
+      font-size: 2.25rem;
+      line-height: 1.15;
+    }
   }
 
   h3 {
     font-family: 'Helvetica Neue', Inter, sans-serif;
-    font-size: 18px;
+    font-size: 1.25rem;
     font-weight: 700;
     color: #ffffff;
-    letter-spacing: -0.9px;
-    line-height: 1.4;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+  }
+
+  @media (min-width: 640px) {
+    h3 {
+      font-size: 1.375rem;
+      line-height: 1.3;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    h3 {
+      font-size: 1.625rem;
+      line-height: 1.25;
+    }
   }
 
   h4,
@@ -104,10 +142,10 @@
   .editor-styles-wrapper .wp-block-heading:is(h1),
   .entry-content > h1 {
     font-family: "Helvetica Neue", Inter, sans-serif;
-    font-size: 3rem;
+    font-size: 2.125rem;
     font-weight: 400 !important;
-    line-height: 1;
-    letter-spacing: -0.03em;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
     color: #fff;
   }
 
@@ -120,7 +158,24 @@
     .editor-styles-wrapper h1,
     .editor-styles-wrapper .wp-block-heading:is(h1),
     .entry-content > h1 {
-      font-size: 3.75rem;
+      font-size: 2.75rem;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tedx-block-heading,
+    .tedx-prose h1,
+    .editor-styles-wrapper .tedx-prose h1,
+    .wp-block-heading:is(h1),
+    h1.wp-block-heading,
+    .editor-styles-wrapper h1,
+    .editor-styles-wrapper .wp-block-heading:is(h1),
+    .entry-content > h1 {
+      font-size: 3.5rem;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
     }
   }
 
@@ -324,6 +379,12 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
+  /* Hidden Navigation Bar on specific pages */
+  body.tedx-no-navbar #site-header,
+  body.no-navbar #site-header {
+      display: none !important;
+  }
+
   /* Active Nav Link Styles */
   .active-nav-link {
       color: #eb0028 !important; font-weight: 700 !important;
@@ -401,13 +462,13 @@
   .editor-styles-wrapper .wp-block-heading:is(h1),
   .entry-content > h1 {
     font-family: "Helvetica Neue", Inter, sans-serif;
-    font-size: 3rem;
+    font-size: 2.125rem;
     font-weight: 400 !important;
-    line-height: 1;
-    letter-spacing: -0.03em;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
     color: #ffffff;
     margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   @media (min-width: 640px) {
@@ -418,7 +479,23 @@
     .editor-styles-wrapper h1,
     .editor-styles-wrapper .wp-block-heading:is(h1),
     .entry-content > h1 {
-      font-size: 3.75rem;
+      font-size: 2.75rem;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tedx-prose h1,
+    .editor-styles-wrapper .tedx-prose h1,
+    .wp-block-heading:is(h1),
+    h1.wp-block-heading,
+    .editor-styles-wrapper h1,
+    .editor-styles-wrapper .wp-block-heading:is(h1),
+    .entry-content > h1 {
+      font-size: 3.5rem;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
     }
   }
 
@@ -430,13 +507,39 @@
   .editor-styles-wrapper .wp-block-heading:is(h2),
   .entry-content > h2 {
     font-family: "Helvetica Neue", Inter, sans-serif;
-    font-size: 22px;
+    font-size: 1.5rem;
     font-weight: 700 !important;
     color: #eb0028;
-    letter-spacing: -1.1px;
-    line-height: 1.375;
-    margin-top: 2.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin-top: 2.25rem;
     margin-bottom: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .tedx-prose h2,
+    .editor-styles-wrapper .tedx-prose h2,
+    .wp-block-heading:is(h2),
+    h2.wp-block-heading,
+    .editor-styles-wrapper h2,
+    .editor-styles-wrapper .wp-block-heading:is(h2),
+    .entry-content > h2 {
+      font-size: 1.75rem;
+      line-height: 1.2;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tedx-prose h2,
+    .editor-styles-wrapper .tedx-prose h2,
+    .wp-block-heading:is(h2),
+    h2.wp-block-heading,
+    .editor-styles-wrapper h2,
+    .editor-styles-wrapper .wp-block-heading:is(h2),
+    .entry-content > h2 {
+      font-size: 2.25rem;
+      line-height: 1.15;
+    }
   }
 
   .tedx-prose h3,
@@ -447,13 +550,39 @@
   .editor-styles-wrapper .wp-block-heading:is(h3),
   .entry-content > h3 {
     font-family: "Helvetica Neue", Inter, sans-serif;
-    font-size: 18px;
+    font-size: 1.25rem;
     font-weight: 700 !important;
     color: #ffffff;
-    letter-spacing: -0.9px;
-    line-height: 1.4;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .tedx-prose h3,
+    .editor-styles-wrapper .tedx-prose h3,
+    .wp-block-heading:is(h3),
+    h3.wp-block-heading,
+    .editor-styles-wrapper h3,
+    .editor-styles-wrapper .wp-block-heading:is(h3),
+    .entry-content > h3 {
+      font-size: 1.375rem;
+      line-height: 1.3;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .tedx-prose h3,
+    .editor-styles-wrapper .tedx-prose h3,
+    .wp-block-heading:is(h3),
+    h3.wp-block-heading,
+    .editor-styles-wrapper h3,
+    .editor-styles-wrapper .wp-block-heading:is(h3),
+    .entry-content > h3 {
+      font-size: 1.625rem;
+      line-height: 1.25;
+    }
   }
 
   .tedx-prose h4,
@@ -569,7 +698,17 @@
     }
   }
 
-  /* Prevent redundant inner padding when nested inside content containers */
+  /* Prevent redundant inner padding when nested inside content containers or cards */
+  .bg-tedx-card .entry-content > p,
+  .bg-tedx-card .entry-content > h1,
+  .bg-tedx-card .entry-content > h2,
+  .bg-tedx-card .entry-content > h3,
+  .bg-tedx-card .entry-content > h4,
+  .bg-tedx-card .entry-content > h5,
+  .bg-tedx-card .entry-content > h6,
+  .bg-tedx-card .entry-content > ul,
+  .bg-tedx-card .entry-content > ol,
+  .bg-tedx-card .entry-content > blockquote,
   .tedx-full-width-page-content > * p,
   .tedx-full-width-page-content > * h1,
   .tedx-full-width-page-content > * h2,
@@ -633,14 +772,34 @@
     margin: 0 !important;
   }
 
-  /* Offset first block on non-front pages to clear the fixed transparent header */
-  body:not(.home) .tedx-page-content > section:first-child {
-    padding-top: 7rem;
+  /* TEDx Speaker Card Elements */
+  .tedx-speaker-card h2,
+  .tedx-speaker-card h3 {
+    margin: 0 !important;
+    padding-top: 0 !important;
   }
-  @media (min-width: 768px) {
-    body:not(.home) .tedx-page-content > section:first-child {
-      padding-top: 6rem;
-    }
+
+  /* TEDx Timetable v2 Card Elements */
+  .tedx-timetable-v2-card h3,
+  .tedx-timetable-v2-card .tedx-timetable-v2-session-title {
+    margin: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .tedx-timetable-v2-card p,
+  .tedx-timetable-v2-card .tedx-timetable-v2-description {
+    margin: 4px 0 0 0 !important;
+    padding-top: 0 !important;
+  }
+
+  /* Automated First Block Clearance:
+     When a full-width page or event page has a block touching the navbar,
+     remove the first section's redundant top border while preserving its internal padding. */
+  .tedx-full-width-page-article.tedx-no-page-header .tedx-full-width-page-content > :first-child,
+  .tedx-full-width-page-article.tedx-no-page-header .tedx-full-width-page-content > section:first-child,
+  .tedx-full-width-page-article.tedx-no-page-header .tedx-full-width-page-content > .alignfull:first-child,
+  body:not(.home) .tedx-page-content > section:first-child {
+    border-top-width: 0 !important;
   }
 }
 
@@ -720,4 +879,127 @@
   max-width: none;
   margin-left: 0;
   margin-right: 0;
+}
+
+/* Page Top Thumbnail Header (renders on top under default nav-bar, no padding, original aspect ratio) */
+.tedx-page-thumbnail-header {
+  width: 100%;
+  margin: 0;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.tedx-page-thumbnail-inner {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.tedx-page-thumbnail-header img {
+  width: 100% !important;
+  height: auto !important;
+  max-width: none !important;
+  display: block !important;
+  aspect-ratio: auto !important;
+  object-fit: contain !important;
+}
+
+/* When a top thumbnail image is present, eliminate distance to the first block */
+.tedx-page-has-top-thumb .entry-header {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+
+.tedx-page-has-top-thumb .entry-header:empty,
+.tedx-page-has-top-thumb .entry-header:has(h1:empty) {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > section:first-of-type,
+body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > section:first-child,
+body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > :first-child,
+.tedx-page-has-top-thumb .tedx-full-width-page-content > section:first-of-type,
+.tedx-page-has-top-thumb .tedx-full-width-page-content > section:first-child,
+.tedx-page-has-top-thumb .tedx-full-width-page-content > .alignfull:first-child,
+.tedx-page-has-top-thumb .tedx-full-width-page-content > :first-child,
+.tedx-page-has-top-thumb .tedx-full-width-page-content > :first-child > section:first-child,
+.tedx-page-has-top-thumb .entry-content > section:first-of-type,
+.tedx-page-has-top-thumb .entry-content > section:first-child,
+.tedx-page-has-top-thumb .entry-content > :first-child,
+.tedx-page-has-top-thumb .entry-content > :first-child > section:first-child,
+.tedx-page-has-top-thumb article > section:first-of-type,
+.tedx-page-has-top-thumb article > section:first-child,
+.tedx-page-has-top-thumb .site-main > section:first-of-type,
+.tedx-page-has-top-thumb .site-main > section:first-child,
+.tedx-page-has-top-thumb section.tedx-timetable-v2-block,
+.tedx-page-has-top-thumb section.tedx-timetable-block,
+.tedx-page-has-top-thumb section.tedx-floorplan-section,
+body.tedx-has-top-thumbnail section.tedx-timetable-v2-block:first-of-type,
+body.tedx-has-top-thumbnail section.tedx-timetable-block:first-of-type,
+body.tedx-has-top-thumbnail section.tedx-floorplan-section:first-of-type,
+body.tedx-has-top-thumbnail .tedx-page-content > :first-child,
+body.tedx-has-top-thumbnail .tedx-page-content > section:first-of-type,
+body.tedx-has-top-thumbnail .tedx-page-content > section:first-child,
+body.tedx-has-top-thumbnail .tedx-full-width-page-content > :first-child,
+body.tedx-has-top-thumbnail .tedx-full-width-page-content > section:first-of-type,
+body.tedx-has-top-thumbnail .tedx-full-width-page-content > section:first-child,
+body.tedx-has-top-thumbnail .tedx-full-width-page-content > .alignfull:first-child,
+body.tedx-has-top-thumbnail .entry-content > :first-child,
+body.tedx-has-top-thumbnail .entry-content > section:first-of-type,
+body.tedx-has-top-thumbnail .entry-content > section:first-child,
+body.tedx-has-top-thumbnail article > section:first-of-type,
+body.tedx-has-top-thumbnail article > section:first-child,
+body.tedx-has-top-thumbnail .site-main > section:first-of-type,
+body.tedx-has-top-thumbnail .site-main > section:first-child {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  border-top-width: 0 !important;
+}
+
+@media (min-width: 768px) {
+  body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > section:first-of-type,
+  body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > section:first-child,
+  body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > :first-child,
+  .tedx-page-has-top-thumb .tedx-full-width-page-content > section:first-of-type,
+  .tedx-page-has-top-thumb .tedx-full-width-page-content > section:first-child,
+  .tedx-page-has-top-thumb .tedx-full-width-page-content > .alignfull:first-child,
+  .tedx-page-has-top-thumb .tedx-full-width-page-content > :first-child,
+  .tedx-page-has-top-thumb .tedx-full-width-page-content > :first-child > section:first-child,
+  .tedx-page-has-top-thumb .entry-content > section:first-of-type,
+  .tedx-page-has-top-thumb .entry-content > section:first-child,
+  .tedx-page-has-top-thumb .entry-content > :first-child,
+  .tedx-page-has-top-thumb .entry-content > :first-child > section:first-child,
+  .tedx-page-has-top-thumb article > section:first-of-type,
+  .tedx-page-has-top-thumb article > section:first-child,
+  .tedx-page-has-top-thumb .site-main > section:first-of-type,
+  .tedx-page-has-top-thumb .site-main > section:first-child,
+  .tedx-page-has-top-thumb section.tedx-timetable-v2-block,
+  .tedx-page-has-top-thumb section.tedx-timetable-block,
+  .tedx-page-has-top-thumb section.tedx-floorplan-section,
+  body.tedx-has-top-thumbnail section.tedx-timetable-v2-block:first-of-type,
+  body.tedx-has-top-thumbnail section.tedx-timetable-block:first-of-type,
+  body.tedx-has-top-thumbnail section.tedx-floorplan-section:first-of-type,
+  body.tedx-has-top-thumbnail .tedx-page-content > :first-child,
+  body.tedx-has-top-thumbnail .tedx-page-content > section:first-of-type,
+  body.tedx-has-top-thumbnail .tedx-page-content > section:first-child,
+  body.tedx-has-top-thumbnail .tedx-full-width-page-content > :first-child,
+  body.tedx-has-top-thumbnail .tedx-full-width-page-content > section:first-of-type,
+  body.tedx-has-top-thumbnail .tedx-full-width-page-content > section:first-child,
+  body.tedx-has-top-thumbnail .tedx-full-width-page-content > .alignfull:first-child,
+  body.tedx-has-top-thumbnail .entry-content > :first-child,
+  body.tedx-has-top-thumbnail .entry-content > section:first-of-type,
+  body.tedx-has-top-thumbnail .entry-content > section:first-child,
+  body.tedx-has-top-thumbnail article > section:first-of-type,
+  body.tedx-has-top-thumbnail article > section:first-child,
+  body.tedx-has-top-thumbnail .site-main > section:first-of-type,
+  body.tedx-has-top-thumbnail .site-main > section:first-child {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    border-top-width: 0 !important;
+  }
 }

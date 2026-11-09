@@ -10,6 +10,7 @@ $removed = array();
 $attached = array();
 $url_ids = array();
 define( 'TEDX_URI', 'https://example.test/theme' );
+function absint( $value ) { return abs( (int) $value ); }
 function get_theme_mod( $key, $default = '' ) { return $GLOBALS['mods'][$key] ?? $default; }
 function wp_get_attachment_image_url( $id, $size ) { return 12 === $id ? '/desktop-logo.svg' : false; }
 function attachment_url_to_postid( $url ) { return $GLOBALS['url_ids'][$url] ?? 0; }

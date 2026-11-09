@@ -15,7 +15,7 @@ $coach_id     = get_the_ID();
 $linkedin_url = get_post_meta( $coach_id, '_speaker_coach_linkedin', true ) ?: get_post_meta( $coach_id, '_speaker_linkedin', true );
 ?>
 
-<main id="primary" class="site-main flex-grow pt-28 pb-16 px-4 md:px-8 lg:px-12 bg-tedx-dark">
+<main id="primary" class="site-main flex-grow pt-28 md:pt-32 pb-16 px-4 md:px-8 lg:px-12 bg-tedx-dark">
 	<div class="max-w-figma mx-auto">
 		
 		<!-- Breadcrumb / Back Link -->
@@ -25,7 +25,7 @@ $linkedin_url = get_post_meta( $coach_id, '_speaker_coach_linkedin', true ) ?: g
 			</a>
 		</div>
 
-		<article id="post-<?php the_ID(); ?>" class="bg-tedx-card rounded-[32px] p-8 md:p-12 border border-white/5 shadow-2xl">
+		<article id="post-<?php the_ID(); ?>" class="bg-tedx-card rounded-[32px] p-5 sm:p-6 md:p-12 border border-white/5 shadow-2xl">
 			
 			<div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
 				
@@ -60,7 +60,7 @@ $linkedin_url = get_post_meta( $coach_id, '_speaker_coach_linkedin', true ) ?: g
 						</span>
 					</div>
 
-					<h1 class="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+					<h1 class="tedx-block-heading">
 						<?php the_title(); ?>
 					</h1>
 

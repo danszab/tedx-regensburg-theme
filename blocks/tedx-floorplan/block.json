@@ -1,0 +1,64 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/floorplan",
+    "title": "TEDx Floorplan Map",
+    "category": "tedx",
+    "icon": "location-alt",
+    "description": "Interactive vector SVG floorplan and venue map with zoom controls, pinch-to-zoom, and smooth touch panning.",
+    "keywords": ["floorplan", "map", "venue", "stages", "svg", "seating", "zoom", "tedx"],
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"]
+    },
+    "attributes": {
+        "sectionId": {
+            "type": "string",
+            "default": "floorplan"
+        },
+        "eyebrow": {
+            "type": "string",
+            "default": "VENUE MAP"
+        },
+        "heading": {
+            "type": "string",
+            "default": "Event Floorplan & Stages"
+        },
+        "description": {
+            "type": "string",
+            "default": "Explore our event spaces, stages, and seating layouts. Use controls or pinch to zoom."
+        },
+        "svgId": {
+            "type": "integer",
+            "default": 0
+        },
+        "svgUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "minZoom": {
+            "type": "number",
+            "default": 1
+        },
+        "maxZoom": {
+            "type": "number",
+            "default": 5
+        },
+        "initialZoom": {
+            "type": "number",
+            "default": 1
+        },
+        "showControls": {
+            "type": "boolean",
+            "default": true
+        },
+        "allowFullscreen": {
+            "type": "boolean",
+            "default": true
+        }
+    },
+    "editorScript": "file:./index.js",
+    "viewScript": "file:./script.js",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}

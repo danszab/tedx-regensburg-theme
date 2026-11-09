@@ -117,6 +117,31 @@
 		return el(wp.serverSideRender, { block: block, attributes: attributes });
 	};
 
+	/** Shared Spacing & Dividers panel for InspectorControls */
+	H.spacingPanel = function (props, options) {
+		options = options || {};
+		var controls = [
+			H.select(props, 'paddingTop', 'Top Spacing', [
+				{ value: 'default', label: 'Default (48px / 32px mobile)' },
+				{ value: 'none', label: 'None (0px)' },
+				{ value: 'compact', label: 'Compact (24px / 16px mobile)' },
+				{ value: 'large', label: 'Large (96px / 64px mobile)' }
+			]),
+			H.select(props, 'paddingBottom', 'Bottom Spacing', [
+				{ value: 'default', label: 'Default (48px / 32px mobile)' },
+				{ value: 'none', label: 'None (0px)' },
+				{ value: 'compact', label: 'Compact (24px / 16px mobile)' },
+				{ value: 'large', label: 'Large (96px / 64px mobile)' }
+			])
+		];
+
+		if (options.hasBorder !== false) {
+			controls.push(H.toggle(props, 'hideBorderTop', 'Hide top divider line'));
+		}
+
+		return H.panel('Spacing & Dividers', controls, false);
+	};
+
 	/**
 	 * Standard edit(): sidebar panels + preview inside a block wrapper.
 	 * Must be called from inside a block's edit function (uses hooks).
@@ -137,6 +162,32 @@
 			}
 		});
 	};
+
+	/**
+	 * Automatically add Spacing & Dividers panel to all TEDx section blocks in Gutenberg.
+	 */
+	if (wp.hooks && wp.hooks.addFilter && wp.compose && wp.compose.createHigherOrderComponent) {
+		var withSpacingControls = wp.compose.createHigherOrderComponent(function (BlockEdit) {
+			return function (props) {
+				if (!props.name || props.name.indexOf('tedx/') !== 0 || props.name === 'tedx/button') {
+					return el(BlockEdit, props);
+				}
+				var isTimetableV2 = (props.name === 'tedx/timetable-v2');
+				return el(
+					wp.element.Fragment,
+					null,
+					el(BlockEdit, props),
+					el(
+						be.InspectorControls,
+						null,
+						H.spacingPanel(props, { hasBorder: !isTimetableV2 })
+					)
+				);
+			};
+		}, 'withSpacingControls');
+
+		wp.hooks.addFilter('editor.BlockEdit', 'tedx-regensburg/spacing-controls', withSpacingControls);
+	}
 
 	window.tedxBlocks = H;
 })(window.wp);

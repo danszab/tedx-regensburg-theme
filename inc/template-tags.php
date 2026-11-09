@@ -136,6 +136,9 @@ function tedx_header_logo_svg( $device, $classes = '' ) {
 }
 
 function tedx_preload_header_logo() {
+	if ( tedx_is_navbar_hidden() ) {
+		return;
+	}
 	$logos = tedx_logo_images();
 	foreach ( array( 'mobile' => '(max-width: 1023px)', 'desktop' => '(min-width: 1024px)' ) as $device => $media ) {
 		$source = ( 'mobile' === $device && $logos['mobile'] ) ? 'mobile' : 'desktop';
@@ -296,6 +299,194 @@ function tedx_blocks_have_full_width( $blocks, $visited_refs = array() ) {
 function tedx_page_has_full_width_blocks( $post_id ) {
 	$page = get_post( $post_id );
 	return $page && tedx_blocks_have_full_width( parse_blocks( $page->post_content ) );
+}
+
+/**
+ * Determine whether the navigation bar should be hidden on a specific page.
+ *
+ * @param int|WP_Post|null $post_id Optional post ID or post object. Defaults to current queried object.
+ * @return bool True if navigation bar should be hidden, false otherwise.
+ */
+function tedx_is_navbar_hidden( $post_id = null ) {
+	if ( null === $post_id ) {
+		if ( function_exists( 'is_admin' ) && is_admin() ) {
+			return false;
+		}
+
+		$post_id = function_exists( 'get_queried_object_id' ) ? get_queried_object_id() : 0;
+		if ( ! $post_id && function_exists( 'is_singular' ) && is_singular() ) {
+			$post_id = function_exists( 'get_the_ID' ) ? get_the_ID() : 0;
+		}
+		if ( ! $post_id && function_exists( 'is_front_page' ) && is_front_page() && function_exists( 'get_option' ) && 'page' === get_option( 'show_on_front' ) ) {
+			$post_id = get_option( 'page_on_front' );
+		}
+	} elseif ( is_object( $post_id ) && isset( $post_id->ID ) ) {
+		$post_id = $post_id->ID;
+	}
+
+	$post_id = absint( $post_id );
+	if ( ! $post_id ) {
+		return false;
+	}
+
+	$is_hidden = false;
+
+	if ( function_exists( 'get_post_meta' ) ) {
+		$meta_value = get_post_meta( $post_id, '_tedx_hide_navbar', true );
+		if ( ! empty( $meta_value ) && '0' !== $meta_value && 'false' !== $meta_value ) {
+			$is_hidden = true;
+		}
+	}
+
+	if ( ! $is_hidden && function_exists( 'get_page_template_slug' ) ) {
+		$template = get_page_template_slug( $post_id );
+		if ( 'page-no-navigation.php' === $template ) {
+			$is_hidden = true;
+		}
+	}
+
+	if ( function_exists( 'apply_filters' ) ) {
+		$is_hidden = (bool) apply_filters( 'tedx_hide_navbar', $is_hidden, $post_id );
+	}
+
+	return $is_hidden;
+}
+
+/**
+ * Determine whether a page should display a top thumbnail image.
+ *
+ * @param int|WP_Post|null $post_id Optional post ID or post object. Defaults to current queried object.
+ * @return bool True if page should render a top thumbnail, false otherwise.
+ */
+function tedx_page_has_top_thumbnail( $post_id = null ) {
+	if ( null === $post_id ) {
+		if ( function_exists( 'is_admin' ) && is_admin() ) {
+			return false;
+		}
+
+		$post_id = function_exists( 'get_queried_object_id' ) ? get_queried_object_id() : 0;
+		if ( ! $post_id && function_exists( 'is_singular' ) && is_singular() ) {
+			$post_id = function_exists( 'get_the_ID' ) ? get_the_ID() : 0;
+		}
+	} elseif ( is_object( $post_id ) && isset( $post_id->ID ) ) {
+		$post_id = $post_id->ID;
+	}
+
+	$post_id = absint( $post_id );
+	if ( ! $post_id ) {
+		return false;
+	}
+
+	$has_thumbnail_media = false;
+	$custom_id           = '';
+	$custom_url          = '';
+
+	if ( function_exists( 'get_post_meta' ) ) {
+		$custom_id  = get_post_meta( $post_id, '_tedx_page_thumbnail_id', true );
+		$custom_url = get_post_meta( $post_id, '_tedx_page_thumbnail_url', true );
+		if ( ! empty( $custom_id ) || ! empty( $custom_url ) ) {
+			$has_thumbnail_media = true;
+		}
+	}
+
+	if ( ! $has_thumbnail_media && function_exists( 'has_post_thumbnail' ) && has_post_thumbnail( $post_id ) ) {
+		$has_thumbnail_media = true;
+	}
+
+	$is_top_enabled = false;
+	if ( $has_thumbnail_media ) {
+		$is_top_enabled = true;
+		if ( function_exists( 'get_post_meta' ) ) {
+			$top_meta = get_post_meta( $post_id, '_tedx_page_thumbnail_top', true );
+			if ( '0' === (string) $top_meta || false === $top_meta ) {
+				$is_top_enabled = false;
+			} elseif ( '1' === (string) $top_meta || true === $top_meta ) {
+				$is_top_enabled = true;
+			}
+		}
+	}
+
+	if ( function_exists( 'apply_filters' ) ) {
+		$is_top_enabled = (bool) apply_filters( 'tedx_page_has_top_thumbnail', $is_top_enabled, $post_id );
+	}
+
+	return $is_top_enabled;
+}
+
+/**
+ * Render the top thumbnail image for a page, preserving its original aspect ratio.
+ *
+ * @param int|WP_Post|null $post_id Optional post ID or post object.
+ */
+function tedx_page_top_thumbnail( $post_id = null ) {
+	if ( null === $post_id ) {
+		$post_id = function_exists( 'get_queried_object_id' ) ? get_queried_object_id() : ( function_exists( 'get_the_ID' ) ? get_the_ID() : 0 );
+	} elseif ( is_object( $post_id ) && isset( $post_id->ID ) ) {
+		$post_id = $post_id->ID;
+	}
+
+	$post_id    = absint( $post_id );
+	$custom_id  = 0;
+	$custom_url = '';
+
+	if ( function_exists( 'get_post_meta' ) ) {
+		$custom_id  = absint( get_post_meta( $post_id, '_tedx_page_thumbnail_id', true ) );
+		$custom_url = get_post_meta( $post_id, '_tedx_page_thumbnail_url', true );
+	}
+
+	$image_html = '';
+
+	if ( $custom_id && function_exists( 'wp_get_attachment_image' ) ) {
+		$image_html = wp_get_attachment_image(
+			$custom_id,
+			'full',
+			false,
+			array(
+				'class'         => 'w-full h-auto block max-w-none',
+				'loading'       => 'eager',
+				'fetchpriority' => 'high',
+				'decoding'      => 'async',
+			)
+		);
+	} elseif ( ! empty( $custom_url ) ) {
+		$title      = function_exists( 'get_the_title' ) ? get_the_title( $post_id ) : '';
+		$image_html = sprintf(
+			'<img src="%s" alt="%s" class="w-full h-auto block max-w-none" loading="eager" fetchpriority="high" decoding="async" />',
+			esc_url( $custom_url ),
+			esc_attr( $title )
+		);
+	} elseif ( function_exists( 'has_post_thumbnail' ) && has_post_thumbnail( $post_id ) ) {
+		if ( function_exists( 'get_the_post_thumbnail' ) ) {
+			$image_html = get_the_post_thumbnail(
+				$post_id,
+				'full',
+				array(
+					'class'         => 'w-full h-auto block max-w-none',
+					'loading'       => 'eager',
+					'fetchpriority' => 'high',
+					'decoding'      => 'async',
+				)
+			);
+		} elseif ( function_exists( 'the_post_thumbnail' ) ) {
+			ob_start();
+			the_post_thumbnail(
+				'full',
+				array(
+					'class'         => 'w-full h-auto block max-w-none',
+					'loading'       => 'eager',
+					'fetchpriority' => 'high',
+					'decoding'      => 'async',
+				)
+			);
+			$image_html = ob_get_clean();
+		}
+	}
+
+	if ( function_exists( 'apply_filters' ) ) {
+		$image_html = apply_filters( 'tedx_page_top_thumbnail_html', $image_html, $post_id );
+	}
+
+	echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 /**

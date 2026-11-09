@@ -83,7 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (targetElement) {
 					e.preventDefault();
 					
-					const headerOffset = 60; // Height of the sticky header
+					const hasVisibleHeader = !!document.getElementById('site-header');
+					const headerOffset = hasVisibleHeader ? (window.innerWidth >= 1024 ? 70 : 60) : 0;
 					const elementPosition = targetElement.getBoundingClientRect().top;
 					const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -197,110 +198,27 @@ document.addEventListener('DOMContentLoaded', () => {
 			});
 		});
 	}
-});
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Advanced TEDx Gallery Logic
-    const galleryWrappers = document.querySelectorAll('.tedx-gallery-wrapper');
-    
-    galleryWrappers.forEach(wrapper => {
-        const container = wrapper.querySelector('.tedx-gallery-container');
-        const rows = wrapper.querySelectorAll('.tedx-gallery-row');
-        const prevBtn = wrapper.querySelector('.gallery-prev');
-        const nextBtn = wrapper.querySelector('.gallery-next');
-        const scrollbarThumb = wrapper.querySelector('.gallery-scrollbar-thumb');
-        const scrollbarTrack = wrapper.querySelector('.gallery-scrollbar');
-        
-        let currentTranslate = 0;
-        // Find max scroll distance. Since w-max is used, calculate row width
-        const getScrollBounds = () => {
-            const firstRow = rows[0];
-            const maxScroll = (firstRow.scrollWidth - wrapper.offsetWidth);
-            return Math.max(0, maxScroll + 100); // add padding
-        };
+	// 6. Navigation Active State Handling for in-page anchors
+	const navLinks = document.querySelectorAll('a.nav-link, #mobile-menu a, .menu-item a');
+	navLinks.forEach(link => {
+		link.addEventListener('click', function(e) {
+			// Ignore accordion toggles, they are handled separately
+			if (this.querySelector('.mobile-dropdown-arrow') || this.querySelector('.nav-dropdown-arrow')) {
+				return;
+			}
 
-        const updateScroll = (newTranslate) => {
-            const max = getScrollBounds();
-            currentTranslate = Math.max(-max, Math.min(0, newTranslate));
-            
-            rows.forEach(row => {
-                row.style.transform = `translateX(${currentTranslate}px)`;
-                row.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
-            });
+			// Check if it's a link to an anchor on the *current* page
+			if (this.hostname === window.location.hostname && this.pathname.replace(/^\//, '') === window.location.pathname.replace(/^\//, '') && this.hash) {
+				navLinks.forEach(l => l.classList.remove('active-nav-link'));
+				this.classList.add('active-nav-link');
 
-            // Update thumb position
-            if (scrollbarTrack && scrollbarThumb && max > 0) {
-                const scrollPct = Math.abs(currentTranslate) / max;
-                const trackSpace = scrollbarTrack.offsetWidth - scrollbarThumb.offsetWidth;
-                scrollbarThumb.style.left = `${scrollPct * trackSpace}px`;
-                scrollbarThumb.style.transition = 'left 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
-            }
-        };
-
-        if (prevBtn && nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                updateScroll(currentTranslate - 300);
-            });
-            prevBtn.addEventListener('click', () => {
-                updateScroll(currentTranslate + 300);
-            });
-        }
-        
-        // Lightbox logic for advanced gallery
-        const lightbox = wrapper.querySelector('.tedx-lightbox');
-        const lightboxImg = wrapper.querySelector('.lightbox-img');
-        const closeBtn = wrapper.querySelector('.lightbox-close');
-        
-        if (lightbox) {
-            const items = wrapper.querySelectorAll('.tedx-gallery-item img');
-            items.forEach(img => {
-                img.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    lightboxImg.src = img.src;
-                    lightboxImg.alt = img.alt || '';
-                    lightbox.style.display = 'flex';
-                    void lightbox.offsetWidth; // Reflow
-                    lightbox.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                });
-            });
-            
-            const closeLightbox = () => {
-                lightbox.classList.remove('active');
-                setTimeout(() => {
-                    lightbox.style.display = 'none';
-                    lightboxImg.src = '';
-                    document.body.style.overflow = '';
-                }, 300);
-            };
-            
-            closeBtn.addEventListener('click', closeLightbox);
-            lightbox.addEventListener('click', (e) => {
-                if (e.target === lightbox) closeLightbox();
-            });
-        }
-
-        // Navigation Active State Handling
-        const navLinks = document.querySelectorAll('a.nav-link, #mobile-menu a, .menu-item a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Ignore accordion toggles, they are handled separately
-                if (this.querySelector('.mobile-dropdown-arrow') || this.querySelector('.nav-dropdown-arrow')) {
-                    return;
-                }
-
-                // Check if it's a link to an anchor on the *current* page
-                if (this.hostname === window.location.hostname && this.pathname.replace(/^\//, '') === window.location.pathname.replace(/^\//, '') && this.hash) {
-                    navLinks.forEach(l => l.classList.remove('active-nav-link'));
-                    this.classList.add('active-nav-link');
-                    
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    const menuToggle = document.getElementById('mobile-menu-toggle');
-                    if (mobileMenu && !mobileMenu.classList.contains('hidden') && menuToggle) {
-                        menuToggle.click();
-                    }
-                }
-            });
-        });
-    });
+				const mobileMenu = document.getElementById('mobile-menu');
+				const menuToggle = document.getElementById('mobile-menu-toggle');
+				if (mobileMenu && !mobileMenu.classList.contains('hidden') && menuToggle) {
+					menuToggle.click();
+				}
+			}
+		});
+	});
 });

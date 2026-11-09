@@ -20,10 +20,14 @@ $eyebrow    = $attributes['eyebrow'] ?? '';
 $title      = $attributes['title'] ?? ( 'featured' === $layout ? 'Our Partner' : 'Other Sponsors' );
 $desc       = $attributes['description'] ?? '';
 
+$spacing_classes = function_exists( 'tedx_get_block_spacing_classes' )
+	? tedx_get_block_spacing_classes( $attributes )
+	: 'pt-8 md:pt-12 pb-8 md:pb-12 border-t border-white/5';
+
 $wrapper = get_block_wrapper_attributes(
 	array(
 		'id'              => $section_id,
-		'class'           => 'bg-tedx-dark px-4 py-16 md:px-8',
+		'class'           => 'bg-tedx-dark ' . $spacing_classes . ' px-4 md:px-8 lg:px-12',
 		'aria-labelledby' => "{$section_id}-heading",
 	)
 );

@@ -1,0 +1,115 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/timetable-v2",
+    "title": "TEDx Timetable v2",
+    "category": "tedx",
+    "icon": "clock",
+    "description": "Real-time sync timetable in a single-row card layout following shadcn design guidelines.",
+    "keywords": ["timetable", "schedule", "agenda", "timeline", "shadcn", "tedx"],
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"]
+    },
+    "attributes": {
+        "title": {
+            "type": "string",
+            "default": "Timetable"
+        },
+        "eyebrow": {
+            "type": "string",
+            "default": "SCHEDULE"
+        },
+        "eventDate": {
+            "type": "string",
+            "default": ""
+        },
+        "showProgress": {
+            "type": "boolean",
+            "default": true
+        },
+        "testMode": {
+            "type": "boolean",
+            "default": false
+        },
+        "previewActiveIndex": {
+            "type": "number",
+            "default": -1
+        },
+        "items": {
+            "type": "array",
+            "default": [
+                {
+                    "startTime": "14:00",
+                    "endTime": "14:30",
+                    "title": "Registration & Welcome Reception",
+                    "description": "Check in, collect your badge, and enjoy light refreshments in the lounge.",
+                    "hasButton": false,
+                    "buttonText": "Details",
+                    "buttonUrl": "",
+                    "buttonNewTab": false,
+                    "buttonVariant": "outline"
+                },
+                {
+                    "startTime": "14:30",
+                    "endTime": "15:00",
+                    "title": "Opening Session & Introduction",
+                    "description": "Opening remarks from the TEDx team and stage performance.",
+                    "hasButton": true,
+                    "buttonText": "Livestream",
+                    "buttonUrl": "#livestream",
+                    "buttonNewTab": false,
+                    "buttonVariant": "outline"
+                },
+                {
+                    "startTime": "15:00",
+                    "endTime": "16:30",
+                    "title": "Session 1: Ideas Worth Spreading",
+                    "description": "First series of inspiring talks from four distinguished guest speakers.",
+                    "hasButton": true,
+                    "buttonText": "Speakers",
+                    "buttonUrl": "#speakers",
+                    "buttonNewTab": false,
+                    "buttonVariant": "outline"
+                },
+                {
+                    "startTime": "16:30",
+                    "endTime": "17:15",
+                    "title": "Networking Break & Food",
+                    "description": "Connect with attendees, speakers, and partners with snacks and coffee.",
+                    "hasButton": false,
+                    "buttonText": "Details",
+                    "buttonUrl": "",
+                    "buttonNewTab": false,
+                    "buttonVariant": "outline"
+                },
+                {
+                    "startTime": "17:15",
+                    "endTime": "18:45",
+                    "title": "Session 2: Future Horizons",
+                    "description": "Second series of talks covering innovation, community, and technology.",
+                    "hasButton": true,
+                    "buttonText": "Schedule",
+                    "buttonUrl": "#schedule",
+                    "buttonNewTab": false,
+                    "buttonVariant": "outline"
+                },
+                {
+                    "startTime": "18:45",
+                    "endTime": "19:15",
+                    "title": "Closing Remarks & Afterparty",
+                    "description": "Final curtain call, thank-yous, and invitation to the evening reception.",
+                    "hasButton": false,
+                    "buttonText": "Details",
+                    "buttonUrl": "",
+                    "buttonNewTab": false,
+                    "buttonVariant": "outline"
+                }
+            ]
+        }
+    },
+    "editorScript": "file:./index.js",
+    "viewScript": "file:./script.js",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}

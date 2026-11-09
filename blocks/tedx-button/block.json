@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/button",
+    "title": "TEDx Button",
+    "category": "tedx",
+    "icon": "button",
+    "description": "Custom button component following shadcn design guidelines with icon, width, color, and redirect options.",
+    "keywords": ["button", "link", "cta", "shadcn", "tedx"],
+    "supports": {
+        "html": false,
+        "align": ["wide", "full"]
+    },
+    "attributes": {
+        "text": {
+            "type": "string",
+            "default": "Click Here"
+        },
+        "url": {
+            "type": "string",
+            "default": ""
+        },
+        "newTab": {
+            "type": "boolean",
+            "default": false
+        },
+        "variant": {
+            "type": "string",
+            "default": "default"
+        },
+        "customBg": {
+            "type": "string",
+            "default": ""
+        },
+        "customTextColor": {
+            "type": "string",
+            "default": ""
+        },
+        "size": {
+            "type": "string",
+            "default": "md"
+        },
+        "width": {
+            "type": "string",
+            "default": "auto"
+        },
+        "alignment": {
+            "type": "string",
+            "default": "left"
+        },
+        "iconId": {
+            "type": "number",
+            "default": 0
+        },
+        "iconUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "iconPosition": {
+            "type": "string",
+            "default": "left"
+        }
+    },
+    "editorScript": "file:./index.js",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}

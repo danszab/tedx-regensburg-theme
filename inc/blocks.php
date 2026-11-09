@@ -17,6 +17,8 @@ function tedx_get_block_dirs() {
 		'tedx-gallery',
 		'tedx-press-releases',
 		'tedx-timetable',
+		'tedx-timetable-v2',
+		'tedx-button',
 		'tedx-speakers',
 		'tedx-speaker-coaches',
 		'tedx-event',
@@ -29,6 +31,7 @@ function tedx_get_block_dirs() {
 		'tedx-what-to-expect',
 		'tedx-qa',
 		'tedx-press-gallery',
+		'tedx-floorplan',
 	);
 }
 
@@ -43,7 +46,7 @@ function tedx_register_native_blocks() {
 	wp_register_script(
 		'tedx-block-helpers',
 		TEDX_URI . '/blocks/shared/editor-helpers.js',
-		array( 'wp-element', 'wp-components', 'wp-block-editor', 'wp-blocks', 'wp-server-side-render' ),
+		array( 'wp-element', 'wp-components', 'wp-block-editor', 'wp-blocks', 'wp-compose', 'wp-hooks', 'wp-server-side-render' ),
 		filemtime( TEDX_DIR . '/blocks/shared/editor-helpers.js' ),
 		true
 	);
@@ -72,6 +75,103 @@ function tedx_block_categories( $categories ) {
 	return $categories;
 }
 add_filter( 'block_categories_all', 'tedx_block_categories' );
+
+/**
+ * Register spacing and divider attributes for all TEDx section blocks.
+ *
+ * @param array  $args       Block type registration arguments.
+ * @param string $block_type Block name (e.g. 'tedx/speakers').
+ * @return array Modified registration arguments.
+ */
+function tedx_register_block_spacing_attributes( $args, $block_type ) {
+	if ( 0 === strpos( $block_type, 'tedx/' ) && 'tedx/button' !== $block_type ) {
+		if ( ! isset( $args['attributes'] ) || ! is_array( $args['attributes'] ) ) {
+			$args['attributes'] = array();
+		}
+		if ( ! isset( $args['attributes']['paddingTop'] ) ) {
+			$args['attributes']['paddingTop'] = array(
+				'type'    => 'string',
+				'default' => 'default',
+			);
+		}
+		if ( ! isset( $args['attributes']['paddingBottom'] ) ) {
+			$args['attributes']['paddingBottom'] = array(
+				'type'    => 'string',
+				'default' => 'default',
+			);
+		}
+		if ( ! isset( $args['attributes']['hideBorderTop'] ) ) {
+			$args['attributes']['hideBorderTop'] = array(
+				'type'    => 'boolean',
+				'default' => false,
+			);
+		}
+	}
+	return $args;
+}
+add_filter( 'register_block_type_args', 'tedx_register_block_spacing_attributes', 10, 2 );
+
+/**
+ * Compute Tailwind spacing and divider classes for a TEDx section block.
+ *
+ * Baseline:
+ * - Desktop: 48px top / 48px bottom (pt-12 pb-12)
+ * - Mobile: 32px top / 32px bottom (pt-8 pb-8)
+ * - Adjacent sections yield 96px desktop / 64px mobile total gap with hairline divider centered.
+ *
+ * Presets:
+ * - 'default': pt-8 md:pt-12, pb-8 md:pb-12
+ * - 'none': pt-0 / pb-0
+ * - 'compact': pt-4 md:pt-6 / pb-4 md:pb-6 (16px / 24px)
+ * - 'large': pt-16 md:pt-24 / pb-16 md:pb-24 (64px / 96px)
+ *
+ * Divider:
+ * - Defaults to 'border-t border-white/5' unless has_border is false or hideBorderTop is true.
+ *
+ * @param array $attributes Block attributes.
+ * @param array $defaults   Custom defaults (e.g. has_border => false for timetable-v2).
+ * @return string Computed CSS class string.
+ */
+function tedx_get_block_spacing_classes( $attributes = array(), $defaults = array() ) {
+	$standard_defaults = array(
+		'padding_top'    => 'default',
+		'padding_bottom' => 'default',
+		'has_border'     => true,
+	);
+	$defaults = function_exists( 'wp_parse_args' )
+		? wp_parse_args( $defaults, $standard_defaults )
+		: array_merge( $standard_defaults, is_array( $defaults ) ? $defaults : array() );
+
+	$top_attr    = isset( $attributes['paddingTop'] ) ? $attributes['paddingTop'] : $defaults['padding_top'];
+	$bottom_attr = isset( $attributes['paddingBottom'] ) ? $attributes['paddingBottom'] : $defaults['padding_bottom'];
+	$hide_border = ! empty( $attributes['hideBorderTop'] );
+
+	$top_map = array(
+		'none'    => 'pt-0',
+		'compact' => 'pt-4 md:pt-6',
+		'default' => 'pt-8 md:pt-12',
+		'large'   => 'pt-16 md:pt-24',
+	);
+
+	$bottom_map = array(
+		'none'    => 'pb-0',
+		'compact' => 'pb-4 md:pb-6',
+		'default' => 'pb-8 md:pb-12',
+		'large'   => 'pb-16 md:pb-24',
+	);
+
+	$classes   = array();
+	$classes[] = isset( $top_map[ $top_attr ] ) ? $top_map[ $top_attr ] : $top_map['default'];
+	$classes[] = isset( $bottom_map[ $bottom_attr ] ) ? $bottom_map[ $bottom_attr ] : $bottom_map['default'];
+
+	if ( $defaults['has_border'] && ! $hide_border ) {
+		$classes[] = 'border-t border-white/5';
+	} elseif ( $hide_border ) {
+		$classes[] = 'border-t-0';
+	}
+
+	return implode( ' ', $classes );
+}
 
 /**
  * Distinct meta values (e.g. years) for a post type. Cached; flushed on save.
@@ -205,6 +305,134 @@ if ( ! function_exists( 'tedx_block_editor_notice' ) ) {
 }
 
 /**
+ * Render a shadcn-compliant button component.
+ *
+ * Supports text-only, custom Media Library SVG icon (left or right), width presets
+ * (auto, sm, md, lg, full), background color presets and custom color, redirect URL,
+ * and shadcn micro-interaction animations.
+ *
+ * @param array $args Button attributes and configuration.
+ * @return string Rendered button HTML.
+ */
+function tedx_render_button( $args = array() ) {
+	$defaults = array(
+		'text'              => __( 'Click Here', 'tedx-regensburg' ),
+		'url'               => '',
+		'new_tab'           => false,
+		'variant'           => 'default',
+		'custom_bg'         => '',
+		'custom_text_color' => '',
+		'size'              => 'md',
+		'width'             => 'auto',
+		'alignment'         => 'left',
+		'icon_id'           => 0,
+		'icon_url'          => '',
+		'icon_position'     => 'left',
+		'extra_classes'     => '',
+		'extra_attrs'       => array(),
+	);
+
+	// Handle camelCase from Gutenberg block attributes as well
+	if ( isset( $args['newTab'] ) ) {
+		$args['new_tab'] = $args['newTab'];
+	}
+	if ( isset( $args['customBg'] ) ) {
+		$args['custom_bg'] = $args['customBg'];
+	}
+	if ( isset( $args['customTextColor'] ) ) {
+		$args['custom_text_color'] = $args['customTextColor'];
+	}
+	if ( isset( $args['iconId'] ) ) {
+		$args['icon_id'] = $args['iconId'];
+	}
+	if ( isset( $args['iconUrl'] ) ) {
+		$args['icon_url'] = $args['iconUrl'];
+	}
+	if ( isset( $args['iconPosition'] ) ) {
+		$args['icon_position'] = $args['iconPosition'];
+	}
+
+	$a = wp_parse_args( $args, $defaults );
+
+	$text          = trim( (string) $a['text'] );
+	$url           = trim( (string) $a['url'] );
+	$new_tab       = ! empty( $a['new_tab'] );
+	$variant       = sanitize_html_class( $a['variant'] ?: 'default' );
+	$size          = in_array( $a['size'], array( 'sm', 'md', 'lg' ), true ) ? $a['size'] : 'md';
+	$width         = in_array( $a['width'], array( 'auto', 'sm', 'md', 'lg', 'full' ), true ) ? $a['width'] : 'auto';
+	$alignment     = in_array( $a['alignment'], array( 'left', 'center', 'right' ), true ) ? $a['alignment'] : 'left';
+	$icon_position = 'right' === $a['icon_position'] ? 'right' : 'left';
+
+	// Resolve Icon URL
+	$icon_url = '';
+	if ( ! empty( $a['icon_id'] ) && function_exists( 'wp_get_attachment_url' ) ) {
+		$icon_url = wp_get_attachment_url( absint( $a['icon_id'] ) ) ?: '';
+	}
+	if ( empty( $icon_url ) && ! empty( $a['icon_url'] ) ) {
+		$icon_url = esc_url_raw( $a['icon_url'] );
+	}
+
+	// Classes
+	$classes = array(
+		'tedx-btn',
+		'btn-shadcn-anim',
+		'size-' . $size,
+		'width-' . $width,
+		'variant-' . $variant,
+	);
+
+	if ( ! empty( $a['extra_classes'] ) ) {
+		$classes[] = sanitize_html_class( $a['extra_classes'] );
+	}
+
+	// Inline Styles (for custom background / custom text color)
+	$inline_styles = array();
+	if ( 'custom' === $variant || ! empty( $a['custom_bg'] ) ) {
+		if ( ! empty( $a['custom_bg'] ) ) {
+			$inline_styles[] = 'background-color: ' . esc_attr( $a['custom_bg'] ) . ';';
+			$inline_styles[] = 'border-color: ' . esc_attr( $a['custom_bg'] ) . ';';
+		}
+		if ( ! empty( $a['custom_text_color'] ) ) {
+			$inline_styles[] = 'color: ' . esc_attr( $a['custom_text_color'] ) . ' !important;';
+		}
+	}
+
+	$style_attr = ! empty( $inline_styles ) ? ' style="' . implode( ' ', $inline_styles ) . '"' : '';
+
+	// Build Icon HTML
+	$icon_html = '';
+	if ( ! empty( $icon_url ) ) {
+		$icon_html = '<span class="tedx-btn-icon" aria-hidden="true"><span class="tedx-btn-icon-mask" style="--btn-icon-url: url(\'' . esc_url( $icon_url ) . '\');"></span></span>';
+	}
+
+	// Content with Icon Placement
+	$content_parts = array();
+	if ( ! empty( $icon_html ) && 'left' === $icon_position ) {
+		$content_parts[] = $icon_html;
+	}
+	if ( '' !== $text ) {
+		$content_parts[] = '<span class="tedx-btn-text">' . esc_html( $text ) . '</span>';
+	}
+	if ( ! empty( $icon_html ) && 'right' === $icon_position ) {
+		$content_parts[] = $icon_html;
+	}
+	$inner_content = implode( '', $content_parts );
+
+	// Tag and attributes
+	$class_attr = 'class="' . esc_attr( implode( ' ', $classes ) ) . '"';
+
+	if ( ! empty( $url ) ) {
+		$target_attr = $new_tab ? ' target="_blank" rel="noopener noreferrer"' : '';
+		$button_html = '<a href="' . esc_url( $url ) . '" ' . $class_attr . $style_attr . $target_attr . '>' . $inner_content . '</a>';
+	} else {
+		$button_html = '<button type="button" ' . $class_attr . $style_attr . '>' . $inner_content . '</button>';
+	}
+
+	// Wrap in alignment container
+	return '<div class="tedx-button-wrap align-' . esc_attr( $alignment ) . '">' . $button_html . '</div>';
+}
+
+/**
  * Shared button markup used across blocks.
  *
  * @param string $text    Label.
@@ -316,6 +544,14 @@ function tedx_render_people_grid( $a ) {
 		return tedx_block_editor_notice( $label );
 	}
 
+	if ( empty( $a['wrapper_attrs'] ) ) {
+		$a['wrapper_attrs'] = get_block_wrapper_attributes(
+			array(
+				'class' => 'relative bg-tedx-dark ' . tedx_get_block_spacing_classes() . ' px-4 md:px-8 lg:px-12 overflow-hidden',
+			)
+		);
+	}
+
 	$cards = array();
 
 	// Header "card": title, year and optional event button.
@@ -325,10 +561,12 @@ function tedx_render_people_grid( $a ) {
 		<?php if ( $is_coach ) : ?>
 			<h2 class="block tedx-block-heading normal-case"><?php echo esc_html( $a['title'] ); ?></h2>
 		<?php else : ?>
-			<?php tedx_category_header( $a['title'], '', 'h2' ); ?>
-			<?php if ( $a['show_year'] && '' !== $year ) : ?>
-				<span class="block tedx-block-heading"><?php echo esc_html( $year ); ?></span>
-			<?php endif; ?>
+			<div class="flex flex-col gap-2 md:gap-3 items-start">
+				<?php if ( $a['show_year'] && '' !== $year ) : ?>
+					<?php tedx_category_header( $year, '', 'p' ); ?>
+				<?php endif; ?>
+				<h2 class="block tedx-block-heading"><?php echo esc_html( $a['title'] ); ?></h2>
+			</div>
 			<?php if ( $a['show_event_button'] && '' !== trim( (string) $a['event_button_text'] ) ) : ?>
 				<div class="pt-2">
 					<a href="<?php echo esc_url( $a['event_button_url'] ); ?>" class="inline-flex items-center justify-center gap-2 border border-tedx-red text-tedx-red text-sm font-medium px-5 py-3 rounded-xl transition-all duration-200 btn-shadcn-anim w-fit">
@@ -358,7 +596,7 @@ function tedx_render_people_grid( $a ) {
 
 		ob_start();
 		?>
-		<article class="bg-tedx-card rounded-[32px] p-6 flex flex-col justify-between border border-white/5 hover:border-white/20 transition-all duration-300 shadow-xl group">
+		<article class="tedx-speaker-card bg-tedx-card rounded-[32px] p-6 flex flex-col justify-between border border-white/5 hover:border-white/20 transition-all duration-300 shadow-xl group">
 			<div>
 				<div class="flex gap-4 items-start mb-4">
 					<div class="w-[122px] h-[122px] rounded-2xl overflow-hidden shrink-0 bg-[#333] border border-white/10 relative">
@@ -375,7 +613,7 @@ function tedx_render_people_grid( $a ) {
 						<?php endif; ?>
 					</div>
 					<div class="flex-1 flex flex-col gap-1 min-w-0">
-						<h3 class="text-xl font-bold text-white leading-tight break-words whitespace-normal"><?php the_title(); ?></h3>
+						<h3 class="m-0 -mt-0.5 text-xl font-bold text-white leading-tight break-words whitespace-normal"><?php the_title(); ?></h3>
 						<?php if ( ! $is_coach ) : ?>
 							<span class="text-sm font-bold text-tedx-red break-words whitespace-normal"><?php echo esc_html( $topic ); ?></span>
 							<div class="inline-flex items-center gap-1 bg-[#4d4d4d] px-2 py-0.5 rounded text-[11px] font-medium text-white/80 w-fit mt-1">

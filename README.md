@@ -61,6 +61,12 @@ Patterns are starting points, not finished content. In particular, update sample
 
 On the default page template, a **Full width** block removes the outer rounded article card. This also works for blocks nested inside groups or synced patterns. Page titles, featured images, and other content remain centered; pages without full-width blocks retain the article card.
 
+### Page Settings and Top Thumbnail Options
+
+Standard WordPress pages support display options under the **Page Settings** sidebar panel in the editor:
+- **Page Thumbnail Image:** Select or upload a dedicated thumbnail image, or use the standard Featured Image panel. When set, an option allows rendering the thumbnail full-width at the very top of the page under the default navigation bar with zero padding, strictly conserving its original aspect ratio (`w-full h-auto block`, no distortion or cropping).
+- **Navigation Bar Visibility:** Toggle **Hide navigation bar** to hide the sticky top navigation header and logo on standalone landing pages. When hidden, the top thumbnail or page content seamlessly starts at the top edge of the viewport.
+
 ### TEDx Event (`tedx/event`)
 
 Creates a two-column event pitch and artwork card.
@@ -111,6 +117,24 @@ Newest published posts appear first; password-protected posts are excluded. See 
 
 Creates an event schedule. Set the title and optional eyebrow, edit the time and title of each item, and highlight important entries such as opening, breaks, or closing. Add/remove items as needed and toggle the connecting line. The schedule is edited in the block, not generated from event metadata.
 
+### TEDx Timetable v2 (`tedx/timetable-v2`)
+
+Creates a real-time synchronized event schedule using a single-row card layout adhering to shadcn design guidelines.
+- **Card Layout:** Each session is rendered as a clean, uniform horizontal card containing start & end times, session title, description, and an optional small shadcn action button.
+- **Full-Layout Progress Bar:** A continuous vertical progress bar runs down the left of the entire card stack, filling green from top to bottom as the event progresses.
+- **Minimalist Active State:** The currently active session is distinguished with a TEDx green border (strictly no glow) while keeping all cards uniform in contrast.
+- **Real-Time Synchronization:** Automatically syncs with visitor local time against the session schedule. An optional Event Date (`YYYY-MM-DD`) and Test/Simulation mode allow flexible scheduling and live previewing in WordPress.
+
+### TEDx Button (`tedx/button`)
+
+Creates a shadcn-compliant button component usable as a Gutenberg block or via the `tedx_render_button()` PHP helper.
+- **Text & Icons:** Text-only by default, with optional custom SVG icon upload from the Media Library (placed either to the left or right of text).
+- **Width Presets:** Auto (hug content), Small Fixed (140px), Medium Fixed (200px), Large Fixed (280px), or Full Width (100%), with Left, Center, or Right alignment.
+- **Sizes:** Small (`h-8`, `text-xs`), Medium/Default (`h-10`, `text-sm`), and Large (`h-12`, `text-base`).
+- **Colors & Backgrounds:** Brand presets (TEDx Red, TEDx Green, Secondary Dark, White, Outline) plus custom background & text color palette pickers.
+- **Redirect Links:** Optional redirect URL with same tab or new tab (`target="_blank" rel="noopener noreferrer"`). Renders `<a>` when a URL is set, or `<button>` when empty.
+- **Animations:** Full shadcn micro-interaction feedback (`btn-shadcn-anim` hover lift, active press scale `scale(0.98)`, and focus-visible ring).
+
 ### TEDx About (`tedx/about`)
 
 Creates an image-and-text introduction. Choose the image and its left/right position, set the eyebrow and description, and toggle the logo and action button. Enter the button label and destination. Without an image, a TEDx graphic placeholder is shown.
@@ -153,6 +177,20 @@ Displays a venue address, consent-gated map, and directions link.
 4. Use **Sync with event** on an event page to read venue metadata.
 
 When synchronizing, a non-empty event venue name enables the metadata overrides; explicit block map HTML and directions URLs take precedence over event values. Custom iframe code is reduced to an approved HTTPS Google Maps URL; scripts and other supplied markup are not executed.
+
+### TEDx Floorplan Map (`tedx/floorplan`)
+
+Interactive vector SVG floorplan and venue map with zoom controls, pinch-to-zoom, and smooth touch panning.
+
+1. Set the section ID, eyebrow (e.g. `VENUE MAP`), title, and description.
+2. Under **Floorplan SVG Media**, upload or select a clean `.svg` file from the WordPress Media Library (or enter a direct SVG URL).
+3. Configurable zoom range (e.g. 1.0x to 5.0x), bottom-right floating controls bar (Zoom In, Zoom Out, Reset view, Fullscreen), and native fullscreen support.
+4. **Interaction mechanics:**
+   - **Mobile Touch:** Pinch-to-zoom with two fingers at any time. When at 1x zoom, single-finger vertical swipes scroll the webpage normally without scroll-trapping; when zoomed in (>1x), single-finger dragging pans the floorplan smoothly within its square boundaries.
+   - **Desktop Mouse:** Click and drag to pan when zoomed in; double-click to zoom; mouse wheel scrolls the page normally.
+   - **Aspect Ratio:** Rendered as a full-width 1:1 square bounded by `max-h-[85vh]` inside the 1000px theme container (`max-w-figma`).
+   - **Safe SVG Inlining:** Embedded inline server-side with sanitization of executable script tags for crisp, infinite vector scaling without pixelation.
+
 
 ## Managing Events
 

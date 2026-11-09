@@ -1,11 +1,22 @@
 .tedx-press-releases {
     background: #0a0a0a;
     color: #fff;
-    padding: 64px 0;
+    padding: 32px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     width: 100%;
     overflow: hidden;
     container-type: inline-size;
 }
+
+@media (min-width: 768px) {
+    .tedx-press-releases {
+        padding: 48px 0;
+    }
+}
+
+.tedx-press-releases.pt-0 { padding-top: 0; }
+.tedx-press-releases.pb-0 { padding-bottom: 0; }
+.tedx-press-releases.border-t-0 { border-top-width: 0; }
 
 .tedx-press-heading {
     width: 100%;
@@ -35,6 +46,20 @@
     gap: 24px;
     width: max-content;
     margin-inline: 16px;
+}
+
+@media (min-width: 768px) and (max-width: 999px) {
+    .tedx-press-heading {
+        padding-inline: 32px;
+    }
+
+    .tedx-press-scroll {
+        scroll-padding-inline: 32px;
+    }
+
+    .tedx-press-grid {
+        margin-inline: 32px;
+    }
 }
 
 @media (min-width: 1000px) {

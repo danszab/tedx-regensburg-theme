@@ -9,8 +9,12 @@
 
 $section_id = ! empty( $attributes['sectionId'] ) ? sanitize_html_class( $attributes['sectionId'] ) : '';
 
+$spacing_classes = function_exists( 'tedx_get_block_spacing_classes' )
+	? tedx_get_block_spacing_classes( $attributes )
+	: 'pt-8 md:pt-12 pb-8 md:pb-12 border-t border-white/5';
+
 $wrapper_args = array(
-	'class' => 'pt-28 pb-16 md:py-24 px-4 md:px-8 lg:px-12 w-full bg-tedx-dark',
+	'class' => 'bg-tedx-dark ' . $spacing_classes . ' px-4 md:px-8 lg:px-12 w-full',
 );
 if ( ! empty( $section_id ) ) {
 	$wrapper_args['id'] = $section_id;

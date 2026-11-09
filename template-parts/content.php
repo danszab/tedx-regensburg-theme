@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	
 	<header class="entry-header mb-8">
 		<?php if ( is_singular() ) : ?>
-			<h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-4">
+			<h1 class="tedx-block-heading mb-4">
 				<?php the_title(); ?>
 			</h1>
 		<?php else : ?>

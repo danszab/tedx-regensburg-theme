@@ -27,10 +27,14 @@ $container_classes .= $is_link
 	? 'event-card-clickable cursor-pointer hover:border-white/60 hover:scale-[1.01] active:scale-95 transition-all duration-500 group'
 	: 'cursor-default transition-none select-none';
 
+$spacing_classes = function_exists( 'tedx_get_block_spacing_classes' )
+	? tedx_get_block_spacing_classes( $attributes, array( 'padding_top' => 'large', 'padding_bottom' => 'default' ) )
+	: 'pt-16 md:pt-24 pb-8 md:pb-12 border-t border-white/5';
+
 $wrapper = get_block_wrapper_attributes(
 	array(
 		'id'    => sanitize_html_class( $attributes['sectionId'] ),
-		'class' => 'bg-tedx-surface py-16 md:py-24 px-4 md:px-8 lg:px-12 border-t border-white/5',
+		'class' => 'bg-tedx-surface ' . $spacing_classes . ' px-4 md:px-8 lg:px-12',
 	)
 );
 ?>
@@ -38,11 +42,13 @@ $wrapper = get_block_wrapper_attributes(
 	<div class="max-w-figma mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
 		<div class="flex flex-col gap-6 items-start">
-			<?php tedx_category_header( $attributes['eyebrow'] ); ?>
+			<div class="flex flex-col gap-2 md:gap-3 items-start">
+				<?php tedx_category_header( $attributes['eyebrow'] ); ?>
 
-			<h2 class="tedx-block-heading">
-				<?php echo esc_html( $attributes['title'] ); ?>
-			</h2>
+				<h2 class="tedx-block-heading">
+					<?php echo esc_html( $attributes['title'] ); ?>
+				</h2>
+			</div>
 
 			<?php if ( $enable_tickets || $enable_show_more ) : ?>
 				<div class="flex flex-wrap items-center gap-4 pt-2">
@@ -70,7 +76,7 @@ $wrapper = get_block_wrapper_attributes(
 					<img src="<?php echo esc_url( $card_image ); ?>" alt="<?php echo esc_attr( $card_alt ); ?>" class="event-card-image absolute inset-0 w-full h-full object-cover object-center pointer-events-none" loading="eager" fetchpriority="high" decoding="async" />
 				<?php else : ?>
 					<div class="event-card-image absolute inset-0 w-full h-full bg-gradient-to-br from-[#2a1015] via-[#1c1c1c] to-[#0a0a0a] pointer-events-none"></div>
-					<div class="absolute inset-0 w-full h-full bg-radial-gradient from-tedx-red/20 to-transparent opacity-60 pointer-events-none"></div>
+					<div class="absolute inset-0 w-full h-full opacity-60 pointer-events-none" style="background: radial-gradient(circle at center, rgba(235, 0, 40, 0.25) 0%, transparent 70%);"></div>
 				<?php endif; ?>
 
 				<div class="relative z-10 w-full flex justify-center">

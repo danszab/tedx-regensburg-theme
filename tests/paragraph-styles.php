@@ -62,15 +62,20 @@ check(
 	'Headings share the max-width 1000px centered linewidth with paragraphs'
 );
 
-// 6c. Headings typography: H1 3rem/3.75rem, H2 22px bold TEDx red (#eb0028), H3 18px bold white
+// 6c. Headings typography: Responsive H1, H2, H3
 check(
-	strpos( $css, 'color:#eb0028' ) !== false && strpos( $css, 'font-size:22px' ) !== false,
-	'H2 heading uses TEDx red #eb0028 and font-size 22px'
+	strpos( $css, 'color:#eb0028' ) !== false && ( strpos( $css, 'font-size:1.5rem' ) !== false || strpos( $css, 'font-size:24px' ) !== false ),
+	'H2 heading uses TEDx red #eb0028 and responsive font-size'
 );
 
 check(
-	strpos( $css, 'font-size:18px' ) !== false,
-	'H3 heading uses font-size 18px'
+	strpos( $css, 'font-size:1.25rem' ) !== false || strpos( $css, 'font-size:20px' ) !== false,
+	'H3 heading uses responsive font-size'
+);
+
+check(
+	strpos( $css, 'font-size:2.125rem' ) !== false,
+	'H1 heading uses responsive font-size'
 );
 
 // 7. Background color: NOT implemented on paragraph

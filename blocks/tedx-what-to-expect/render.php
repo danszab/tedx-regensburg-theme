@@ -12,10 +12,14 @@ $eyebrow    = ! empty( $attributes['eyebrow'] ) ? $attributes['eyebrow'] : '';
 $section_id = ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : 'what-to-expect';
 $cards      = ! empty( $attributes['cards'] ) && is_array( $attributes['cards'] ) ? $attributes['cards'] : array();
 
+$spacing_classes = function_exists( 'tedx_get_block_spacing_classes' )
+	? tedx_get_block_spacing_classes( $attributes )
+	: 'pt-8 md:pt-12 pb-8 md:pb-12 border-t border-white/5';
+
 $wrapper = get_block_wrapper_attributes(
 	array(
 		'id'    => sanitize_html_class( $section_id ),
-		'class' => 'bg-tedx-dark py-16 md:py-24 px-4 md:px-8 lg:px-12 w-full border-t border-white/5',
+		'class' => 'bg-tedx-dark ' . $spacing_classes . ' px-4 md:px-8 lg:px-12 w-full',
 	)
 );
 ?>

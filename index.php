@@ -12,13 +12,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-<main id="primary" class="site-main flex-grow pt-28 pb-16 px-4 md:px-8 lg:px-12 bg-tedx-dark">
+<main id="primary" class="site-main flex-grow pt-28 md:pt-32 pb-16 px-4 md:px-8 lg:px-12 bg-tedx-dark">
 	<div class="max-w-figma mx-auto">
 		
 		<?php if ( have_posts() ) : ?>
 			
 			<header class="page-header mb-12">
-				<h1 class="page-title text-4xl md:text-5xl font-black text-white tracking-tight">
+				<h1 class="page-title tedx-block-heading">
 					<?php
 					if ( is_home() && ! is_front_page() ) {
 						single_post_title();

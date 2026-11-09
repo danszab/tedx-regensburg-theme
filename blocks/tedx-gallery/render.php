@@ -5,8 +5,16 @@ if ( empty($images) ) {
     return;
 }
 
+$gallery_classes = 'tedx-gallery-wrapper';
+if ( ( ! empty( $attributes['paddingTop'] ) && 'default' !== $attributes['paddingTop'] ) ||
+     ( ! empty( $attributes['paddingBottom'] ) && 'default' !== $attributes['paddingBottom'] ) ||
+     ! empty( $attributes['hideBorderTop'] ) ) {
+	if ( function_exists( 'tedx_get_block_spacing_classes' ) ) {
+		$gallery_classes .= ' ' . tedx_get_block_spacing_classes( $attributes );
+	}
+}
 ?>
-<div <?php echo get_block_wrapper_attributes( array( 'class' => 'tedx-gallery-wrapper' ) ); ?>>
+<div <?php echo get_block_wrapper_attributes( array( 'class' => $gallery_classes ) ); ?>>
     
     <div class="tedx-gallery-scroll-container">
         <div class="tedx-gallery-grid">

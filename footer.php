@@ -90,9 +90,9 @@ $newsletter_action = tedx_mod( 'tedx_newsletter_action', '#' );
 						<div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-white/50">
 							<?php echo tedx_get_icon( 'mail', 'w-5 h-5' ); ?>
 						</div>
-						<input type="email" name="email" required placeholder="<?php esc_attr_e( 'Email Address', 'tedx-regensburg' ); ?>" class="w-full pl-11 pr-4 py-3 bg-transparent border border-tedx-outline rounded-lg text-white placeholder:text-white/40 focus:outline-none focus:border-tedx-red focus:ring-1 focus:ring-tedx-red transition-all">
+						<input type="email" name="email" required placeholder="<?php esc_attr_e( 'Email Address', 'tedx-regensburg' ); ?>" class="w-full pl-11 pr-4 py-3 bg-transparent border border-tedx-outline rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-tedx-red focus:ring-1 focus:ring-tedx-red transition-all">
 					</div>
-					<button type="submit" class="flex items-center justify-center w-12 h-12 bg-tedx-button text-white rounded-2xl transition-all duration-200 btn-shadcn-anim shrink-0" aria-label="<?php esc_attr_e( 'Subscribe', 'tedx-regensburg' ); ?>">
+					<button type="submit" class="flex items-center justify-center w-12 h-12 bg-tedx-button text-white rounded-xl transition-all duration-200 btn-shadcn-anim shrink-0" aria-label="<?php esc_attr_e( 'Subscribe', 'tedx-regensburg' ); ?>">
 						<?php echo tedx_get_icon( 'send', 'w-5 h-5' ); ?>
 					</button>
 				</form>

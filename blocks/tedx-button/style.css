@@ -1,0 +1,302 @@
+/**
+ * TEDx Button Block Styles
+ * Following shadcn design guidelines: base tokens, sizes, width presets, animations, and icons.
+ */
+
+.tedx-button-block {
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+    .tedx-button-block {
+        padding-left: 32px;
+        padding-right: 32px;
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .tedx-button-block {
+        padding-left: 48px;
+        padding-right: 48px;
+    }
+}
+
+.tedx-button-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Alignment Wrappers */
+.tedx-button-wrap {
+    display: flex;
+    width: 100%;
+}
+
+.tedx-button-wrap.align-left {
+    justify-content: flex-start;
+}
+
+.tedx-button-wrap.align-center {
+    justify-content: center;
+}
+
+.tedx-button-wrap.align-right {
+    justify-content: flex-end;
+}
+
+/* Base shadcn Button */
+.tedx-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    border-radius: 6px;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none !important;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    outline: none;
+    user-select: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Focus-visible ring */
+.tedx-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #0a0a0a, 0 0 0 4px #eb0028 !important;
+}
+
+/* shadcn Button Micro-Interactions */
+.tedx-btn.btn-shadcn-anim:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+}
+
+.tedx-btn.btn-shadcn-anim:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   Button Sizes (shadcn Guidelines)
+   ========================================================================== */
+
+/* Small (size: sm) */
+.tedx-btn.size-sm {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 12px;
+    gap: 6px;
+}
+
+.tedx-btn.size-sm .tedx-btn-icon {
+    width: 14px;
+    height: 14px;
+}
+
+/* Medium / Default (size: md) */
+.tedx-btn.size-md {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    gap: 8px;
+}
+
+.tedx-btn.size-md .tedx-btn-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Large (size: lg) */
+.tedx-btn.size-lg {
+    height: 48px;
+    padding: 0 24px;
+    font-size: 16px;
+    gap: 10px;
+}
+
+.tedx-btn.size-lg .tedx-btn-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* ==========================================================================
+   Width Presets
+   ========================================================================== */
+
+.tedx-btn.width-auto {
+    width: auto;
+}
+
+.tedx-btn.width-sm {
+    width: 140px;
+    max-width: 100%;
+}
+
+.tedx-btn.width-md {
+    width: 200px;
+    max-width: 100%;
+}
+
+.tedx-btn.width-lg {
+    width: 280px;
+    max-width: 100%;
+}
+
+.tedx-btn.width-full {
+    width: 100%;
+}
+
+/* ==========================================================================
+   Color Variants & Background Presets
+   ========================================================================== */
+
+/* Default / Primary (TEDx Red) */
+.tedx-btn.variant-default,
+.tedx-btn.variant-red {
+    background-color: #eb0028;
+    color: #ffffff !important;
+    border-color: transparent;
+}
+
+.tedx-btn.variant-default:hover,
+.tedx-btn.variant-red:hover {
+    background-color: #c80022;
+    color: #ffffff !important;
+}
+
+/* TEDx Green */
+.tedx-btn.variant-green {
+    background-color: #2ad17e;
+    color: #000000 !important;
+    border-color: transparent;
+    font-weight: 600;
+}
+
+.tedx-btn.variant-green:hover {
+    background-color: #22a865;
+    color: #000000 !important;
+}
+
+/* Secondary (Dark) */
+.tedx-btn.variant-secondary {
+    background-color: #212121;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.tedx-btn.variant-secondary:hover {
+    background-color: #2c2c2c;
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff !important;
+}
+
+/* White */
+.tedx-btn.variant-white {
+    background-color: #ffffff;
+    color: #000000 !important;
+    border-color: transparent;
+    font-weight: 600;
+}
+
+.tedx-btn.variant-white:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #000000 !important;
+}
+
+/* Outline */
+.tedx-btn.variant-outline {
+    background-color: transparent;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.tedx-btn.variant-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #ffffff !important;
+}
+
+/* Custom Variant */
+.tedx-btn.variant-custom {
+    /* Handled via inline background and color properties */
+}
+
+/* ==========================================================================
+   Icon Handling (Custom SVG via Mask or Inlined SVG)
+   ========================================================================== */
+
+.tedx-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 0;
+}
+
+.tedx-btn-icon-mask {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: currentColor;
+    -webkit-mask: var(--btn-icon-url) no-repeat center / contain;
+    mask: var(--btn-icon-url) no-repeat center / contain;
+}
+
+.tedx-btn-icon img,
+.tedx-btn-icon svg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    fill: currentColor;
+}
+
+/* ==========================================================================
+   Editor Visual Styling
+   ========================================================================== */
+
+.tedx-button-editor-wrap {
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    transition: border-color 0.2s ease;
+}
+
+.tedx-button-editor-wrap:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.tedx-button-editor-input {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    min-width: 60px;
+    outline: none;
+}
+
+.tedx-button-editor-input:focus {
+    outline: 1px dashed rgba(255, 255, 255, 0.4);
+    outline-offset: 2px;
+}

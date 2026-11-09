@@ -1,10 +1,38 @@
 .tedx-gallery-wrapper {
-    background-color: #0a0a0a;
-    padding-top: 64px;
-    padding-bottom: 64px;
+    background-color: rgb(10, 10, 10);
+    padding-top: 32px;
+    padding-bottom: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     position: relative;
     overflow: hidden;
     width: 100%;
+}
+
+@media (min-width: 768px) {
+    .tedx-gallery-wrapper {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+}
+
+.tedx-gallery-wrapper.pt-0 { padding-top: 0; }
+.tedx-gallery-wrapper.pb-0 { padding-bottom: 0; }
+.tedx-gallery-wrapper.border-t-0 { border-top-width: 0; }
+
+@media (min-width: 768px) {
+    .tedx-gallery-scroll-container {
+        scroll-padding-left: max(32px, calc((100vw - 1000px) / 2));
+        scroll-padding-right: max(32px, calc((100vw - 1000px) / 2));
+    }
+
+    .tedx-gallery-grid {
+        padding-left: max(32px, calc((100vw - 1000px) / 2));
+        padding-right: max(32px, calc((100vw - 1000px) / 2));
+    }
+
+    .gallery-controls-wrapper {
+        padding: 0 32px;
+    }
 }
 
 .tedx-gallery-scroll-container {
@@ -72,7 +100,7 @@
     top: 0;
     height: 100%;
     width: max(16px, calc((100vw - 1000px) / 2));
-    background: linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(to right, rgba(10, 10, 10, 1) 0%, rgba(10, 10, 10, 0) 100%);
     pointer-events: none;
     z-index: 10;
 }
@@ -83,7 +111,7 @@
     top: 0;
     height: 100%;
     width: max(16px, calc((100vw - 1000px) / 2));
-    background: linear-gradient(to left, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+    background: linear-gradient(to left, rgba(10, 10, 10, 1) 0%, rgba(10, 10, 10, 0) 100%);
     pointer-events: none;
     z-index: 10;
 }

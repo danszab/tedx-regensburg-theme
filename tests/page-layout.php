@@ -20,6 +20,7 @@ function the_post() { $GLOBALS['remaining'] = false; }
 function the_ID() { echo 42; }
 function post_class( $classes ) { echo 'class="' . esc_attr( $classes ) . '"'; }
 function the_title() { echo 'Press'; }
+function get_the_title( $post = 0 ) { return 'Press'; }
 function has_post_thumbnail() { return true; }
 function the_post_thumbnail( $size, $attrs ) { echo '<img alt="Featured image">'; }
 function the_content() { echo '<section class="alignfull">Page block content</section>'; }
@@ -71,7 +72,7 @@ foreach ( $cases as $label => $case ) {
 		check( false === strpos( $html, 'bg-tedx-card' ), $label . ': no outer rounded background card.' );
 		check( false !== strpos( $html, 'tedx-full-width-page-content' ), $label . ': uses full-width content wrapper.' );
 	} else {
-		check( false !== strpos( $html, 'bg-tedx-card rounded-3xl p-8 md:p-12' ), 'Ordinary page card styles are unchanged.' );
+		check( false !== strpos( $html, 'bg-tedx-card rounded-3xl p-5 sm:p-6 md:p-12' ), 'Ordinary page card styles are unchanged.' );
 		check( false !== strpos( $html, 'max-w-4xl mx-auto' ), 'Ordinary page width is unchanged.' );
 		check( false !== strpos( $html, 'entry-content text-white/90 leading-relaxed space-y-4 text-base' ), 'Ordinary page content styles are unchanged.' );
 	}

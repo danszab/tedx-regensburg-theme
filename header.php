@@ -13,6 +13,7 @@
 </head>
 <body <?php body_class( 'bg-tedx-dark text-white antialiased selection:bg-tedx-red selection:text-white min-h-screen flex flex-col' ); ?>>
 <?php wp_body_open(); ?>
+<?php if ( ! tedx_is_navbar_hidden() ) : ?>
 <a class="skip-link screen-reader-text sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-tedx-red focus:text-white focus:rounded-lg" href="#primary">
 	<?php esc_html_e( 'Skip to content', 'tedx-regensburg' ); ?>
 </a>
@@ -40,7 +41,7 @@
 			} else {
 				?>
 				<ul class="flex items-center justify-center gap-6 list-none m-0 p-0">
-					<li><a href="<?php echo esc_url( home_url( '/#hero' ) ); ?>" class="py-2 rounded-xl text-base font-medium text-white/90 hover:text-white inline-block transition-all nav-link nav-link-anim active-nav-link"><?php esc_html_e( 'Home', 'tedx-regensburg' ); ?></a></li>
+					<li><a href="<?php echo esc_url( home_url( '/#hero' ) ); ?>" class="py-2 rounded-xl text-base font-medium text-white/90 hover:text-white inline-block transition-all nav-link nav-link-anim <?php echo is_front_page() ? 'active-nav-link' : ''; ?>"><?php esc_html_e( 'Home', 'tedx-regensburg' ); ?></a></li>
 					<li><a href="<?php echo esc_url( home_url( '/#event-pitch' ) ); ?>" class="py-2 rounded-xl text-base font-medium text-white/90 hover:text-white inline-block transition-all nav-link nav-link-anim"><?php esc_html_e( '2026 Event', 'tedx-regensburg' ); ?></a></li>
 					<li class="relative group">
 						<a href="#" class="inline-flex items-center py-2 text-base font-medium text-white/90 hover:text-white transition-all duration-200 nav-link nav-link-anim">
@@ -98,7 +99,7 @@
 				) );
 			} else {
 					?>
-					<a href="<?php echo esc_url( home_url( '/#hero' ) ); ?>" class="text-xl font-medium text-white/90 hover:text-white py-3 px-4 rounded-xl inline-block transition-all nav-link nav-link-anim active-nav-link"><?php esc_html_e( 'Home', 'tedx-regensburg' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/#hero' ) ); ?>" class="text-xl font-medium text-white/90 hover:text-white py-3 px-4 rounded-xl inline-block transition-all nav-link nav-link-anim <?php echo is_front_page() ? 'active-nav-link' : ''; ?>"><?php esc_html_e( 'Home', 'tedx-regensburg' ); ?></a>
 					<a href="<?php echo esc_url( home_url( '/#event-pitch' ) ); ?>" class="text-xl font-medium text-white/90 hover:text-white py-3 px-4 rounded-xl inline-block transition-all nav-link nav-link-anim"><?php esc_html_e( '2026 Event', 'tedx-regensburg' ); ?></a>
 					<div class="mobile-nav-item">
 						<a href="#" class="text-xl font-medium text-white/90 hover:text-white py-3 px-4 rounded-xl inline-flex items-center transition-all nav-link nav-link-anim mobile-nav-parent w-full">
@@ -118,3 +119,4 @@
 		</nav>
 	</div>
 </header>
+<?php endif; ?>

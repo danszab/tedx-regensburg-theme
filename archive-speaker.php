@@ -12,11 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-<main id="primary" class="site-main flex-grow pt-28 pb-16 px-4 md:px-8 lg:px-12 bg-tedx-dark">
+<main id="primary" class="site-main flex-grow pt-28 md:pt-32 pb-16 px-4 md:px-8 lg:px-12 bg-tedx-dark">
 	<div class="max-w-figma mx-auto">
 		
 		<header class="page-header mb-12">
-			<h1 class="text-4xl md:text-6xl font-black text-white tracking-tight leading-none mb-3">
+			<h1 class="tedx-block-heading mb-3">
 				<?php esc_html_e( 'TEDx Regensburg Speakers', 'tedx-regensburg' ); ?>
 			</h1>
 			<p class="text-lg text-white/70">
@@ -35,7 +35,7 @@ get_header();
 					$linkedin_url  = get_post_meta( $speaker_id, '_speaker_linkedin', true );
 					$has_thumbnail = has_post_thumbnail();
 					?>
-					<article class="bg-tedx-card rounded-[32px] p-6 flex flex-col justify-between border border-white/5 hover:border-white/20 transition-all duration-300 shadow-xl group">
+					<article class="tedx-speaker-card bg-tedx-card rounded-[32px] p-6 flex flex-col justify-between border border-white/5 hover:border-white/20 transition-all duration-300 shadow-xl group">
 						<div>
 							<div class="flex gap-4 items-start mb-4">
 								<div class="w-[122px] h-[122px] rounded-2xl overflow-hidden shrink-0 bg-[#333] border border-white/10 relative">
@@ -49,7 +49,7 @@ get_header();
 								</div>
 
 								<div class="flex-1 flex flex-col gap-1 min-w-0">
-									<h2 class="text-xl font-bold text-white leading-tight truncate">
+									<h2 class="m-0 -mt-0.5 text-xl font-bold text-white leading-tight truncate">
 										<a href="<?php the_permalink(); ?>" class="hover:text-tedx-red transition-colors">
 											<?php the_title(); ?>
 										</a>

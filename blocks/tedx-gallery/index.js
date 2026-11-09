@@ -12,7 +12,7 @@
             var setAttributes = props.setAttributes;
             var images = attributes.images || [];
             var blockProps = wp.blockEditor.useBlockProps({
-                style: { padding: '20px', background: '#000000', color: 'white', borderRadius: '12px' }
+                style: { padding: '20px', background: 'rgb(10, 10, 10)', color: 'white', borderRadius: '12px' }
             });
 
             var onSelectImages = function(media) {
