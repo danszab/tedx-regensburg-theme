@@ -32,6 +32,8 @@ function tedx_get_block_dirs() {
 		'tedx-qa',
 		'tedx-press-gallery',
 		'tedx-floorplan',
+		'tedx-live-ticker',
+		'tedx-bottom-navbar',
 	);
 }
 
@@ -84,7 +86,7 @@ add_filter( 'block_categories_all', 'tedx_block_categories' );
  * @return array Modified registration arguments.
  */
 function tedx_register_block_spacing_attributes( $args, $block_type ) {
-	if ( 0 === strpos( $block_type, 'tedx/' ) && 'tedx/button' !== $block_type ) {
+	if ( 0 === strpos( $block_type, 'tedx/' ) && 'tedx/button' !== $block_type && 'tedx/live-ticker' !== $block_type && 'tedx/bottom-navbar' !== $block_type ) {
 		if ( ! isset( $args['attributes'] ) || ! is_array( $args['attributes'] ) ) {
 			$args['attributes'] = array();
 		}

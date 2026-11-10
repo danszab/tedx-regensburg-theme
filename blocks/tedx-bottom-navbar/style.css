@@ -1,0 +1,106 @@
+/* Bottom Navigation Bar Styles */
+.tedx-bottom-navbar-root {
+    position: relative;
+    width: 100%;
+    z-index: 48;
+}
+
+.tedx-bottom-navbar-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+    z-index: 48;
+    padding-bottom: max(6px, env(safe-area-inset-bottom, 0px));
+}
+
+.tedx-bottom-navbar-container {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 6px 12px;
+}
+
+.tedx-bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+    padding: 6px 4px;
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: none !important;
+    border-radius: 8px;
+    transition: color 0.18s ease, transform 0.18s ease, background-color 0.18s ease;
+}
+
+.tedx-bottom-nav-item:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tedx-bottom-nav-item:active {
+    transform: scale(0.96);
+}
+
+.tedx-bottom-nav-item:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #0a0a0a, 0 0 0 4px #2ad17e;
+}
+
+.tedx-bottom-nav-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.tedx-bottom-nav-custom-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: currentColor;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+}
+
+.tedx-bottom-nav-label {
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+@media (min-width: 640px) {
+    .tedx-bottom-nav-label {
+        font-size: 12px;
+    }
+}
+
+/* Editor Preview */
+.tedx-bottom-navbar-editor-wrap {
+    padding: 16px;
+    background-color: #121212;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+}

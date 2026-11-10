@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
 				if (openIcon) openIcon.classList.add('hidden');
 				if (closeIcon) closeIcon.classList.remove('hidden');
 				document.body.classList.add('overflow-hidden'); // Prevent background scrolling
+				const headerEl = document.getElementById('site-header');
+				if (headerEl) {
+					headerEl.classList.remove('header-collapsed');
+					document.body.classList.remove('header-collapsed');
+				}
 			} else {
 				mobileMenu.classList.add('hidden');
 				if (openIcon) openIcon.classList.remove('hidden');
@@ -60,18 +65,52 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 
-	// 2. Sticky Header scroll effect
+	// 2. Sticky Header scroll effect & autocollapse on scroll down
 	const header = document.getElementById('site-header');
 	if (header) {
-		window.addEventListener('scroll', () => {
-			if (window.scrollY > 20) {
-				header.classList.add("header-scrolled");
-				
+		let lastScrollY = Math.max(0, window.pageYOffset || document.documentElement.scrollTop);
+		let ticking = false;
+
+		const updateHeaderOnScroll = () => {
+			const currentScrollY = Math.max(0, window.pageYOffset || document.documentElement.scrollTop);
+			const isMenuOpen = mobileMenu && !mobileMenu.classList.contains('hidden');
+
+			if (currentScrollY > 20) {
+				header.classList.add('header-scrolled');
 			} else {
-				header.classList.remove("header-scrolled");
-				
+				header.classList.remove('header-scrolled');
 			}
-		});
+
+			// Autocollapse on scroll down, reveal on scroll up
+			if (!isMenuOpen) {
+				if (currentScrollY <= 60) {
+					// Near top of page, keep header visible
+					header.classList.remove('header-collapsed');
+					document.body.classList.remove('header-collapsed');
+				} else if (currentScrollY > lastScrollY + 6) {
+					// Scrolling down past threshold -> collapse
+					header.classList.add('header-collapsed');
+					document.body.classList.add('header-collapsed');
+				} else if (currentScrollY < lastScrollY - 6) {
+					// Scrolling up -> reveal
+					header.classList.remove('header-collapsed');
+					document.body.classList.remove('header-collapsed');
+				}
+			} else {
+				header.classList.remove('header-collapsed');
+				document.body.classList.remove('header-collapsed');
+			}
+
+			lastScrollY = currentScrollY;
+			ticking = false;
+		};
+
+		window.addEventListener('scroll', () => {
+			if (!ticking) {
+				window.requestAnimationFrame(updateHeaderOnScroll);
+				ticking = true;
+			}
+		}, { passive: true });
 	}
 
 	// 3. Smooth scrolling for hash links

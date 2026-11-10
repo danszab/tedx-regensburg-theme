@@ -1,0 +1,244 @@
+/**
+ * TEDx Live Event Ticker Block Styles
+ * Clean, compact, floating one-liner pill following shadcn design aesthetics.
+ * Positioned fixed at the top of the viewport.
+ */
+
+.tedx-live-ticker-block {
+    position: relative;
+    width: 100%;
+    pointer-events: none;
+    z-index: 45; /* Just beneath skip-link / modal z-index */
+}
+
+/* In the Gutenberg editor, allow selecting and clicking the block */
+.tedx-live-ticker-block.tedx-live-ticker-editor,
+.editor-styles-wrapper .tedx-live-ticker-block {
+    pointer-events: auto !important;
+}
+
+/* Floating wrapper fixed at top center */
+.tedx-live-ticker-floating-wrapper {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 24px);
+    max-width: 680px;
+    display: flex;
+    justify-content: center;
+    pointer-events: auto;
+    transition: top 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 45;
+}
+
+/* Explicit class when navbar is present and visible */
+.has-navbar .tedx-live-ticker-floating-wrapper,
+body.has-navbar .tedx-live-ticker-floating-wrapper,
+.tedx-has-navbar .tedx-live-ticker-floating-wrapper,
+body.tedx-has-navbar .tedx-live-ticker-floating-wrapper {
+    top: 72px; /* 60px navbar + 12px gap on mobile */
+}
+
+@media (min-width: 1024px) {
+    .has-navbar .tedx-live-ticker-floating-wrapper,
+    body.has-navbar .tedx-live-ticker-floating-wrapper,
+    .tedx-has-navbar .tedx-live-ticker-floating-wrapper,
+    body.tedx-has-navbar .tedx-live-ticker-floating-wrapper {
+        top: 82px; /* 70px navbar + 12px gap on desktop */
+    }
+}
+
+/* Explicit class when navbar is hidden or collapsed on scroll */
+.tedx-no-navbar .tedx-live-ticker-floating-wrapper,
+body.tedx-no-navbar .tedx-live-ticker-floating-wrapper,
+.no-navbar .tedx-live-ticker-floating-wrapper,
+body.no-navbar .tedx-live-ticker-floating-wrapper,
+.tedx-navbar-hidden .tedx-live-ticker-floating-wrapper,
+body.tedx-navbar-hidden .tedx-live-ticker-floating-wrapper,
+body.header-collapsed .tedx-live-ticker-floating-wrapper,
+body:has(#site-header.header-collapsed) .tedx-live-ticker-floating-wrapper {
+    top: 12px !important;
+}
+
+/* If logged in with WP admin bar */
+body.admin-bar .tedx-live-ticker-floating-wrapper {
+    margin-top: 32px;
+}
+
+@media (max-width: 782px) {
+    body.admin-bar .tedx-live-ticker-floating-wrapper {
+        margin-top: 46px;
+    }
+}
+
+/* The Minimalist Floating One-Liner Pill */
+.tedx-live-ticker-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: auto;
+    max-width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    background-color: rgba(18, 18, 18, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    color: #ffffff;
+    text-decoration: none !important;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04);
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tedx-live-ticker-pill:hover {
+    background-color: rgba(24, 24, 24, 0.96);
+    border-color: rgba(255, 255, 255, 0.22);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px -2px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.tedx-live-ticker-pill:active {
+    transform: translateY(1px) scale(0.99);
+}
+
+.tedx-live-ticker-pill:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #0a0a0a, 0 0 0 4px #2ad17e;
+}
+
+/* Badge (LIVE / UP NEXT / FINISHED) */
+.tedx-live-ticker-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 7px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Pulsing Dot indicator */
+.tedx-live-ticker-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+    flex-shrink: 0;
+}
+
+/* Status: LIVE (Electric Emerald Green, subtle pulse) */
+.tedx-live-ticker-badge.badge-live {
+    background: rgba(42, 209, 126, 0.14);
+    color: #2ad17e;
+    border: 1px solid rgba(42, 209, 126, 0.3);
+}
+
+.tedx-live-ticker-badge.badge-live .tedx-live-ticker-dot {
+    animation: tedx-ticker-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes tedx-ticker-pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.4;
+        transform: scale(0.85);
+    }
+}
+
+/* Status: UP NEXT (Subtle gray-white) */
+.tedx-live-ticker-badge.badge-next {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Status: FINISHED (Muted neutral) */
+.tedx-live-ticker-badge.badge-finished {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Session Title (Truncated smoothly) */
+.tedx-live-ticker-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 140px;
+    flex-shrink: 1;
+}
+
+@media (min-width: 480px) {
+    .tedx-live-ticker-title {
+        max-width: 240px;
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 640px) {
+    .tedx-live-ticker-title {
+        max-width: 340px;
+        font-size: 14px;
+    }
+}
+
+/* Time Range Badge */
+.tedx-live-ticker-time {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.65);
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+}
+
+/* Jump to timetable indicator arrow */
+.tedx-live-ticker-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.45);
+    flex-shrink: 0;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.tedx-live-ticker-pill:hover .tedx-live-ticker-arrow {
+    transform: translateY(1px);
+    color: #ffffff;
+}
+
+/* Gutenberg Editor Preview Styling */
+.tedx-live-ticker-editor-preview {
+    padding: 16px;
+    background: #141414;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.tedx-live-ticker-editor-notice {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+}

@@ -169,7 +169,7 @@
 	if (wp.hooks && wp.hooks.addFilter && wp.compose && wp.compose.createHigherOrderComponent) {
 		var withSpacingControls = wp.compose.createHigherOrderComponent(function (BlockEdit) {
 			return function (props) {
-				if (!props.name || props.name.indexOf('tedx/') !== 0 || props.name === 'tedx/button') {
+				if (!props.name || props.name.indexOf('tedx/') !== 0 || props.name === 'tedx/button' || props.name === 'tedx/live-ticker' || props.name === 'tedx/bottom-navbar') {
 					return el(BlockEdit, props);
 				}
 				var isTimetableV2 = (props.name === 'tedx/timetable-v2');

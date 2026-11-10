@@ -365,11 +365,16 @@
 }
 
 @layer components {
-  /* Custom Header Scrolled State */
+  /* Custom Header Scrolled & Collapsed State */
   #site-header {
       background-color: transparent;
       border-bottom: 1px solid transparent;
-      transition: background-color 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+      will-change: transform;
+  }
+
+  #site-header.header-collapsed {
+      transform: translateY(-100%);
   }
 
   #site-header.header-scrolled {
@@ -377,6 +382,12 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Live Ticker floats neatly at top: 12px when navbar collapses */
+  body.header-collapsed .tedx-live-ticker-floating-wrapper,
+  body:has(#site-header.header-collapsed) .tedx-live-ticker-floating-wrapper {
+      top: 12px !important;
   }
 
   /* Hidden Navigation Bar on specific pages */

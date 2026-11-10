@@ -320,4 +320,15 @@ tedx_preload_header_logo();
 $preload_output = ob_get_clean();
 check( '' === trim( $preload_output ), 'Header logo preload is suppressed when navigation bar is hidden.' );
 
+// -------------------------------------------------------------
+// Test 8: Autocollapse on scroll styles and script
+// -------------------------------------------------------------
+$compiled_css = file_get_contents( dirname( __DIR__ ) . '/assets/css/style.css' );
+check( false !== strpos( $compiled_css, 'header-collapsed{transform:translateY(-100%)' ), 'Compiled CSS includes header-collapsed transform: translateY(-100%).' );
+check( false !== strpos( $compiled_css, 'header-collapsed .tedx-live-ticker-floating-wrapper' ), 'Compiled CSS includes ticker docking adjustment on header-collapsed.' );
+
+$main_js = file_get_contents( dirname( __DIR__ ) . '/assets/js/main.js' );
+check( false !== strpos( $main_js, 'header.classList.add(\'header-collapsed\')' ), 'main.js adds header-collapsed on downscroll.' );
+check( false !== strpos( $main_js, 'header.classList.remove(\'header-collapsed\')' ), 'main.js removes header-collapsed on upscroll.' );
+
 echo 'All navbar visibility tests passed!' . PHP_EOL;

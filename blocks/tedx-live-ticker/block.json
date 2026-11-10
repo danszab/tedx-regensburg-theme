@@ -1,0 +1,78 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "tedx/live-ticker",
+    "title": "TEDx Live Event Ticker",
+    "category": "tedx",
+    "icon": "clock",
+    "description": "Floating minimalist pill at the top of the screen showing current or upcoming event session from Timetable v2.",
+    "keywords": ["ticker", "floating", "sticky", "event", "live", "schedule", "timetable"],
+    "supports": {
+        "html": false
+    },
+    "attributes": {
+        "eyebrowLive": {
+            "type": "string",
+            "default": "LIVE"
+        },
+        "eyebrowNext": {
+            "type": "string",
+            "default": "UP NEXT"
+        },
+        "eyebrowFinished": {
+            "type": "string",
+            "default": "FINISHED"
+        },
+        "jumpToTimetable": {
+            "type": "boolean",
+            "default": true
+        },
+        "eventDate": {
+            "type": "string",
+            "default": ""
+        },
+        "testMode": {
+            "type": "boolean",
+            "default": false
+        },
+        "items": {
+            "type": "array",
+            "default": [
+                {
+                    "startTime": "14:00",
+                    "endTime": "14:30",
+                    "title": "Registration & Welcome Reception"
+                },
+                {
+                    "startTime": "14:30",
+                    "endTime": "15:00",
+                    "title": "Opening Session & Introduction"
+                },
+                {
+                    "startTime": "15:00",
+                    "endTime": "16:30",
+                    "title": "Session 1: Ideas Worth Spreading"
+                },
+                {
+                    "startTime": "16:30",
+                    "endTime": "17:15",
+                    "title": "Networking Break & Food"
+                },
+                {
+                    "startTime": "17:15",
+                    "endTime": "18:45",
+                    "title": "Session 2: Future Horizons"
+                },
+                {
+                    "startTime": "18:45",
+                    "endTime": "19:15",
+                    "title": "Closing Remarks & Afterparty"
+                }
+            ]
+        }
+    },
+    "editorScript": "file:./index.js",
+    "viewScript": "file:./script.js",
+    "style": "file:./style.css",
+    "render": "file:./render.php"
+}
