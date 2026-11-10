@@ -8,6 +8,7 @@
     var el = wp.element.createElement;
     var InspectorControls = wp.blockEditor.InspectorControls || wp.editor.InspectorControls;
     var useBlockProps = wp.blockEditor.useBlockProps;
+    var RichText = wp.blockEditor.RichText || wp.editor.RichText;
     var PanelBody = wp.components.PanelBody;
     var TextControl = wp.components.TextControl;
     var ToggleControl = wp.components.ToggleControl;
@@ -82,18 +83,31 @@
                     )
                 ),
 
-                // Editor Visual Canvas (Static Clickable Pill preview)
+                // Editor Visual Canvas (Clickable & Editable Pill preview)
                 el(
                     'div',
                     { className: 'tedx-live-ticker-editor-preview' },
                     el(
                         'div',
-                        { className: 'tedx-live-ticker-pill' },
+                        { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '8px', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '8px' } },
+                        el('strong', { style: { color: '#2ad17e', fontSize: '13px' } }, '⚡ TEDx Live Event Ticker (Floating Top Pill)'),
+                        el('span', { style: { fontSize: '11px', color: 'rgba(255,255,255,0.45)' } }, testMode ? 'Simulation Active' : 'Live Synced')
+                    ),
+                    el(
+                        'div',
+                        { className: 'tedx-live-ticker-pill', style: { pointerEvents: 'auto', cursor: 'pointer' } },
                         el(
                             'span',
                             { className: 'tedx-live-ticker-badge badge-live' },
                             el('span', { className: 'tedx-live-ticker-dot' }),
-                            el('span', { className: 'tedx-live-ticker-badge-text' }, eyebrowLive)
+                            el(RichText, {
+                                tagName: 'span',
+                                className: 'tedx-live-ticker-badge-text',
+                                value: eyebrowLive,
+                                onChange: function (val) { setAttributes({ eyebrowLive: val }); },
+                                placeholder: 'LIVE',
+                                allowedFormats: []
+                            })
                         ),
                         el(
                             'span',
@@ -117,8 +131,22 @@
                     ),
                     el(
                         'div',
+                        { style: { display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center', justifyContent: 'center', marginTop: '12px', width: '100%' } },
+                        el(ToggleControl, {
+                            label: 'Jump to Timetable on click',
+                            checked: jumpToTimetable,
+                            onChange: function (val) { setAttributes({ jumpToTimetable: val }); }
+                        }),
+                        el(ToggleControl, {
+                            label: 'Test Mode (preview live event state)',
+                            checked: testMode,
+                            onChange: function (val) { setAttributes({ testMode: val }); }
+                        })
+                    ),
+                    el(
+                        'div',
                         { className: 'tedx-live-ticker-editor-notice' },
-                        'Floating pill will automatically dock at the top of the viewport on the frontend and sync with the current time / Timetable v2.'
+                        'On frontend, floating pill automatically docks at the top of the viewport under the navbar and synchronizes with Timetable v2 sessions.'
                     )
                 )
             );

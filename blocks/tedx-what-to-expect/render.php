@@ -9,7 +9,7 @@
 
 $title      = ! empty( $attributes['title'] ) ? $attributes['title'] : __( 'What to expect', 'tedx-regensburg' );
 $eyebrow    = ! empty( $attributes['eyebrow'] ) ? $attributes['eyebrow'] : '';
-$section_id = ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : 'what-to-expect';
+$section_id = ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : 'what-to-expect' );
 $cards      = ! empty( $attributes['cards'] ) && is_array( $attributes['cards'] ) ? $attributes['cards'] : array();
 
 $spacing_classes = function_exists( 'tedx_get_block_spacing_classes' )

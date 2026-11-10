@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$section_id       = ! empty( $attributes['sectionId'] ) ? sanitize_title( $attributes['sectionId'] ) : 'floorplan';
+$section_id       = ! empty( $attributes['anchor'] ) ? sanitize_title( $attributes['anchor'] ) : ( ! empty( $attributes['sectionId'] ) ? sanitize_title( $attributes['sectionId'] ) : 'floorplan' );
 $eyebrow          = $attributes['eyebrow'] ?? 'VENUE MAP';
 $heading          = $attributes['heading'] ?? 'Event Floorplan & Stages';
 $description      = $attributes['description'] ?? '';

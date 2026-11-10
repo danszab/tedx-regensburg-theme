@@ -39,7 +39,24 @@
             var iconUrl = attributes.iconUrl || '';
             var iconPosition = attributes.iconPosition || 'left';
 
-            var blockProps = useBlockProps ? useBlockProps({ className: 'tedx-button-block w-full py-6 md:py-8 px-4 md:px-8 lg:px-12' }) : { className: 'tedx-button-block w-full py-6 md:py-8 px-4 md:px-8 lg:px-12' };
+            var blockClass = 'tedx-button-block w-full px-4 md:px-8 lg:px-12';
+            if (attributes.paddingTop === 'none') { blockClass += ' pt-0'; }
+            else if (attributes.paddingTop === 'compact') { blockClass += ' pt-4 md:pt-6'; }
+            else if (attributes.paddingTop === 'large') { blockClass += ' pt-16 md:pt-24'; }
+            else { blockClass += ' pt-8 md:pt-12'; }
+
+            if (attributes.paddingBottom === 'none') { blockClass += ' pb-0'; }
+            else if (attributes.paddingBottom === 'compact') { blockClass += ' pb-4 md:pb-6'; }
+            else if (attributes.paddingBottom === 'large') { blockClass += ' pb-16 md:pb-24'; }
+            else { blockClass += ' pb-8 md:pb-12'; }
+
+            if (attributes.hideBorderTop) {
+                blockClass += ' border-t-0';
+            } else {
+                blockClass += ' border-t border-white/5';
+            }
+
+            var blockProps = useBlockProps ? useBlockProps({ className: blockClass }) : { className: blockClass };
 
             // Build dynamic classes
             var btnClasses = [

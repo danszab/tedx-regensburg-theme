@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $title         = ! empty( $attributes['title'] ) ? $attributes['title'] : __( 'Press Gallery', 'tedx-regensburg' );
 $eyebrow       = ! empty( $attributes['eyebrow'] ) ? $attributes['eyebrow'] : '';
-$section_id    = ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : 'press-gallery';
+$section_id    = ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : 'press-gallery' );
 $download_text = ! empty( $attributes['downloadText'] ) ? $attributes['downloadText'] : __( 'Download high-resolution image', 'tedx-regensburg' );
 $items         = ! empty( $attributes['items'] ) && is_array( $attributes['items'] ) ? $attributes['items'] : array();
 

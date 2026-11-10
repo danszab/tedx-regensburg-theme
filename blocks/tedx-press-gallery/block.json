@@ -6,10 +6,21 @@
     "category": "tedx",
     "icon": "format-gallery",
     "description": "Grid of press image previews with descriptions and high-resolution download links.",
-    "keywords": ["press", "gallery", "images", "media", "download", "tedx"],
+    "keywords": [
+        "press",
+        "gallery",
+        "images",
+        "media",
+        "download",
+        "tedx"
+    ],
     "supports": {
         "html": false,
-        "align": ["wide", "full"]
+        "align": [
+            "wide",
+            "full"
+        ],
+        "anchor": true
     },
     "attributes": {
         "title": {

@@ -114,6 +114,9 @@ foreach ( array( 'grid', 'featured' ) as $layout ) {
 	check( false !== strpos( $html, 'class="tedx-sponsor-logo-link"' ), $layout . ' linked logo fills the same frame as unlinked logos.' );
 }
 
+$sponsor_css = file_get_contents( dirname( __DIR__ ) . '/blocks/tedx-sponsors/style.css' );
+check( false !== strpos( $sponsor_css, 'height: 70%;' ) && false !== strpos( $sponsor_css, 'max-height: 70%;' ), 'Sponsor logo height is set to 70% in style.css' );
+
 class WP_Query {
 	private $remaining = true;
 	public function __construct( $args ) {}

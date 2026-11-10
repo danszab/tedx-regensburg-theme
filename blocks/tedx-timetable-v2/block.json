@@ -6,10 +6,21 @@
     "category": "tedx",
     "icon": "clock",
     "description": "Real-time sync timetable in a single-row card layout following shadcn design guidelines.",
-    "keywords": ["timetable", "schedule", "agenda", "timeline", "shadcn", "tedx"],
+    "keywords": [
+        "timetable",
+        "schedule",
+        "agenda",
+        "timeline",
+        "shadcn",
+        "tedx"
+    ],
     "supports": {
         "html": false,
-        "align": ["wide", "full"]
+        "align": [
+            "wide",
+            "full"
+        ],
+        "anchor": true
     },
     "attributes": {
         "title": {

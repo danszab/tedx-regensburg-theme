@@ -135,9 +135,28 @@
 			])
 		];
 
-		if (options.hasBorder !== false) {
+		if (options.hasBorderDefault === false || options.hasBorder === false) {
+			controls.push(H.toggle(props, 'showBorderTop', 'Show top divider line'));
+		} else {
 			controls.push(H.toggle(props, 'hideBorderTop', 'Hide top divider line'));
 		}
+
+		var currentAnchor = props.attributes.anchor || props.attributes.sectionId || '';
+		controls.push(
+			el(c.TextControl, {
+				key: 'anchor',
+				label: 'HTML Anchor (#section-id)',
+				help: 'Target for anchor links (e.g. timetable, speakers).',
+				value: currentAnchor,
+				onChange: function (val) {
+					var updates = { anchor: val };
+					if (typeof props.attributes.sectionId !== 'undefined') {
+						updates.sectionId = val;
+					}
+					props.setAttributes(updates);
+				}
+			})
+		);
 
 		return H.panel('Spacing & Dividers', controls, false);
 	};
@@ -164,12 +183,12 @@
 	};
 
 	/**
-	 * Automatically add Spacing & Dividers panel to all TEDx section blocks in Gutenberg.
+	 * Automatically add Spacing & Dividers panel to all TEDx blocks in Gutenberg.
 	 */
 	if (wp.hooks && wp.hooks.addFilter && wp.compose && wp.compose.createHigherOrderComponent) {
 		var withSpacingControls = wp.compose.createHigherOrderComponent(function (BlockEdit) {
 			return function (props) {
-				if (!props.name || props.name.indexOf('tedx/') !== 0 || props.name === 'tedx/button' || props.name === 'tedx/live-ticker' || props.name === 'tedx/bottom-navbar') {
+				if (!props.name || props.name.indexOf('tedx/') !== 0) {
 					return el(BlockEdit, props);
 				}
 				var isTimetableV2 = (props.name === 'tedx/timetable-v2');
@@ -180,7 +199,7 @@
 					el(
 						be.InspectorControls,
 						null,
-						H.spacingPanel(props, { hasBorder: !isTimetableV2 })
+						H.spacingPanel(props, { hasBorderDefault: !isTimetableV2 })
 					)
 				);
 			};

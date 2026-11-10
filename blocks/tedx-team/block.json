@@ -6,11 +6,26 @@
     "category": "tedx",
     "icon": "groups",
     "description": "Grid of team members automatically fetched from the team member database.",
-    "keywords": ["team", "members", "staff", "tedx"],
-    "supports": { "html": false, "align": false },
+    "keywords": [
+        "team",
+        "members",
+        "staff",
+        "tedx"
+    ],
+    "supports": {
+        "html": false,
+        "align": false,
+        "anchor": true
+    },
     "attributes": {
-        "title": { "type": "string", "default": "Our Team" },
-        "sectionId": { "type": "string", "default": "team" }
+        "title": {
+            "type": "string",
+            "default": "Our Team"
+        },
+        "sectionId": {
+            "type": "string",
+            "default": "team"
+        }
     },
     "editorScript": "file:./index.js",
     "render": "file:./render.php"

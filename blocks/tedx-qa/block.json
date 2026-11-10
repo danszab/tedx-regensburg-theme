@@ -6,10 +6,20 @@
     "category": "tedx",
     "icon": "editor-help",
     "description": "Accessible, animated Q&A Accordion component following shadcn / Base UI specifications.",
-    "keywords": ["qa", "faq", "accordion", "questions", "tedx"],
+    "keywords": [
+        "qa",
+        "faq",
+        "accordion",
+        "questions",
+        "tedx"
+    ],
     "supports": {
         "html": false,
-        "align": ["wide", "full"]
+        "align": [
+            "wide",
+            "full"
+        ],
+        "anchor": true
     },
     "attributes": {
         "title": {

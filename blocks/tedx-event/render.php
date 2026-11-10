@@ -33,7 +33,7 @@ $spacing_classes = function_exists( 'tedx_get_block_spacing_classes' )
 
 $wrapper = get_block_wrapper_attributes(
 	array(
-		'id'    => sanitize_html_class( $attributes['sectionId'] ),
+		'id'    => sanitize_html_class( ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( $attributes['sectionId'] ?? 'event-pitch' ) ),
 		'class' => 'bg-tedx-surface ' . $spacing_classes . ' px-4 md:px-8 lg:px-12',
 	)
 );

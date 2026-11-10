@@ -8,13 +8,19 @@ if ( empty($images) ) {
 $gallery_classes = 'tedx-gallery-wrapper';
 if ( ( ! empty( $attributes['paddingTop'] ) && 'default' !== $attributes['paddingTop'] ) ||
      ( ! empty( $attributes['paddingBottom'] ) && 'default' !== $attributes['paddingBottom'] ) ||
-     ! empty( $attributes['hideBorderTop'] ) ) {
+     ! empty( $attributes['hideBorderTop'] ) ||
+     ! empty( $attributes['showBorderTop'] ) ) {
 	if ( function_exists( 'tedx_get_block_spacing_classes' ) ) {
 		$gallery_classes .= ' ' . tedx_get_block_spacing_classes( $attributes );
 	}
 }
+$anchor = ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : '' );
+$wrapper_args = array( 'class' => $gallery_classes );
+if ( ! empty( $anchor ) ) {
+	$wrapper_args['id'] = sanitize_html_class( $anchor );
+}
 ?>
-<div <?php echo get_block_wrapper_attributes( array( 'class' => $gallery_classes ) ); ?>>
+<div <?php echo get_block_wrapper_attributes( $wrapper_args ); ?>>
     
     <div class="tedx-gallery-scroll-container">
         <div class="tedx-gallery-grid">

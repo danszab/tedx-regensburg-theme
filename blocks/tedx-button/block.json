@@ -6,10 +6,20 @@
     "category": "tedx",
     "icon": "button",
     "description": "Custom button component following shadcn design guidelines with icon, width, color, and redirect options.",
-    "keywords": ["button", "link", "cta", "shadcn", "tedx"],
+    "keywords": [
+        "button",
+        "link",
+        "cta",
+        "shadcn",
+        "tedx"
+    ],
     "supports": {
         "html": false,
-        "align": ["wide", "full"]
+        "align": [
+            "wide",
+            "full"
+        ],
+        "anchor": true
     },
     "attributes": {
         "text": {

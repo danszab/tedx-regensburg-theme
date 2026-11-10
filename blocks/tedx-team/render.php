@@ -8,7 +8,7 @@
  */
 
 $title      = ! empty( $attributes['title'] ) ? $attributes['title'] : __( 'Our Team', 'tedx-regensburg' );
-$section_id = ! empty( $attributes['sectionId'] ) ? sanitize_html_class( $attributes['sectionId'] ) : 'team';
+$section_id = sanitize_html_class( ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : 'team' ) );
 
 $team_args = array(
 	'post_type'      => 'team_member',

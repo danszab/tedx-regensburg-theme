@@ -62,14 +62,25 @@ $initial_item  = $items[0];
 // Check navbar visibility from WordPress helper
 $navbar_hidden = function_exists( 'tedx_is_navbar_hidden' ) ? tedx_is_navbar_hidden() : false;
 
-$wrapper_classes = 'tedx-live-ticker-block' . ( $navbar_hidden ? ' tedx-navbar-hidden' : ' tedx-has-navbar' );
+$spacing_classes = function_exists( 'tedx_get_block_spacing_classes' )
+	? tedx_get_block_spacing_classes( $attributes )
+	: 'pt-8 md:pt-12 pb-8 md:pb-12 border-t border-white/5';
+
+$anchor = ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : '' );
+
+$wrapper_classes = 'tedx-live-ticker-block ' . $spacing_classes . ( $navbar_hidden ? ' tedx-navbar-hidden' : ' tedx-has-navbar' );
 if ( ! empty( $attributes['className'] ) ) {
 	$wrapper_classes .= ' ' . $attributes['className'];
 }
 
-$wrapper_attributes = get_block_wrapper_attributes( array(
+$wrapper_args = array(
 	'class' => $wrapper_classes,
-) );
+);
+if ( ! empty( $anchor ) ) {
+	$wrapper_args['id'] = sanitize_html_class( $anchor );
+}
+
+$wrapper_attributes = get_block_wrapper_attributes( $wrapper_args );
 ?>
 
 <div <?php echo $wrapper_attributes; ?>

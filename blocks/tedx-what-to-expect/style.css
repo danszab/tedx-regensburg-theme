@@ -5,7 +5,14 @@
   border-color: #252525;
   border-radius: 32px;
   background-color: transparent;
+  padding: 1rem !important; /* 16px */
   transition: border-color 0.3s ease;
+}
+
+@media (min-width: 640px) {
+  .tedx-what-to-expect-card {
+    padding: 1.5rem !important; /* 24px */
+  }
 }
 
 .tedx-what-to-expect-card:hover {

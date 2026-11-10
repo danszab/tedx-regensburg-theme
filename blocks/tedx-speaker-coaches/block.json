@@ -6,13 +6,33 @@
     "category": "tedx",
     "icon": "groups",
     "description": "Speaker coach cards, optionally filtered by year.",
-    "keywords": ["coaches", "speaker coaches", "tedx"],
-    "supports": { "html": false, "align": false },
-    "usesContext": ["postId", "postType"],
+    "keywords": [
+        "coaches",
+        "speaker coaches",
+        "tedx"
+    ],
+    "supports": {
+        "html": false,
+        "align": false,
+        "anchor": true
+    },
+    "usesContext": [
+        "postId",
+        "postType"
+    ],
     "attributes": {
-        "year": { "type": "string", "default": "" },
-        "title": { "type": "string", "default": "Speaker Coaches" },
-        "showMore": { "type": "boolean", "default": true }
+        "year": {
+            "type": "string",
+            "default": ""
+        },
+        "title": {
+            "type": "string",
+            "default": "Speaker Coaches"
+        },
+        "showMore": {
+            "type": "boolean",
+            "default": true
+        }
     },
     "editorScript": "file:./index.js",
     "render": "file:./render.php"

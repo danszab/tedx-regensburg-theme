@@ -84,12 +84,18 @@ require_once TEDX_DIR . '/inc/blocks.php';
 check( in_array( 'tedx-live-ticker', tedx_get_block_dirs(), true ), 'tedx-live-ticker is registered in tedx_get_block_dirs()' );
 
 $spacing_attrs = tedx_register_block_spacing_attributes( array(), 'tedx/live-ticker' );
-check( empty( $spacing_attrs['attributes'] ), 'tedx/live-ticker is excluded from section spacing attributes' );
+check( ! empty( $spacing_attrs['attributes'] ), 'tedx/live-ticker receives section spacing attributes' );
 
 // 4. Stylesheet check for floating positioning and navbar offset
 $style_css = file_get_contents( TEDX_DIR . '/blocks/tedx-live-ticker/style.css' );
 check( false !== strpos( $style_css, 'position: fixed;' ), 'style.css defines fixed positioning' );
 check( false !== strpos( $style_css, 'top: 12px' ), 'style.css aligns pill compact to the top (12px) when navbar is hidden' );
 check( false !== strpos( $style_css, 'backdrop-filter: blur(12px);' ), 'style.css uses backdrop-filter blur' );
+
+// 5. Editor script assets check
+check( file_exists( TEDX_DIR . '/blocks/tedx-live-ticker/index.asset.php' ), 'Live ticker has index.asset.php' );
+$asset = include TEDX_DIR . '/blocks/tedx-live-ticker/index.asset.php';
+check( in_array( 'wp-blocks', $asset['dependencies'], true ), 'index.asset.php declares wp-blocks dependency' );
+check( in_array( 'wp-block-editor', $asset['dependencies'], true ), 'index.asset.php declares wp-block-editor dependency' );
 
 echo 'All Live Event Ticker block tests passed!' . PHP_EOL;

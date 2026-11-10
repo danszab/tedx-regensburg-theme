@@ -6,10 +6,19 @@
     "category": "tedx",
     "icon": "grid-view",
     "description": "Grid of benefit and expectation cards with configurable title, icon, and description.",
-    "keywords": ["what to expect", "benefits", "features", "tedx"],
+    "keywords": [
+        "what to expect",
+        "benefits",
+        "features",
+        "tedx"
+    ],
     "supports": {
         "html": false,
-        "align": ["wide", "full"]
+        "align": [
+            "wide",
+            "full"
+        ],
+        "anchor": true
     },
     "attributes": {
         "title": {

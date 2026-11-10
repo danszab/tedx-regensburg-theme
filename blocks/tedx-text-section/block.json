@@ -6,10 +6,22 @@
     "category": "tedx",
     "icon": "editor-alignleft",
     "description": "Rich text and headings styled exactly like the About Us page.",
-    "keywords": ["text", "about", "content", "tedx"],
-    "supports": { "html": false, "align": false },
+    "keywords": [
+        "text",
+        "about",
+        "content",
+        "tedx"
+    ],
+    "supports": {
+        "html": false,
+        "align": false,
+        "anchor": true
+    },
     "attributes": {
-        "sectionId": { "type": "string", "default": "" }
+        "sectionId": {
+            "type": "string",
+            "default": ""
+        }
     },
     "editorScript": "file:./index.js",
     "render": "file:./render.php"

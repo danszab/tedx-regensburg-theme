@@ -6,9 +6,18 @@
     "category": "tedx",
     "icon": "clock",
     "description": "Floating minimalist pill at the top of the screen showing current or upcoming event session from Timetable v2.",
-    "keywords": ["ticker", "floating", "sticky", "event", "live", "schedule", "timetable"],
+    "keywords": [
+        "ticker",
+        "floating",
+        "sticky",
+        "event",
+        "live",
+        "schedule",
+        "timetable"
+    ],
     "supports": {
-        "html": false
+        "html": false,
+        "anchor": true
     },
     "attributes": {
         "eyebrowLive": {

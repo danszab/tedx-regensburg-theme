@@ -41,7 +41,7 @@ echo tedx_render_people_grid( array( // phpcs:ignore WordPress.Security.EscapeOu
 	'cfs_button_text'   => $attributes['cfsButtonText'],
 	'wrapper_attrs'     => get_block_wrapper_attributes(
 		array(
-			'id'    => 'speakers',
+			'id'    => sanitize_html_class( ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( $attributes['sectionId'] ?? 'speakers' ) ),
 			'class' => 'relative bg-tedx-dark ' . $spacing_classes . ' px-4 md:px-8 lg:px-12 overflow-hidden',
 		)
 	),

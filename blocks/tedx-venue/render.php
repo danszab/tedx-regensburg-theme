@@ -55,7 +55,7 @@ if ( empty( $maps_url ) || '#' === $maps_url ) {
 	}
 }
 
-$section_id = ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : 'location';
+$section_id = ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : 'location' );
 
 $spacing_classes = function_exists( 'tedx_get_block_spacing_classes' )
 	? tedx_get_block_spacing_classes( $attributes )

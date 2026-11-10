@@ -6,10 +6,20 @@
     "category": "tedx",
     "icon": "clock",
     "description": "Visual timeline schedule and timetable for TEDx events.",
-    "keywords": ["timetable", "schedule", "agenda", "timeline", "tedx"],
+    "keywords": [
+        "timetable",
+        "schedule",
+        "agenda",
+        "timeline",
+        "tedx"
+    ],
     "supports": {
         "html": false,
-        "align": ["wide", "full"]
+        "align": [
+            "wide",
+            "full"
+        ],
+        "anchor": true
     },
     "attributes": {
         "title": {
@@ -27,15 +37,51 @@
         "items": {
             "type": "array",
             "default": [
-                { "time": "15:00", "title": "Start", "isHighlight": true },
-                { "time": "15:00", "title": "Start", "isHighlight": false },
-                { "time": "15:00", "title": "Start", "isHighlight": false },
-                { "time": "15:00", "title": "Start", "isHighlight": false },
-                { "time": "15:00", "title": "Break", "isHighlight": true },
-                { "time": "15:00", "title": "Start", "isHighlight": false },
-                { "time": "15:00", "title": "Start", "isHighlight": false },
-                { "time": "15:00", "title": "Start", "isHighlight": false },
-                { "time": "15:00", "title": "End", "isHighlight": true }
+                {
+                    "time": "15:00",
+                    "title": "Start",
+                    "isHighlight": true
+                },
+                {
+                    "time": "15:00",
+                    "title": "Start",
+                    "isHighlight": false
+                },
+                {
+                    "time": "15:00",
+                    "title": "Start",
+                    "isHighlight": false
+                },
+                {
+                    "time": "15:00",
+                    "title": "Start",
+                    "isHighlight": false
+                },
+                {
+                    "time": "15:00",
+                    "title": "Break",
+                    "isHighlight": true
+                },
+                {
+                    "time": "15:00",
+                    "title": "Start",
+                    "isHighlight": false
+                },
+                {
+                    "time": "15:00",
+                    "title": "Start",
+                    "isHighlight": false
+                },
+                {
+                    "time": "15:00",
+                    "title": "Start",
+                    "isHighlight": false
+                },
+                {
+                    "time": "15:00",
+                    "title": "End",
+                    "isHighlight": true
+                }
             ]
         }
     },

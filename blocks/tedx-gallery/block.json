@@ -8,7 +8,10 @@
     "description": "Custom 2-row gallery slider for TEDx.",
     "supports": {
         "html": false,
-        "align": ["full"]
+        "align": [
+            "full"
+        ],
+        "anchor": true
     },
     "attributes": {
         "images": {

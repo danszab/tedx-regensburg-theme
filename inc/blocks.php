@@ -79,14 +79,19 @@ function tedx_block_categories( $categories ) {
 add_filter( 'block_categories_all', 'tedx_block_categories' );
 
 /**
- * Register spacing and divider attributes for all TEDx section blocks.
+ * Register spacing and divider attributes for all TEDx blocks.
  *
  * @param array  $args       Block type registration arguments.
  * @param string $block_type Block name (e.g. 'tedx/speakers').
  * @return array Modified registration arguments.
  */
 function tedx_register_block_spacing_attributes( $args, $block_type ) {
-	if ( 0 === strpos( $block_type, 'tedx/' ) && 'tedx/button' !== $block_type && 'tedx/live-ticker' !== $block_type && 'tedx/bottom-navbar' !== $block_type ) {
+	if ( 0 === strpos( $block_type, 'tedx/' ) ) {
+		if ( ! isset( $args['supports'] ) || ! is_array( $args['supports'] ) ) {
+			$args['supports'] = array();
+		}
+		$args['supports']['anchor'] = true;
+
 		if ( ! isset( $args['attributes'] ) || ! is_array( $args['attributes'] ) ) {
 			$args['attributes'] = array();
 		}
@@ -104,6 +109,12 @@ function tedx_register_block_spacing_attributes( $args, $block_type ) {
 		}
 		if ( ! isset( $args['attributes']['hideBorderTop'] ) ) {
 			$args['attributes']['hideBorderTop'] = array(
+				'type'    => 'boolean',
+				'default' => false,
+			);
+		}
+		if ( ! isset( $args['attributes']['showBorderTop'] ) ) {
+			$args['attributes']['showBorderTop'] = array(
 				'type'    => 'boolean',
 				'default' => false,
 			);
@@ -129,6 +140,7 @@ add_filter( 'register_block_type_args', 'tedx_register_block_spacing_attributes'
  *
  * Divider:
  * - Defaults to 'border-t border-white/5' unless has_border is false or hideBorderTop is true.
+ * - When has_border is false, showBorderTop=true adds 'border-t border-white/5'.
  *
  * @param array $attributes Block attributes.
  * @param array $defaults   Custom defaults (e.g. has_border => false for timetable-v2).
@@ -147,6 +159,7 @@ function tedx_get_block_spacing_classes( $attributes = array(), $defaults = arra
 	$top_attr    = isset( $attributes['paddingTop'] ) ? $attributes['paddingTop'] : $defaults['padding_top'];
 	$bottom_attr = isset( $attributes['paddingBottom'] ) ? $attributes['paddingBottom'] : $defaults['padding_bottom'];
 	$hide_border = ! empty( $attributes['hideBorderTop'] );
+	$show_border = ! empty( $attributes['showBorderTop'] );
 
 	$top_map = array(
 		'none'    => 'pt-0',
@@ -166,7 +179,14 @@ function tedx_get_block_spacing_classes( $attributes = array(), $defaults = arra
 	$classes[] = isset( $top_map[ $top_attr ] ) ? $top_map[ $top_attr ] : $top_map['default'];
 	$classes[] = isset( $bottom_map[ $bottom_attr ] ) ? $bottom_map[ $bottom_attr ] : $bottom_map['default'];
 
-	if ( $defaults['has_border'] && ! $hide_border ) {
+	$has_border = $defaults['has_border'];
+	if ( isset( $attributes['showBorderTop'] ) ) {
+		$has_border = ! empty( $attributes['showBorderTop'] );
+	} elseif ( $hide_border ) {
+		$has_border = false;
+	}
+
+	if ( $has_border ) {
 		$classes[] = 'border-t border-white/5';
 	} elseif ( $hide_border ) {
 		$classes[] = 'border-t-0';
@@ -270,6 +290,7 @@ function tedx_enqueue_block_editor_data() {
 		),
 	);
 
+	wp_enqueue_script( 'tedx-block-helpers' );
 	wp_add_inline_script( 'tedx-block-helpers', 'window.tedxBlockData = ' . wp_json_encode( $data ) . ';', 'before' );
 }
 add_action( 'enqueue_block_editor_assets', 'tedx_enqueue_block_editor_data' );

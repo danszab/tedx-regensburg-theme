@@ -7,13 +7,16 @@
 .tedx-live-ticker-block {
     position: relative;
     width: 100%;
-    pointer-events: none;
     z-index: 45; /* Just beneath skip-link / modal z-index */
+    pointer-events: auto;
 }
 
 /* In the Gutenberg editor, allow selecting and clicking the block */
+.tedx-live-ticker-block,
 .tedx-live-ticker-block.tedx-live-ticker-editor,
-.editor-styles-wrapper .tedx-live-ticker-block {
+.editor-styles-wrapper .tedx-live-ticker-block,
+.tedx-live-ticker-editor-preview,
+.tedx-live-ticker-pill {
     pointer-events: auto !important;
 }
 
@@ -227,18 +230,27 @@ body.admin-bar .tedx-live-ticker-floating-wrapper {
 
 /* Gutenberg Editor Preview Styling */
 .tedx-live-ticker-editor-preview {
-    padding: 16px;
-    background: #141414;
-    border: 1px dashed rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    background: #121212;
+    border: 1px dashed rgba(255, 255, 255, 0.25);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.tedx-live-ticker-editor-preview:hover {
+    border-color: rgba(42, 209, 126, 0.5);
+    background: #161616;
 }
 
 .tedx-live-ticker-editor-notice {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.55);
     text-align: center;
+    line-height: 1.4;
+    max-width: 520px;
 }

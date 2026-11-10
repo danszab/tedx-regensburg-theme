@@ -394,10 +394,14 @@ $classes = tedx_page_thumbnail_body_class( array( 'page' ) );
 check( in_array( 'tedx-has-top-thumbnail', $classes, true ), 'body_class includes tedx-has-top-thumbnail.' );
 
 // -------------------------------------------------------------
-// Test 10: CSS rules remove padding on first block following top thumbnail
+// Test 10: CSS rules clear margin/border under top thumbnail without overriding card/block padding
 // -------------------------------------------------------------
 $css = file_get_contents( dirname( __DIR__ ) . '/assets/css/input.css' );
 check( false !== strpos( $css, '.tedx-page-has-top-thumb .tedx-full-width-page-content > section:first-child' ), 'CSS contains rule targeting first section on full-width top thumbnail pages.' );
-check( false !== strpos( $css, 'padding-top: 0 !important' ), 'CSS sets padding-top to 0 !important for first block below top thumbnail.' );
+check( false !== strpos( $css, 'border-top-width: 0 !important' ), 'CSS resets border-top-width to 0 !important for first block below top thumbnail.' );
+check( false === strpos( $css, '.tedx-page-has-top-thumb section.tedx-timetable-v2-block' ), 'Global stylesheet does not broadly target timetable-v2 blocks under top thumbnail.' );
+check( false !== strpos( $css, '.tedx-timetable-v2-card' ) && false !== strpos( $css, 'padding: 20px !important' ), 'CSS enforces timetable-v2 card padding strictly.' );
+check( false !== strpos( $css, '.tedx-what-to-expect-card' ) && false !== strpos( $css, 'padding: 1rem !important' ), 'CSS enforces what-to-expect card padding strictly.' );
+check( false !== strpos( $css, '.tedx-speaker-card' ) && false !== strpos( $css, 'padding: 1.5rem !important' ), 'CSS enforces speaker card padding strictly.' );
 
 echo 'All page thumbnail tests passed!' . PHP_EOL;

@@ -931,6 +931,9 @@
   padding: 0 !important;
 }
 
+/* Automated clearance below top thumbnail:
+   Zero out top margins and top borders so the first block sits flush under the thumbnail,
+   while strictly preserving section and card padding settings. */
 body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > section:first-of-type,
 body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > section:first-child,
 body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > :first-child,
@@ -938,21 +941,11 @@ body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > :first-child,
 .tedx-page-has-top-thumb .tedx-full-width-page-content > section:first-child,
 .tedx-page-has-top-thumb .tedx-full-width-page-content > .alignfull:first-child,
 .tedx-page-has-top-thumb .tedx-full-width-page-content > :first-child,
-.tedx-page-has-top-thumb .tedx-full-width-page-content > :first-child > section:first-child,
 .tedx-page-has-top-thumb .entry-content > section:first-of-type,
 .tedx-page-has-top-thumb .entry-content > section:first-child,
 .tedx-page-has-top-thumb .entry-content > :first-child,
-.tedx-page-has-top-thumb .entry-content > :first-child > section:first-child,
-.tedx-page-has-top-thumb article > section:first-of-type,
-.tedx-page-has-top-thumb article > section:first-child,
 .tedx-page-has-top-thumb .site-main > section:first-of-type,
 .tedx-page-has-top-thumb .site-main > section:first-child,
-.tedx-page-has-top-thumb section.tedx-timetable-v2-block,
-.tedx-page-has-top-thumb section.tedx-timetable-block,
-.tedx-page-has-top-thumb section.tedx-floorplan-section,
-body.tedx-has-top-thumbnail section.tedx-timetable-v2-block:first-of-type,
-body.tedx-has-top-thumbnail section.tedx-timetable-block:first-of-type,
-body.tedx-has-top-thumbnail section.tedx-floorplan-section:first-of-type,
 body.tedx-has-top-thumbnail .tedx-page-content > :first-child,
 body.tedx-has-top-thumbnail .tedx-page-content > section:first-of-type,
 body.tedx-has-top-thumbnail .tedx-page-content > section:first-child,
@@ -963,54 +956,75 @@ body.tedx-has-top-thumbnail .tedx-full-width-page-content > .alignfull:first-chi
 body.tedx-has-top-thumbnail .entry-content > :first-child,
 body.tedx-has-top-thumbnail .entry-content > section:first-of-type,
 body.tedx-has-top-thumbnail .entry-content > section:first-child,
-body.tedx-has-top-thumbnail article > section:first-of-type,
-body.tedx-has-top-thumbnail article > section:first-child,
 body.tedx-has-top-thumbnail .site-main > section:first-of-type,
 body.tedx-has-top-thumbnail .site-main > section:first-child {
-  padding-top: 0 !important;
   margin-top: 0 !important;
   border-top-width: 0 !important;
 }
 
+/* ==========================================================================
+   Card Padding Enforcement
+   Enforce individual card padding settings strictly across all page templates
+   and configurations (e.g. top thumbnail active, hidden navbar, standard layout).
+   ========================================================================== */
+
+/* Timetable v2 Card Padding */
+.tedx-timetable-v2-card,
+article.tedx-timetable-v2-card {
+  padding: 20px !important;
+}
+
+@media (min-width: 640px) {
+  .tedx-timetable-v2-card,
+  article.tedx-timetable-v2-card {
+    padding: 20px 24px !important;
+  }
+}
+
+/* What to Expect Card Padding */
+.tedx-what-to-expect-card,
+article.tedx-what-to-expect-card {
+  padding: 1rem !important; /* 16px */
+}
+
+@media (min-width: 640px) {
+  .tedx-what-to-expect-card,
+  article.tedx-what-to-expect-card {
+    padding: 1.5rem !important; /* 24px */
+  }
+}
+
+/* Speaker Card Padding */
+.tedx-speaker-card,
+article.tedx-speaker-card {
+  padding: 1.5rem !important; /* 24px */
+}
+
+/* Press Card Body Padding */
+.tedx-press-card .tedx-press-card-body,
+.tedx-press-card-body {
+  padding: 24px !important;
+}
+
+/* Standard Content Card Padding (used across page templates and single views) */
+article.bg-tedx-card,
+.bg-tedx-card.rounded-3xl,
+.bg-tedx-card.rounded-\[32px\] {
+  padding: 1.25rem !important; /* 20px (p-5) */
+}
+
+@media (min-width: 640px) {
+  article.bg-tedx-card,
+  .bg-tedx-card.rounded-3xl,
+  .bg-tedx-card.rounded-\[32px\] {
+    padding: 1.5rem !important; /* 24px (sm:p-6) */
+  }
+}
+
 @media (min-width: 768px) {
-  body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > section:first-of-type,
-  body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > section:first-child,
-  body.tedx-has-top-thumbnail:not(.home) .tedx-page-content > :first-child,
-  .tedx-page-has-top-thumb .tedx-full-width-page-content > section:first-of-type,
-  .tedx-page-has-top-thumb .tedx-full-width-page-content > section:first-child,
-  .tedx-page-has-top-thumb .tedx-full-width-page-content > .alignfull:first-child,
-  .tedx-page-has-top-thumb .tedx-full-width-page-content > :first-child,
-  .tedx-page-has-top-thumb .tedx-full-width-page-content > :first-child > section:first-child,
-  .tedx-page-has-top-thumb .entry-content > section:first-of-type,
-  .tedx-page-has-top-thumb .entry-content > section:first-child,
-  .tedx-page-has-top-thumb .entry-content > :first-child,
-  .tedx-page-has-top-thumb .entry-content > :first-child > section:first-child,
-  .tedx-page-has-top-thumb article > section:first-of-type,
-  .tedx-page-has-top-thumb article > section:first-child,
-  .tedx-page-has-top-thumb .site-main > section:first-of-type,
-  .tedx-page-has-top-thumb .site-main > section:first-child,
-  .tedx-page-has-top-thumb section.tedx-timetable-v2-block,
-  .tedx-page-has-top-thumb section.tedx-timetable-block,
-  .tedx-page-has-top-thumb section.tedx-floorplan-section,
-  body.tedx-has-top-thumbnail section.tedx-timetable-v2-block:first-of-type,
-  body.tedx-has-top-thumbnail section.tedx-timetable-block:first-of-type,
-  body.tedx-has-top-thumbnail section.tedx-floorplan-section:first-of-type,
-  body.tedx-has-top-thumbnail .tedx-page-content > :first-child,
-  body.tedx-has-top-thumbnail .tedx-page-content > section:first-of-type,
-  body.tedx-has-top-thumbnail .tedx-page-content > section:first-child,
-  body.tedx-has-top-thumbnail .tedx-full-width-page-content > :first-child,
-  body.tedx-has-top-thumbnail .tedx-full-width-page-content > section:first-of-type,
-  body.tedx-has-top-thumbnail .tedx-full-width-page-content > section:first-child,
-  body.tedx-has-top-thumbnail .tedx-full-width-page-content > .alignfull:first-child,
-  body.tedx-has-top-thumbnail .entry-content > :first-child,
-  body.tedx-has-top-thumbnail .entry-content > section:first-of-type,
-  body.tedx-has-top-thumbnail .entry-content > section:first-child,
-  body.tedx-has-top-thumbnail article > section:first-of-type,
-  body.tedx-has-top-thumbnail article > section:first-child,
-  body.tedx-has-top-thumbnail .site-main > section:first-of-type,
-  body.tedx-has-top-thumbnail .site-main > section:first-child {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-    border-top-width: 0 !important;
+  article.bg-tedx-card,
+  .bg-tedx-card.rounded-3xl,
+  .bg-tedx-card.rounded-\[32px\] {
+    padding: 3rem !important; /* 48px (md:p-12) */
   }
 }

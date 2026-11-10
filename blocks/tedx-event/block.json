@@ -6,26 +6,86 @@
     "category": "tedx",
     "icon": "calendar-alt",
     "description": "Event title, description, action buttons and visual theme card.",
-    "keywords": ["event", "pitch", "tickets", "tedx"],
-    "supports": { "html": false, "align": false },
+    "keywords": [
+        "event",
+        "pitch",
+        "tickets",
+        "tedx"
+    ],
+    "supports": {
+        "html": false,
+        "align": false,
+        "anchor": true
+    },
     "attributes": {
-        "sectionId": { "type": "string", "default": "event-pitch" },
-        "eyebrow": { "type": "string", "default": "TEDxREGENSBURG | NOV 14 | MARINAFORUM" },
-        "title": { "type": "string", "default": "This Events Title" },
-        "description": { "type": "string", "default": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum." },
-        "showTickets": { "type": "boolean", "default": true },
-        "ticketText": { "type": "string", "default": "Tickets" },
-        "ticketUrl": { "type": "string", "default": "#tickets" },
-        "showMore": { "type": "boolean", "default": true },
-        "showMoreText": { "type": "string", "default": "Show More" },
-        "showMoreUrl": { "type": "string", "default": "" },
-        "linkedEventId": { "type": "number", "default": 0 },
-        "cardImage": { "type": "object", "default": {} },
-        "showCardLabel": { "type": "boolean", "default": true },
-        "cardLabel": { "type": "string", "default": "Nov. 14 | TEDxRegensburg" },
-        "cardClickable": { "type": "boolean", "default": false },
-        "cardUrl": { "type": "string", "default": "" },
-        "reverseColumns": { "type": "boolean", "default": false }
+        "sectionId": {
+            "type": "string",
+            "default": "event-pitch"
+        },
+        "eyebrow": {
+            "type": "string",
+            "default": "TEDxREGENSBURG | NOV 14 | MARINAFORUM"
+        },
+        "title": {
+            "type": "string",
+            "default": "This Events Title"
+        },
+        "description": {
+            "type": "string",
+            "default": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
+        },
+        "showTickets": {
+            "type": "boolean",
+            "default": true
+        },
+        "ticketText": {
+            "type": "string",
+            "default": "Tickets"
+        },
+        "ticketUrl": {
+            "type": "string",
+            "default": "#tickets"
+        },
+        "showMore": {
+            "type": "boolean",
+            "default": true
+        },
+        "showMoreText": {
+            "type": "string",
+            "default": "Show More"
+        },
+        "showMoreUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "linkedEventId": {
+            "type": "number",
+            "default": 0
+        },
+        "cardImage": {
+            "type": "object",
+            "default": {}
+        },
+        "showCardLabel": {
+            "type": "boolean",
+            "default": true
+        },
+        "cardLabel": {
+            "type": "string",
+            "default": "Nov. 14 | TEDxRegensburg"
+        },
+        "cardClickable": {
+            "type": "boolean",
+            "default": false
+        },
+        "cardUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "reverseColumns": {
+            "type": "boolean",
+            "default": false
+        }
     },
     "editorScript": "file:./index.js",
     "render": "file:./render.php"

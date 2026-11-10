@@ -70,6 +70,9 @@ check( false === strpos( $hidden_border, 'border-white/5' ), 'hideBorderTop=true
 $no_border_default = tedx_get_block_spacing_classes( array(), array( 'has_border' => false ) );
 check( false === strpos( $no_border_default, 'border-t' ), 'Blocks with has_border=false (like timetable-v2) omit border by default.' );
 
+$with_border_override = tedx_get_block_spacing_classes( array( 'showBorderTop' => true ), array( 'has_border' => false ) );
+check( false !== strpos( $with_border_override, 'border-t border-white/5' ), 'showBorderTop=true enables top divider on blocks with has_border=false.' );
+
 // -------------------------------------------------------------
 // Test 4: Dynamic attribute injection via filter
 // -------------------------------------------------------------
@@ -80,7 +83,16 @@ check( isset( $speaker_args['attributes']['hideBorderTop'] ), 'hideBorderTop att
 check( 'default' === $speaker_args['attributes']['paddingTop']['default'], 'Default paddingTop is "default".' );
 
 $button_args = tedx_register_block_spacing_attributes( array(), 'tedx/button' );
-check( empty( $button_args['attributes'] ), 'Inline tedx/button block does not receive section spacing attributes.' );
+check( isset( $button_args['attributes']['paddingTop'] ), 'Inline tedx/button block receives section spacing attributes.' );
+check( isset( $button_args['attributes']['paddingBottom'] ), 'Inline tedx/button block receives paddingBottom attribute.' );
+check( isset( $button_args['attributes']['hideBorderTop'] ), 'Inline tedx/button block receives hideBorderTop attribute.' );
+
+// Ensure all blocks registered in the theme receive spacing attributes
+foreach ( tedx_get_block_dirs() as $b_dir ) {
+	$b_name = 'tedx/' . str_replace( 'tedx-', '', $b_dir );
+	$b_args = tedx_register_block_spacing_attributes( array(), $b_name );
+	check( isset( $b_args['attributes']['paddingTop'] ) && isset( $b_args['attributes']['paddingBottom'] ) && isset( $b_args['attributes']['hideBorderTop'] ) && isset( $b_args['attributes']['showBorderTop'] ), "Block {$b_name} receives padding and divider attributes." );
+}
 
 $core_args = tedx_register_block_spacing_attributes( array(), 'core/paragraph' );
 check( empty( $core_args['attributes'] ), 'Non-tedx blocks do not receive section spacing attributes.' );

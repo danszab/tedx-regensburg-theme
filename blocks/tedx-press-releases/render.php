@@ -39,8 +39,13 @@ $extra_cls  = 'tedx-press-releases ' . $spacing;
 if ( 'full' === $align ) {
 	$extra_cls .= ' alignfull';
 }
+$anchor = ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : '' );
+$wrapper_args = array( 'class' => $extra_cls );
+if ( ! empty( $anchor ) ) {
+	$wrapper_args['id'] = sanitize_html_class( $anchor );
+}
 ?>
-<section <?php echo get_block_wrapper_attributes( array( 'class' => $extra_cls ) ); ?>>
+<section <?php echo get_block_wrapper_attributes( $wrapper_args ); ?>>
 	<div class="tedx-press-heading">
 		<h2 id="<?php echo esc_attr( $heading_id ); ?>" class="tedx-block-heading"><?php echo esc_html( $attributes['title'] ); ?></h2>
 	</div>

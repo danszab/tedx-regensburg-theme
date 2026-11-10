@@ -6,11 +6,25 @@
     "category": "tedx",
     "icon": "menu-alt3",
     "description": "Fixed bottom navigation bar with iOS safe-area support, custom SVG icons, and smooth autoscroll links.",
-    "keywords": ["navbar", "bottom", "navigation", "menu", "dock", "sticky", "fixed", "safari"],
+    "keywords": [
+        "navbar",
+        "bottom",
+        "navigation",
+        "menu",
+        "dock",
+        "sticky",
+        "fixed",
+        "safari"
+    ],
     "supports": {
-        "html": false
+        "html": false,
+        "anchor": true
     },
     "attributes": {
+        "showIcons": {
+            "type": "boolean",
+            "default": true
+        },
         "buttons": {
             "type": "array",
             "default": [

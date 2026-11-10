@@ -7,7 +7,7 @@
  * @var WP_Block $block      Block instance.
  */
 
-$section_id = ! empty( $attributes['sectionId'] ) ? sanitize_html_class( $attributes['sectionId'] ) : '';
+$section_id = sanitize_html_class( ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : '' ) );
 
 $spacing_classes = function_exists( 'tedx_get_block_spacing_classes' )
 	? tedx_get_block_spacing_classes( $attributes )

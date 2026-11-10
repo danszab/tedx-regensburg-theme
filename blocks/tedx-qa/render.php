@@ -9,7 +9,7 @@
 
 $title       = ! empty( $attributes['title'] ) ? $attributes['title'] : __( 'Frequently Asked Questions', 'tedx-regensburg' );
 $eyebrow     = isset( $attributes['eyebrow'] ) ? $attributes['eyebrow'] : 'Q&A';
-$section_id  = ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : 'faq';
+$section_id  = ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( ! empty( $attributes['sectionId'] ) ? $attributes['sectionId'] : 'faq' );
 $type        = ! empty( $attributes['type'] ) ? $attributes['type'] : 'single';
 $collapsible = isset( $attributes['collapsible'] ) ? (bool) $attributes['collapsible'] : true;
 $items       = ! empty( $attributes['items'] ) && is_array( $attributes['items'] ) ? $attributes['items'] : array();

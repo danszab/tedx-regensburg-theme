@@ -6,10 +6,23 @@
     "category": "tedx",
     "icon": "location-alt",
     "description": "Interactive vector SVG floorplan and venue map with zoom controls, pinch-to-zoom, and smooth touch panning.",
-    "keywords": ["floorplan", "map", "venue", "stages", "svg", "seating", "zoom", "tedx"],
+    "keywords": [
+        "floorplan",
+        "map",
+        "venue",
+        "stages",
+        "svg",
+        "seating",
+        "zoom",
+        "tedx"
+    ],
     "supports": {
         "html": false,
-        "align": ["wide", "full"]
+        "align": [
+            "wide",
+            "full"
+        ],
+        "anchor": true
     },
     "attributes": {
         "sectionId": {

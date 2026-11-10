@@ -15,7 +15,7 @@ if ( empty( $sponsors ) ) {
 }
 
 $layout     = $attributes['layout'] ?? 'grid';
-$section_id = sanitize_html_class( $attributes['sectionId'] ?? ( 'featured' === $layout ? 'partner' : 'sponsors' ) );
+$section_id = sanitize_html_class( ! empty( $attributes['anchor'] ) ? $attributes['anchor'] : ( $attributes['sectionId'] ?? ( 'featured' === $layout ? 'partner' : 'sponsors' ) ) );
 $eyebrow    = $attributes['eyebrow'] ?? '';
 $title      = $attributes['title'] ?? ( 'featured' === $layout ? 'Our Partner' : 'Other Sponsors' );
 $desc       = $attributes['description'] ?? '';
