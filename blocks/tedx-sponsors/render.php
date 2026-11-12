@@ -98,11 +98,11 @@ $wrapper = get_block_wrapper_attributes(
 						array(
 							'alt'   => $s_name,
 							'class' => 'tedx-sponsor-logo',
-							'sizes' => '(max-width: 639px) calc(100vw - 70px), (max-width: 767px) calc((100vw - 56px) / 2 - 38px), (max-width: 1023px) calc((100vw - 88px) / 2 - 38px), 280px',
+							'sizes' => '(max-width: 639px) calc(100vw - 72px), (max-width: 767px) calc((100vw - 56px) / 2 - 40px), (max-width: 1023px) calc((100vw - 88px) / 2 - 40px), 280px',
 						)
 					);
 					?>
-					<article class="flex h-[92px] items-center justify-center overflow-hidden rounded-[32px] bg-tedx-card px-[19px] py-4">
+					<article class="tedx-sponsor-card flex h-[92px] items-center justify-center overflow-hidden rounded-[32px] bg-tedx-card">
 						<div class="tedx-sponsor-logo-frame">
 						<?php if ( $s_image ) : ?>
 							<?php if ( ! empty( $s_link ) ) : ?>
@@ -112,10 +112,10 @@ $wrapper = get_block_wrapper_attributes(
 							<?php else : ?>
 								<?php echo $s_image; // phpcs:ignore WordPress.Security.EscapeOutput -- escaped in helper. ?>
 							<?php endif; ?>
-							</div>
 						<?php else : ?>
 							<span class="text-center text-sm font-medium text-white/60"><?php echo esc_html( $s_name ); ?></span>
 						<?php endif; ?>
+						</div>
 					</article>
 				<?php endforeach; ?>
 			</div>

@@ -115,7 +115,13 @@ foreach ( array( 'grid', 'featured' ) as $layout ) {
 }
 
 $sponsor_css = file_get_contents( dirname( __DIR__ ) . '/blocks/tedx-sponsors/style.css' );
-check( false !== strpos( $sponsor_css, 'height: 70%;' ) && false !== strpos( $sponsor_css, 'max-height: 70%;' ), 'Sponsor logo height is set to 70% in style.css' );
+check( false !== strpos( $sponsor_css, 'width: auto;' ) && false !== strpos( $sponsor_css, 'height: auto;' ) && false !== strpos( $sponsor_css, 'max-height: 100%;' ), 'Sponsor logos preserve their aspect ratio within the frame.' );
+check( false !== strpos( $sponsor_css, 'padding: 16px 20px !important;' ), 'Sponsor cards retain explicit padding despite global card rules.' );
+$attributes = array( 'layout' => 'grid', 'sponsors' => array( array( 'name' => 'Text-only sponsor' ) ) );
+ob_start();
+include dirname( __DIR__ ) . '/blocks/tedx-sponsors/render.php';
+$html = ob_get_clean();
+check( 1 === preg_match( '/<div class="tedx-sponsor-logo-frame">\s*<span[^>]*>Text-only sponsor<\/span>\s*<\/div>\s*<\/article>/', $html ), 'Text-only sponsor card closes its logo frame correctly.' );
 
 class WP_Query {
 	private $remaining = true;
