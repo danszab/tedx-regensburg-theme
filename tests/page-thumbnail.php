@@ -403,5 +403,8 @@ check( false === strpos( $css, '.tedx-page-has-top-thumb section.tedx-timetable-
 check( false !== strpos( $css, '.tedx-timetable-v2-card' ) && false !== strpos( $css, 'padding: 20px !important' ), 'CSS enforces timetable-v2 card padding strictly.' );
 check( false !== strpos( $css, '.tedx-what-to-expect-card' ) && false !== strpos( $css, 'padding: 1rem !important' ), 'CSS enforces what-to-expect card padding strictly.' );
 check( false !== strpos( $css, '.tedx-speaker-card' ) && false !== strpos( $css, 'padding: 1.5rem !important' ), 'CSS enforces speaker card padding strictly.' );
+check( ! preg_match( '~(?:article\.bg-tedx-card|\.bg-tedx-card\.rounded-3xl)[^{}]*\{[^{}]*padding:\s*3rem\s*!important~', $css ), 'Generic cards do not enforce 3rem padding at larger widths.' );
+$compiled_css = file_get_contents( dirname( __DIR__ ) . '/assets/css/style.css' );
+check( ! preg_match( '~(?:article\.bg-tedx-card|\.bg-tedx-card\.rounded-3xl)[^{}]*\{[^{}]*padding:\s*3rem\s*!important~', $compiled_css ), 'Compiled CSS does not enforce 3rem padding on generic cards.' );
 
 echo 'All page thumbnail tests passed!' . PHP_EOL;

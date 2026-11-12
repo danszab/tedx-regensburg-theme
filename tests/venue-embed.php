@@ -42,6 +42,12 @@ foreach ( array( 'https://youtu.be/dQw4w9WgXcQ', 'https://www.youtube.com/watch?
 check( '' === tedx_youtube_embed_url( 'https://evil.test/watch?v=dQw4w9WgXc' ), 'Unknown video host rejected.' );
 $html = tedx_consent_embed( tedx_youtube_embed_url( 'https://youtu.be/dQw4w9WgXcQ' ), 'YouTube', 'A & B' );
 check( false === strpos( $html, '<iframe' ) && false !== strpos( $html, 'data-embed-title="A &amp; B"' ), 'Video output is inert and title is escaped.' );
+check( false !== strpos( $html, 'data-embed-accept hidden' ) && false !== strpos( $html, 'data-embed-revoke hidden' ), 'Consent and revoke controls remain available to the consent script.' );
+$css = file_get_contents( dirname( __DIR__ ) . '/assets/css/input.css' );
+$compiled_css = file_get_contents( dirname( __DIR__ ) . '/assets/css/style.css' );
+check( 1 === preg_match( '/\.tedx-venue-map \.tedx-embed-placeholder\s*\{[^}]*padding:\s*12px;[^}]*font-size:\s*14px;[^}]*line-height:\s*1\.35/', $css ), 'Venue consent placeholder uses compact spacing and typography.' );
+check( 1 === preg_match( '/\.tedx-venue-map \.tedx-embed-placeholder button\s*\{[^}]*min-height:\s*44px/', $css ), 'Venue consent button retains a 44px touch target.' );
+check( 1 === preg_match( '/\.tedx-venue-map \.tedx-embed-placeholder\{[^}]*padding:12px;[^}]*font-size:14px;[^}]*line-height:1\.35/', $compiled_css ), 'Compiled stylesheet includes compact venue consent styling.' );
 $speaker = file_get_contents( dirname( __DIR__ ) . '/single-speaker.php' );
 check( false === strpos( $speaker, 'wp_oembed_get' ) && false !== strpos( $speaker, 'tedx_consent_embed(' ), 'Speaker video uses consent helper instead of active oEmbed.' );
 
